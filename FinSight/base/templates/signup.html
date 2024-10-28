@@ -1,0 +1,233 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>FinSight - Personal Finance Dashboard</title>
+    <link rel="icon" type="image/png" href="{% static 'logo/fav-transparent.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --adminuiux-content-font: "Open Sans", sans-serif;
+            --adminuiux-content-font-weight: 400;
+            --adminuiux-title-font: "Lexend", sans-serif;
+            --adminuiux-title-font-weight: 600
+        }
+    </style>
+    <script defer="defer" src="{% static 'js/app.js' %}"></script>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <style>
+        .fancy-line {
+            width: 60%;
+            height: 4px;
+            margin: 20px auto;
+            background: linear-gradient(90deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.8) 50%,
+                    rgba(255, 255, 255, 0) 100%);
+        }
+    </style>
+
+</head>
+
+<body
+    class="main-bg main-bg-opac main-bg-blur adminuiux-sidebar-fill-white adminuiux-sidebar-boxed theme-blue roundedui"
+    data-theme="theme-blue" data-sidebarfill="adminuiux-sidebar-fill-white" data-bs-spy="scroll"
+    data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0"></body>
+
+<main class="flex-shrink-0 pt-0 h-100">
+    <div class="container-fluid">
+        <div class="auth-wrapper">
+            <div class="row">
+                <div class="col-12 col-md-6 col-xl-4 minvheight-100 d-flex flex-column px-0">
+                    <header class="adminuiux-header">
+                        <nav class="navbar">
+                            <div class="container-fluid"><a class="navbar-brand" href="{% url 'login' %}"><img
+                                        data-bs-img="light" src="{% static 'logo/fav-transparent.png' %}" alt="">
+                                    <div class="">
+                                        <h2>FinSight</h2>
+                                        <p class="company-tagline">Clarity in Every Rupee</p>
+                                    </div>
+                                </a>
+                                <div class="ms-auto"></div>
+                                <div class="ms-auto"></div>
+                            </div>
+                        </nav>
+                    </header>
+                    <div class="h-100 py-3 px-3">
+                        <div class="row h-100 align-items-center justify-content-center">
+                            <div class="col-11 col-sm-8 col-md-11 col-xl-11 col-xxl-10 login-box">
+                                <div class="text-center mb-4">
+                                    <h1 class="mb-3">Let's get started&#128077;</h1>
+                                    <p class="text-secondary">Provide your few details</p>
+                                </div>
+                                <form method="post" action="{% url 'signup' %}">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-floating mb-3">
+                                                {{ form.first_name }}
+                                                <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-floating mb-3">
+                                                <!-- <input class="form-control" id="namel" placeholder="Enter last name"
+                                                    value="Doe"> <label for="namel">Last
+                                                    Name</label> -->
+                                                {{ form.last_name }}
+                                                <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        {{ form.email }}
+                                        <label for="{{ form.email.id_for_label }}">Email Address</label>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="form-floating maxwidth-100">
+                                            {{ form.mobile_code }}
+                                            <label for="{{ form.mobile_code.id_for_label }}">Code</label>
+                                        </div>
+
+                                        <div class="form-floating">
+                                            {{ form.mobile_number }}
+                                            <label for="{{ form.mobile_number.id_for_label }}">Phone Number</label>
+                                        </div>
+                                    </div>
+                                    <div class="position-relative">
+                                        <div class="form-floating mb-3">
+                                            {{ form.password1 }}
+                                            <label for="{{ form.password1.id_for_label }}">Password</label>
+                                        </div>
+                                        <button type="button" data-target="{{ form.password1.id_for_label }}"
+                                            class="btn btn-square btn-link text-theme-1 position-absolute end-0 top-0 mt-2 me-2 toggle-password">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="position-relative">
+                                        <div class="form-floating mb-3">
+                                            {{ form.password2 }}
+                                            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                                        </div>
+                                        <button type="button" data-target="{{ form.password2.id_for_label }}"
+                                            class="btn btn-square btn-link text-theme-1 position-absolute end-0 top-0 mt-2 me-2 toggle-password">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </div>
+
+
+                                    <button type="submit" class="btn btn-lg btn-theme w-100 mb-4">Sign up</button>
+                                </form>
+                                <div class="text-center mb-3">Already have account? <a href="investment-login.html"
+                                        class="">Login</a> here.</div>
+                                <div class="row align-items-center mb-3">
+                                    <div class="col">
+                                        <hr class="">
+                                    </div>
+                                    <div class="col-auto">
+                                        <p class="text-secondary">OR Continue with</p>
+                                    </div>
+                                    <div class="col">
+                                        <hr class="">
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col"><button
+                                            class="btn btn-lg btn-outline-theme w-100 mb-3 text-start"><img
+                                                src="{% static 'img/g-logo.png' %}" alt="" class="me-2"> Google</button>
+                                    </div>
+                                    <div class="col"><button
+                                            class="btn btn-lg btn-outline-theme w-100 mb-3 text-start"><img
+                                                src="{% static 'img/f-logo.png' %}" alt="" class="me-2">
+                                            Facebook</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="adminuiux-footer mt-auto">
+                        <div class="container-fluid text-center"><span class="small">Copyright @2024, FinSight</span>
+                        </div>
+                    </footer>
+                </div>
+                <div class="col-12 col-md-6 col-xl-8 p-4 d-none d-md-block">
+                    <div class="card adminuiux-card bg-theme-1-space position-relative overflow-hidden h-100">
+                        <div class="position-absolute start-0 top-0 h-100 w-100 coverimg opacity-75 z-index-0"><img
+                                src="{% static 'img/background-image/background-image-8.html' %}" alt=""></div>
+                        <div class="card-body position-relative z-index-1">
+                            <div
+                                class="row h-100 d-flex flex-column justify-content-center align-items-center gx-0 text-center">
+                                <div class="col-10 col-md-11 col-xl-8 mb-4 mx-auto">
+                                    <div class="swiper swipernavpagination pb-5">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide"><img
+                                                    src="{% static 'img/investment/slider.png' %}" alt=""
+                                                    class="mw-100 mb-3">
+                                                <h2 class="text-white mb-3">Create and Manage your Investments
+                                                    easily at your own very personalized space.</h2>
+                                                <div class="fancy-line"></div>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-pagination white bottom-0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- <script src="{% static 'js/investment/investment-auth.js' %}"></script> -->
+<!-- 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#passwd');
+
+        togglePassword.addEventListener('click', function (e) {
+            // toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // toggle the eye icon
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+    });
+</script> -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+
+        togglePasswordButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const passwordField = document.querySelector(`#${this.dataset.target}`);
+
+                // Toggle the type attribute
+                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+
+                // Toggle the eye icon
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+        });
+    });
+</script>
+
+
+</html>

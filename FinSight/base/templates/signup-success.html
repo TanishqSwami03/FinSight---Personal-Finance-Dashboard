@@ -1,0 +1,141 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>FinSight - Personal Finance Dashboard</title>
+    <link rel="icon" type="image/png" href="{% static 'logo/fav-transparent.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --adminuiux-content-font: "Open Sans", sans-serif;
+            --adminuiux-content-font-weight: 400;
+            --adminuiux-title-font: "Lexend", sans-serif;
+            --adminuiux-title-font-weight: 600
+        }
+    </style>
+    <script defer="defer" src="{% static 'js/app.js' %}"></script>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <style>
+        .fancy-line {
+            width: 60%;
+            height: 4px;
+            margin: 20px auto;
+            background: linear-gradient(90deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.8) 50%,
+                    rgba(255, 255, 255, 0) 100%);
+        }
+    </style>
+
+</head>
+
+<body
+    class="main-bg main-bg-opac main-bg-blur adminuiux-sidebar-fill-white adminuiux-sidebar-boxed theme-blue roundedui"
+    data-theme="theme-blue" data-sidebarfill="adminuiux-sidebar-fill-white" data-bs-spy="scroll"
+    data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0"></body>
+
+<main class="flex-shrink-0 pt-0 h-100">
+    <div class="container-fluid">
+        <div class="auth-wrapper">
+            <div class="row">
+                <div class="col-12 col-md-6 col-xl-4 minvheight-100 d-flex flex-column px-0">
+                    <header class="adminuiux-header">
+                        <nav class="navbar">
+                            <div class="container-fluid"><a class="navbar-brand" href="{% url 'login' %}"><img
+                                        data-bs-img="light" src="{% static 'logo/fav-transparent.png' %}" alt="">
+                                    <div class="">
+                                        <h2>FinSight</h2>
+                                        <p class="company-tagline">Clarity in Every Rupee</p>
+                                    </div>
+                                </a>
+                                <div class="ms-auto"></div>
+                                <div class="ms-auto"></div>
+                            </div>
+                        </nav>
+                    </header>
+                    <div class="h-100 py-3 px-3">
+                        <div class="row h-100 align-items-center justify-content-center">
+                            <div class="col-11 col-sm-8 col-md-11 col-xl-11 col-xxl-10 login-box">
+                                <div class="text-center mb-4">
+                                    <h1 class="mb-3">Congratulations&#129395;</h1>
+                                    <p class="text-secondary">You have successfully completed the registration !</p>
+                                </div>
+                                <a href="{% url 'login' %}" class="btn btn-lg btn-theme w-100 mb-4">
+                                    Proceed to Login
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                                <!-- <a href="investment-onboarding.html"
+                                    class="btn btn-lg btn-outline-theme h-auto w-100 mb-3 text-start">
+                                    <div class="row align-items-center p-2">
+                                        <div class="col-auto"><i class="bi bi-journal-medical fs-2 h-auto w-auto"></i>
+                                        </div>
+                                        <div class="col">
+                                            <p class="h6 mb-0">Are you a investment?</p>
+                                            <p class="opacity-75 fs-14">Small investment with 1-5 staff</p>
+                                        </div>
+                                        <div class="col-auto"><i class="bi bi-chevron-right"></i></div>
+                                    </div> -->
+                                <!-- </a><a href="investment-onboarding.html"
+                                    class="btn btn-lg btn-outline-theme h-auto w-100 mb-3 text-start">
+                                    <div class="row align-items-center p-2">
+                                        <div class="col-auto"><i class="bi bi-hospital fs-2 h-auto w-auto"></i></div>
+                                        <div class="col">
+                                            <p class="h6 mb-0">Are you a Broker?</p>
+                                            <p class="opacity-75 fs-14">Broker with 5+ staff</p>
+                                        </div>
+                                        <div class="col-auto"><i class="bi bi-chevron-right"></i></div>
+                                    </div>
+                                </a> -->
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="adminuiux-footer mt-auto">
+                        <div class="container-fluid text-center"><span class="small">Copyright @2024, FinSight</span>
+                        </div>
+                    </footer>
+                </div>
+                <div class="col-12 col-md-6 col-xl-8 p-4 d-none d-md-block">
+                    <div class="card adminuiux-card bg-theme-1-space position-relative overflow-hidden h-100">
+                        <div class="position-absolute start-0 top-0 h-100 w-100 coverimg opacity-75 z-index-0"><img
+                                src="assets/img/background-image/background-image-8.html" alt=""></div>
+                        <div class="card-body position-relative z-index-1">
+                            <div
+                                class="row h-100 d-flex flex-column justify-content-center align-items-center gx-0 text-center">
+                                <div class="col-10 col-md-11 col-xl-8 mb-4 mx-auto">
+                                    <div class="swiper swipernavpagination pb-5">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide"><img
+                                                    src="{% static 'img/investment/slider.png' %}" alt=""
+                                                    class="mw-100 mb-3">
+                                                <h2 class="text-white mb-3">Create and Manage your Investment
+                                                    appointments easily at your own very personalized space.
+                                                </h2>
+                                                <div class="fancy-line"></div>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-pagination white bottom-0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- <script src="assets/js/investment/investment-auth.js"></script> -->
+
+</html>

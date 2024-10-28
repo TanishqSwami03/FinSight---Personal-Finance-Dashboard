@@ -1,0 +1,2 @@
+/*! For license information please see investment-add-goal.js.LICENSE.txt */
+import smartWizard from"smartwizard";document.addEventListener("DOMContentLoaded",(function(){$("#smartwizard").smartWizard({theme:"dots",toolbar:{extraHtml:'<a class="btn btn-outline-accent float-start" href="investment-dashboard.html">Skip</a><a class="btn btn-theme finish-btn" style="display:none" href="investment-dashboard.html">Start Investment</a>'}}),$("#smartwizard").on("showStep",(function(t,a,n,e,s){"last"===s?$(".finish-btn").show():$(".finish-btn").hide()}))}));

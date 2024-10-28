@@ -1,0 +1,191 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<!-- Mirrored from www.adminuiux.com/adminuiux/investment-uiux/investment-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 19 Oct 2024 12:06:10 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>FinSight - Personal Finance Dashboard</title>
+    <link rel="icon" type="image/png" href="{% static 'logo/fav-transparent.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --adminuiux-content-font: "Open Sans", sans-serif;
+            --adminuiux-content-font-weight: 400;
+            --adminuiux-title-font: "Lexend", sans-serif;
+            --adminuiux-title-font-weight: 600
+        }
+    </style>
+    <!-- <script defer="defer" src="assets/js/app7e23.js?b1b4e75de865b54102d8"></script> -->
+    <script src="{% static 'js/app.js' %}"></script>
+    <!-- <link href="assets/css/app7e23.css?b1b4e75de865b54102d8" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <style>
+        .fancy-line {
+            width: 60%;
+            height: 4px;
+            margin: 20px auto;
+            background: linear-gradient(90deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.8) 50%,
+                    rgba(255, 255, 255, 0) 100%);
+        }
+    </style>
+
+
+</head>
+
+<body
+    class="main-bg main-bg-opac main-bg-blur adminuiux-sidebar-fill-white adminuiux-sidebar-boxed theme-blue roundedui"
+    data-theme="theme-blue" data-sidebarfill="adminuiux-sidebar-fill-white" data-bs-spy="scroll"
+    data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0"></body>
+
+<main class="flex-shrink-0 pt-0 h-100">
+    <div class="container-fluid">
+        <div class="auth-wrapper">
+            <div class="row">
+                <div class="col-12 col-md-6 col-xl-4 minvheight-100 d-flex flex-column px-0">
+                    <header class="adminuiux-header">
+                        <nav class="navbar">
+                            <div class="container-fluid"><a class="navbar-brand" href="{% url 'login' %}"><img
+                                        data-bs-img="light" src="{% static 'logo/fav-transparent.png' %}" alt="">
+                                    <div class="">
+                                        <h2>FinSight</h2>
+                                        <p class="company-tagline">Clarity in Every Rupee</p>
+                                    </div>
+                                </a>
+                                <div class="ms-auto"></div>
+                                <div class="ms-auto"></div>
+                            </div>
+                        </nav>
+                    </header>
+                    <div class="h-100 py-4 px-3">
+                        <div class="row h-100 align-items-center justify-content-center mt-md-4">
+                            <div class="col-11 col-sm-8 col-md-11 col-xl-11 col-xxl-10 login-box">
+                                <div class="text-center mb-4">
+                                    <h1 class="mb-2">Welcome&#9996;</h1>
+                                    <p class="text-secondary">Enter your credential to login</p>
+                                </div>
+                                <form method="POST" action="{% url 'login' %}">
+                                    {% csrf_token %}
+                                    <div class="form-floating mb-3">
+                                        <input type="email" name="email" class="form-control" id="emailadd"
+                                            placeholder="Enter email address" value="" required autofocus="">
+                                        <label for="emailadd">Email Address</label>
+                                    </div>
+                                    <div class="position-relative">
+                                        <div class="form-floating mb-3">
+                                            <input type="password" name="password" class="form-control" id="passwd"
+                                                placeholder="Enter your password" required>
+                                            <label for="passwd">Password</label>
+                                        </div>
+                                        <button id="togglePassword"
+                                            class="btn btn-square btn-link text-theme-1 position-absolute end-0 top-0 mt-2 me-2">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col">
+                                            <!-- <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="rememberme"
+                                                id="rememberme">
+                                            <label class="form-check-label" for="rememberme">Remember me</label>
+                                        </div> -->
+                                        </div>
+                                        <div class="col-auto"><a href="{% url 'forgot-login-password' %}"
+                                                class="">Forget
+                                                Password?</a></div>
+                                    </div>
+                                    <a href="{% url 'dashboard' %}" class="btn btn-lg btn-theme w-100 mb-4">Login</a>
+                                    <div class="text-center mb-3">Don't have account? <a href="{% url 'signup' %}"
+                                            class="">Create Account</a>
+                                    </div>
+                                </form>
+                                <div class="row align-items-center mb-3">
+                                    <div class="col">
+                                        <hr class="">
+                                    </div>
+                                    <div class="col-auto">
+                                        <p class="text-secondary">OR</p>
+                                    </div>
+                                    <div class="col">
+                                        <hr class="">
+                                    </div>
+                                </div><button class="btn btn-lg btn-outline-theme w-100 mb-3 text-start"><img
+                                        src="{% static 'img/g-logo.png' %}" alt="" class="me-2"> Sign in with
+                                    Google</button>
+                                <button class="btn btn-lg btn-outline-theme w-100 mb-4 text-start"><img
+                                        src="{% static 'img/f-logo.png' %}" alt="" class="me-2"> Sign in with
+                                    Facebook</button><br><br>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="adminuiux-footer mt-auto">
+                        <div class="container-fluid text-center"><span class="small">Copyright @2024, FinSight</span>
+                        </div>
+                    </footer>
+                    <!-- <div class="position-fixed bottom-0 end-0 m-3 z-index-5"><button
+                            class="btn btn-square btn-theme shadow" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#theming" aria-controls="theming"><i
+                                class="bi bi-palette"></i></button><br><button
+                            class="btn btn-theme btn-square rounded-circle shadow mt-2 d-none" id="backtotop"><i
+                                class="bi bi-arrow-up"></i></button></div> -->
+                </div>
+                <div class="col-12 col-md-6 col-xl-8 p-4 d-none d-md-block">
+                    <div class="card adminuiux-card bg-theme-1-space position-relative overflow-hidden h-100">
+                        <div class="position-absolute start-0 top-0 h-100 w-100 coverimg opacity-75 z-index-0"><img
+                                src="{% static 'img/background-image/background-image-8.html' %}" alt=""></div>
+                        <div class="card-body position-relative z-index-1">
+                            <div
+                                class="row h-100 d-flex flex-column justify-content-center align-items-center gx-0 text-center">
+                                <div class="col-10 col-md-11 col-xl-8 mb-4 mx-auto">
+                                    <div class="swiper swipernavpagination pb-5">
+                                        <div class="swiper-wrapper">
+                                            <div class="swiper-slide"><img
+                                                    src="{% static 'img/investment/slider.png' %}" alt=""
+                                                    class="mw-100 mb-3">
+                                                <h2 class="text-white mb-3">Create and Manage your Investments
+                                                    easily at your own very personalized space.</h2>
+                                                <div class="fancy-line"></div>
+                                            </div>
+                                        </div>
+                                        <div class="swiper-pagination white bottom-0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="{% static 'js/investment/investment-auth.js' %}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#passwd');
+
+        togglePassword.addEventListener('click', function (e) {
+            // toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // toggle the eye icon
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+    });
+</script>
+
+</html>
