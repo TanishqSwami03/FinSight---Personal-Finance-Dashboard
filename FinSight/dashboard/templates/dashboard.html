@@ -27,9 +27,6 @@
     <!-- <link href="assets/css/app7e23.css?b1b4e75de865b54102d8" rel="stylesheet"> -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <!-- <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css"
-        integrity="sha384-..." crossorigin="anonymous"> -->
 
 </head>
 
@@ -39,29 +36,15 @@
     data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0">
 
 
-    <!-- <div class="pageloader">
-    <div class="container h-100">
-        <div class="row justify-content-center align-items-center text-center h-100">
-            <div class="col-12 mb-auto pt-4"></div>
-            <div class="col-auto"><img src="assets/img/logo.svg" alt="" class="height-60 mb-3">
-                <p class="h6 mb-0">AdminUIUX</p>
-                <p class="h3 mb-4">Investment</p>
-                <div class="loader10 mb-2 mx-auto"></div>
-            </div>
-            <div class="col-12 mt-auto pb-4">
-                <p class="text-secondary">Please wait we are preparing awesome things to preview...</p>
-            </div>
-        </div>
-    </div>
-    </div> -->
-
     <header class="adminuiux-header">
         <nav class="navbar navbar-expand-lg fixed-top">
-            <div class="container-fluid"><button class="btn btn-link btn-square sidebar-toggler" type="button"
-                    onclick="initSidebar()"><i class="sidebar-svg" data-feather="menu"></i></button> <a
-                    class="navbar-brand" href="{% url 'dashboard' %}"><img data-bs-img="light"
-                        src="{% static 'logo/fav-transparent.png' %}" alt=""> <img data-bs-img="dark"
-                        src="{% static 'logo/fav-transparent.png' %}" alt="">
+            <div class="container-fluid">
+                <button class="btn btn-link btn-square sidebar-toggler" type="button" onclick="initSidebar()">
+                    <i class="sidebar-svg" data-feather="menu"></i>
+                </button>
+                <a class="navbar-brand" href="{% url 'dashboard' %}">
+                    <img data-bs-img="light" src="{% static 'logo/fav-transparent.png' %}" alt="">
+                    <img data-bs-img="dark" src="{% static 'logo/fav-transparent.png' %}" alt="">
                     <div class="">
                         <h2>FinSight</h2>
                         <p class="company-tagline">Clarity in Every Rupee</p>
@@ -69,158 +52,23 @@
                 </a>
                 <div class="collapse navbar-collapse right-in-device justify-content-center" id="header-navbar">
                     <ul class="navbar-nav mx-lg-3 mb-2 mb-md-0">
-                        <li class="nav-item"><a class="nav-link active" href="investment-dashboard.html">Dashboard</a>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'dashboard' %}">Dashboard</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="investment-portfolio.html">Portfolio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="investment-transaction.html">Transaction</a></li>
-                        <li class="nav-item"><a class="nav-link" href="investment-blogs.html">News</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'portfolio' %}">Portfolio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'transaction' %}">Transaction</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link" href="investment-blogs.html">News</a></li> -->
                     </ul>
                 </div>
-                <div class="ms-auto"><button class="btn btn-link btn-square btn-icon btn-link-header" type="button"
-                        onclick="openSearch()"><i data-feather="search"></i></button> <button
-                        class="btn btn-link btn-square btnsunmoon btn-link-header" id="btn-layout-modes-dark-page"><i
-                            class="sun mx-auto" data-feather="sun"></i> <i class="moon mx-auto"
-                            data-feather="moon"></i></button>
-                    <div class="dropdown d-none d-sm-inline-block"><button
-                            class="btn btn-link btn-square btn-icon btn-link-header dropdown-toggle no-caret"
-                            type="button" data-bs-toggle="dropdown" aria-expanded="false"><i
-                                data-feather="grid"></i></button>
-                        <div class="dropdown-menu dropdown-menu-end width-300 pt-0 px-0">
-                            <div class="bg-theme-1-space rounded py-3 mb-2 dropdown-dontclose text-center">
-                                <p class="mb-0">Applications</p>
-                                <p class="opacity-50 small">Make your app innovative</p>
-                            </div>
-                            <div class="px-2">
-                                <div class="row g-0 text-center mb-2">
-                                    <div class="col-4"><a class="dropdown-item square-item" href="app-finance.html">
-                                            <div class="avatar avatar-40 rounded mb-2"><i
-                                                    class="bi bi-bank fs-4 mx-0"></i>
-                                            </div>
-                                            <p class="mb-0">Finance</p>
-                                            <p class="fs-12 opacity-50 mb-2">Accounting</p>
-                                        </a></div>
-                                    <div class="col-4"><a class="dropdown-item square-item" href="app-network.html">
-                                            <div class="avatar avatar-40 rounded mb-2"><i
-                                                    class="bi bi-globe fs-4 mx-0"></i>
-                                            </div>
-                                            <p class="mb-0">Network</p>
-                                            <p class="fs-12 opacity-50 mb-2">Stabilize</p>
-                                        </a></div>
-                                    <div class="col-4"><a class="dropdown-item square-item" href="app-ecommerce.html">
-                                            <div class="avatar avatar-40 rounded mb-2"><i
-                                                    class="bi bi-box fs-4 mx-0"></i>
-                                            </div>
-                                            <p class="mb-0">Inventory</p>
-                                            <p class="fs-12 opacity-50 mb-2">Assuring</p>
-                                        </a></div>
-                                    <div class="col-4"><a class="dropdown-item square-item" href="app-project.html">
-                                            <div class="avatar avatar-40 rounded mb-2"><i
-                                                    class="bi bi-folder fs-4 mx-0"></i></div>
-                                            <p class="mb-0">Project</p>
-                                            <p class="fs-12 opacity-50 mb-2">Management</p>
-                                        </a></div>
-                                    <div class="col-4"><a class="dropdown-item square-item" href="app-social.html">
-                                            <div class="avatar avatar-40 rounded mb-2"><i
-                                                    class="bi bi-people fs-4 mx-0"></i></div>
-                                            <p class="mb-0">Social</p>
-                                            <p class="fs-12 opacity-50 mb-2">Tracking</p>
-                                        </a></div>
-                                    <div class="col-4"><a class="dropdown-item square-item" href="app-learning.html">
-                                            <div class="avatar avatar-40 rounded mb-2"><i
-                                                    class="bi bi-journal-bookmark fs-4 mx-0"></i></div>
-                                            <p class="mb-0">Learning</p>
-                                            <p class="fs-12 opacity-50 mb-2">Make-easy</p>
-                                        </a></div>
-                                </div>
-                            </div>
-                            <div class="text-center"><a class="btn btn-link text-center" href="app-demo.html">View all
-                                    <i class="bi bi-arrow-right fs-14"></i></a></div>
-                        </div>
-                    </div>
-                    <div class="dropdown d-none d-sm-inline-block"><button
-                            class="btn btn-link btn-square btn-icon btn-link-header dropdown-toggle no-caret"
-                            type="button" data-bs-toggle="dropdown" aria-expanded="false"><i
-                                class="bi bi-translate"></i></button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item active" data-value="EN">EN - English</a></li>
-                            <li><a class="dropdown-item" data-value="FR">FR - French</a></li>
-                            <li><a class="dropdown-item" data-value="CH">CH - Chinese</a></li>
-                            <li><a class="dropdown-item" data-value="HI">HI - Hindi</a></li>
-                        </ul>
-                    </div>
-                    <div class="dropdown d-inline-block"><button
-                            class="btn btn-link btn-square btn-icon btn-link-header dropdown-toggle no-caret"
-                            type="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="bell"></i>
-                            <span
-                                class="position-absolute top-0 end-0 badge rounded-pill bg-danger p-1"><small>9+</small>
-                                <span class="visually-hidden">unread messages</span></span></button>
-                        <ul class="dropdown-menu dropdown-menu-end notification-dd sm-mi-95px">
-                            <li><a class="dropdown-item p-2" href="#">
-                                    <div class="row gx-3">
-                                        <div class="col-auto">
-                                            <figure class="avatar avatar-40 rounded-circle bg-pink"><i
-                                                    class="bi bi-gift text-white"></i></figure>
-                                        </div>
-                                        <div class="col">
-                                            <p class="mb-2 small">Congratulation! Your property <span
-                                                    class="fw-bold">#H10215</span> has reached 1000 views.</p><span
-                                                class="row"><span class="col"><span
-                                                        class="badge badge-light rounded-pill text-bg-warning small">Directory</span></span>
-                                                <span class="col-auto small opacity-75">1:00 am</span></span>
-                                        </div>
-                                    </div>
-                                </a></li>
-                            <li><a class="dropdown-item p-2" href="#">
-                                    <div class="row gx-3">
-                                        <div class="col-auto">
-                                            <figure class="avatar avatar-40 rounded-circle bg-success"><i
-                                                    class="bi bi-patch-check text-white"></i></figure>
-                                        </div>
-                                        <div class="col">
-                                            <p class="mb-2 small">Your property <span class="fw-bold">#H10215</span> is
-                                                published and live now.</p><span class="row"><span class="col"><span
-                                                        class="badge badge-light rounded-pill text-bg-primary small">System</span></span>
-                                                <span class="col-auto small opacity-75">1:00 am</span></span>
-                                        </div>
-                                    </div>
-                                </a></li>
-                            <li><a class="dropdown-item p-2" href="#">
-                                    <div class="row gx-3">
-                                        <div class="col-auto">
-                                            <figure class="avatar avatar-40 rounded-circle bg-info"><i
-                                                    class="bi bi-clipboard-check text-white"></i></figure>
-                                        </div>
-                                        <div class="col">
-                                            <p class="mb-2 small">User <span class="fw-bold">Rahana</span> has updated
-                                                <span class="fw-bold">#H10215</span> property.
-                                            </p><span class="row"><span class="col"><span
-                                                        class="badge badge-light rounded-pill text-bg-success small">team</span></span>
-                                                <span class="col-auto small opacity-75">1:00 am</span></span>
-                                        </div>
-                                    </div>
-                                </a></li>
-                            <li>
-                                <div class="dropdown-item p-2">
-                                    <div class="row gx-3">
-                                        <div class="col-auto">
-                                            <figure class="avatar avatar-40 rounded-circle bg-warning"><i
-                                                    class="bi bi-bell text-white"></i></figure>
-                                        </div>
-                                        <div class="col">
-                                            <p class="mb-2 small">Your subscription going to expire soon. Please <a
-                                                    href="profile-subscription.html">upgrade</a> to get service
-                                                interrupt
-                                                free.</p>
-                                            <p class="opacity-75 small">4 days ago</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="text-center"><button class="btn btn-link text-center"
-                                    onclick="notifcationAll()">View
-                                    all <i class="bi bi-arrow-right fs-14"></i></button></li>
-                        </ul>
-                    </div>
+                <div class="ms-auto">
+                    <button class="btn btn-link btn-square btn-icon btn-link-header" type="button"
+                        onclick="openSearch()"><i data-feather="search"></i>
+                    </button>
+                    <button class="btn btn-link btn-square btnsunmoon btn-link-header"
+                        id="btn-layout-modes-dark-page"><i class="sun mx-auto" data-feather="sun"></i> <i
+                            class="moon mx-auto" data-feather="moon"></i>
+                    </button>
+
                     <div class="dropdown d-inline-block"><a
                             class="dropdown-toggle btn btn-link btn-square btn-link-header style-none no-caret px-0"
                             id="userprofiledd" data-bs-toggle="dropdown" aria-expanded="false" role="button">
@@ -249,13 +97,18 @@
                                 </div>
                             </div>
                             <div class="px-2">
-                                <div><a class="dropdown-item" href="investment-myprofile.html"><i data-feather="user"
-                                            class="avatar avatar-18 me-1"></i> My Profile</a></div>
-                                <div><a class="dropdown-item" href="investment-dashboard.html">
+                                <!-- <div>
+                                    <a class="dropdown-item" href="investment-myprofile.html"><i data-feather="user"
+                                            class="avatar avatar-18 me-1"></i> My Profile
+                                    </a>
+                                </div> -->
+                                <div>
+                                    <a class="dropdown-item" href="{% url 'dashboard' %}">
                                         <div class="row g-0">
                                             <div class="col align-self-center"><i data-feather="layout"
-                                                    class="avatar avatar-18 me-1"></i> My Dashboard</div>
-                                            <div class="col-auto">
+                                                    class="avatar avatar-18 me-1"></i> My Dashboard
+                                            </div>
+                                            <!-- <div class="col-auto">
                                                 <figure class="avatar avatar-20 coverimg rounded-circle"><img
                                                         src="{% static 'img/modern-ai-image/user-1.jpg' %}" alt="">
                                                 </figure>
@@ -269,9 +122,10 @@
                                                     class="avatar avatar-20 bg-theme-1 rounded-circle text-center align-middle">
                                                     <small class="fs-10 align-middle">9+</small>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
-                                    </a></div>
+                                    </a>
+                                </div>
                                 <div><a class="dropdown-item" href="investment-earning.html"><i
                                             data-feather="dollar-sign" class="avatar avatar-18 me-1"></i> Earning</a>
                                 </div>
@@ -523,11 +377,18 @@
                     </div>
                 </div>
                 <ul class="nav flex-column menu-active-line">
-                    <li class="nav-item"><a href="investment-dashboard.html" class="nav-link"><i
-                                class="menu-icon bi bi-columns-gap"></i> <span class="menu-name">Dashboard</span></a>
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard' %}" class="nav-link">
+                            <i class="menu-icon bi bi-columns-gap"></i>
+                            <span class="menu-name">Dashboard</span>
+                        </a>
                     </li>
-                    <li class="nav-item"><a href="investment-wallet.html" class="nav-link"><i
-                                class="menu-icon bi bi-wallet"></i> <span class="menu-name">Wallet</span></a></li>
+                    <li class="nav-item">
+                        <a href="{% url 'wallet' %}" class="nav-link">
+                            <i class="menu-icon bi bi-wallet"></i>
+                            <span class="menu-name">Wallet</span>
+                        </a>
+                    </li>
                     <li class="nav-item"><a href="investment-goals.html" class="nav-link"><i
                                 class="menu-icon bi bi-bullseye"></i> <span class="menu-name">My Goals</span></a></li>
                     <li class="nav-item"><a href="investment-loan-list.html" class="nav-link"><i
@@ -554,8 +415,11 @@
                                 class="menu-icon bi bi-bar-chart-line"></i> <span
                                 class="menu-name">Statistics</span></a>
                     </li>
-                    <li class="nav-item"><a href="investment-calculator.html" class="nav-link"><i
-                                class="menu-icon bi bi-calculator"></i> <span class="menu-name">Calculators</span></a>
+                    <li class="nav-item">
+                        <a href="{% url 'calculator' %}" class="nav-link">
+                            <i class="menu-icon bi bi-calculator"></i>
+                            <span class="menu-name">Calculator</span>
+                        </a>
                     </li>
                     <li class="nav-item"><a href="investment-pages.html" class="nav-link"><i
                                 class="menu-icon bi bi-layers"></i> <span class="menu-name">Pages</span> <span
@@ -927,8 +791,8 @@
                             <div class="col-6 col-md-3 col-lg-3 col-xl-3 col-xxl mb-3"><a
                                     href="investment-investment-plans.html"
                                     class="card adminuiux-card style-none text-center h-100">
-                                    <div class="card-body"><i
-                                            class="avatar avatar-40 text-theme-1 bi bi-person-walking h3 mb-3"></i>
+                                    <div class="card-body">
+                                        <i class="avatar avatar-40 text-theme-1 bi bi-person-walking h3 mb-3"></i>
                                         <p class="text-secondary small">Retirement Plans</p>
                                     </div>
                                 </a></div>
@@ -1568,11 +1432,10 @@
     <footer class="adminuiux-footer has-adminuiux-sidebar mt-auto">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12 col-md col-lg py-2"><span class="small">Copyright @2024, Creatively designed by <a
-                            href="https://adminuiux.com/" target="_blank">InvestmentUX - Adminuiux</a> on Earth
-                        ❤️</span>
+                <div class="col-12 col-md col-lg py-2">
+                    <span class="small">Copyright @2024, FinSight </span>
                 </div>
-                <div class="col-12 col-md-auto col-lg-auto align-self-center">
+                <!-- <div class="col-12 col-md-auto col-lg-auto align-self-center">
                     <ul class="nav small">
                         <li class="nav-item"><a class="nav-link" href="help-center.html">Help</a></li>
                         <li class="nav-item">|</li>
@@ -1580,179 +1443,10 @@
                         <li class="nav-item">|</li>
                         <li class="nav-item"><a class="nav-link" href="privacy-policy.html">Privacy Policy</a></li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
     </footer>
-    <!-- <div class="position-fixed bottom-0 end-0 m-3 z-index-5"><button class="btn btn-square btn-theme shadow"
-            type="button" data-bs-toggle="offcanvas" data-bs-target="#theming" aria-controls="theming"><i
-                class="bi bi-palette"></i></button><br><button
-            class="btn btn-theme btn-square rounded-circle shadow mt-2 d-none" id="backtotop"><i
-                class="bi bi-arrow-up"></i></button>
-    </div> -->
-    <!-- <div class="offcanvas offcanvas-end shadow border-0" tabindex="-1" id="theming" data-bs-scroll="true"
-        data-bs-backdrop="false" aria-labelledby="theminglabel">
-        <div class="offcanvas-header border-bottom">
-            <div>
-                <h5 class="offcanvas-title" id="theminglabel">Personalize</h5>
-                <p class="text-secondary small">Make it more like your own</p>
-            </div><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <h6 class="offcanvas-title">Colors</h6>
-            <p class="text-secondary small mb-4">Change colors of templates</p>
-            <div class="row mb-4 theme-select">
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title=""><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-default"><i
-                                class="bi bi-arrow-clockwise"></i></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-blue"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-blue"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-indigo"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-indigo"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-purple"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-purple"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-pink"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-pink"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-red"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-red"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-orange"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-orange"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-yellow"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-yellow"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-green"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-green"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-teal"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-teal"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-cyan"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-cyan"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-grey"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-grey"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-brown"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-brown"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-chocolate"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-chocolate"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="theme-black"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-dark"></span></div>
-                </div>
-            </div>
-            <h6 class="offcanvas-title">Backgrounds</h6>
-            <p class="text-secondary small mb-4">Change color for background</p>
-            <div class="row mb-4 theme-background">
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-default"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-default"><i
-                                class="bi bi-arrow-clockwise"></i></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-white"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-white"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-r-gradient"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-r-gradient"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-gradient-1"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-gradient-1"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-gradient-2"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-gradient-2"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-gradient-3"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-gradient-3"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-gradient-4"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-gradient-4"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-gradient-5"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-gradient-5"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-gradient-6"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-gradient-6"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-gradient-7"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-gradient-7"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-gradient-8"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-gradient-8"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-gradient-9"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-gradient-9"></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="gradient-box text-center mb-2" data-title="bg-gradient-10"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-gradient-10"></span></div>
-                </div>
-            </div>
-            <h6 class="offcanvas-title">Sidebar Layout</h6>
-            <p class="text-secondary small mb-4">Change sidebar layout style</p>
-            <div class="row mb-4 sidebar-layout">
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="adminuiux-sidebar-standard"
-                        data-bs-toggle="tooltip" title="None"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-default"><i
-                                class="bi bi-arrow-clockwise"></i></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="adminuiux-sidebar-iconic"
-                        data-bs-toggle="tooltip" title="Iconic"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-default"><i
-                                class="bi bi-bezier h4"></i></span></div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2" data-title="adminuiux-sidebar-boxed"
-                        data-bs-toggle="tooltip" title="Boxed"><span
-                            class="avatar avatar-40 rounded-circle mb-2 bg-default"><i class="bi bi-box h5"></i></span>
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <div class="select-box text-center mb-2"
-                        data-title="adminuiux-sidebar-boxed adminuiux-sidebar-iconic" data-bs-toggle="tooltip"
-                        title="Iconic+Boxed"><span class="avatar avatar-40 rounded-circle mb-2 bg-default"><i
-                                class="bi bi-bounding-box h5"></i></span></div>
-                </div>
-            </div>
-            <div class="text-center mb-4"><a href="investment-personalization.html"
-                    class="btn btn-sm btn-outline-theme">More options <i class="bi bi-arrow-right-short"></i></a></div>
-        </div>
-    </div> -->
 
     <script src="{% static 'js/investment/investment-dashboard.js' %}"></script>
 

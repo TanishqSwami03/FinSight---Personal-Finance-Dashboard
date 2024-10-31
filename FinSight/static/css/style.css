@@ -32387,7 +32387,7 @@ button.swiper-pagination-bullet {
 }
 
 [aria-label=breadcrumb] {
-    --bs-breadcrumb-divider: ""
+    --bs-breadcrumb-divider: ">"
 }
 
 [aria-label=breadcrumb] .bi:before {

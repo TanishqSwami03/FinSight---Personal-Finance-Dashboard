@@ -1,0 +1,827 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>FinSight - Personal Finance Dashboard</title>
+    <link rel="icon" type="image/png" href="{% static 'logo/fav-transparent.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --adminuiux-content-font: "Open Sans", sans-serif;
+            --adminuiux-content-font-weight: 400;
+            --adminuiux-title-font: "Lexend", sans-serif;
+            --adminuiux-title-font-weight: 600
+        }
+    </style>
+    <!-- <script defer="defer" src="assets/js/app7e23.js?b1b4e75de865b54102d8"></script> -->
+    <script src="{% static 'js/app.js' %}"></script>
+    <!-- <link href="assets/css/app7e23.css?b1b4e75de865b54102d8" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+</head>
+
+<body
+    class="main-bg main-bg-opac main-bg-blur adminuiux-sidebar-fill-white adminuiux-sidebar-boxed theme-blue roundedui"
+    data-theme="theme-blue" data-sidebarfill="adminuiux-sidebar-fill-white" data-bs-spy="scroll"
+    data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0">
+
+    <header class="adminuiux-header">
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container-fluid">
+                <button class="btn btn-link btn-square sidebar-toggler" type="button" onclick="initSidebar()">
+                    <i class="sidebar-svg" data-feather="menu"></i>
+                </button>
+                <a class="navbar-brand" href="{% url 'dashboard' %}">
+                    <img data-bs-img="light" src="{% static 'logo/fav-transparent.png' %}" alt="">
+                    <img data-bs-img="dark" src="{% static 'logo/fav-transparent.png' %}" alt="">
+                    <div class="">
+                        <h2>FinSight</h2>
+                        <p class="company-tagline">Clarity in Every Rupee</p>
+                    </div>
+                </a>
+                <div class="collapse navbar-collapse right-in-device justify-content-center" id="header-navbar">
+                    <ul class="navbar-nav mx-lg-3 mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'portfolio' %}">Portfolio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'transaction' %}">Transaction</a></li>
+                    </ul>
+                </div>
+                <div class="ms-auto">
+                    <button class="btn btn-link btn-square btn-icon btn-link-header" type="button"
+                        onclick="openSearch()"><i data-feather="search"></i>
+                    </button>
+                    <button class="btn btn-link btn-square btnsunmoon btn-link-header"
+                        id="btn-layout-modes-dark-page"><i class="sun mx-auto" data-feather="sun"></i> <i
+                            class="moon mx-auto" data-feather="moon"></i>
+                    </button>
+
+                    <div class="dropdown d-inline-block"><a
+                            class="dropdown-toggle btn btn-link btn-square btn-link-header style-none no-caret px-0"
+                            id="userprofiledd" data-bs-toggle="dropdown" aria-expanded="false" role="button">
+                            <div class="row gx-0 d-inline-flex">
+                                <div class="col-auto align-self-center">
+                                    <figure class="avatar avatar-28 rounded-circle coverimg align-middle"><img
+                                            src="{% static 'img/modern-ai-image/user-6.jpg' %}" alt=""
+                                            id="userphotoonboarding2">
+                                    </figure>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end width-300 pt-0 px-0 sm-mi-45px"
+                            aria-labelledby="userprofiledd">
+                            <div class="bg-theme-1-space rounded py-3 mb-3 dropdown-dontclose">
+                                <div class="row gx-0">
+                                    <div class="col-auto px-3">
+                                        <figure class="avatar avatar-50 rounded-circle coverimg align-middle"><img
+                                                src="{% static 'img/modern-ai-image/user-6.jpg' %}" alt=""></figure>
+                                    </div>
+                                    <div class="col align-self-center">
+                                        <p class="mb-1"><span>AdminUIUX</span></p>
+                                        <p><i class="bi bi-wallet2 me-2"></i> $1100.00 <small
+                                                class="opacity-50">Balance</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="px-2">
+                                <div><a class="dropdown-item" href="investment-myprofile.html"><i data-feather="user"
+                                            class="avatar avatar-18 me-1"></i> My Profile</a></div>
+                                <div><a class="dropdown-item" href="investment-dashboard.html">
+                                        <div class="row g-0">
+                                            <div class="col align-self-center"><i data-feather="layout"
+                                                    class="avatar avatar-18 me-1"></i> My Dashboard</div>
+                                            <div class="col-auto">
+                                                <figure class="avatar avatar-20 coverimg rounded-circle"><img
+                                                        src="{% static 'img/modern-ai-image/user-1.jpg' %}" alt="">
+                                                </figure>
+                                                <figure class="avatar avatar-20 coverimg rounded-circle"><img
+                                                        src="{% static 'img/modern-ai-image/user-2.jpg' %}" alt="">
+                                                </figure>
+                                                <figure class="avatar avatar-20 coverimg rounded-circle"><img
+                                                        src="{% static 'img/modern-ai-image/user-4.jpg' %}" alt="">
+                                                </figure>
+                                                <div
+                                                    class="avatar avatar-20 bg-theme-1 rounded-circle text-center align-middle">
+                                                    <small class="fs-10 align-middle">9+</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a></div>
+                                <div><a class="dropdown-item" href="investment-earning.html"><i
+                                            data-feather="dollar-sign" class="avatar avatar-18 me-1"></i> Earning</a>
+                                </div>
+                                <div><a class="dropdown-item" href="investment-mysubscription.html">
+                                        <div class="row">
+                                            <div class="col"><i data-feather="gift" class="avatar avatar-18 me-1"></i>
+                                                Subscription</div>
+                                            <div class="col-auto">
+                                                <p class="small text-success">Upgrade</p>
+                                            </div>
+                                            <div class="col-auto"><span class="arrow bi bi-chevron-right"></span></div>
+                                        </div>
+                                    </a></div>
+                                <div class="dropdown open-left dropdown-dontclose"><a class="dropdown-item"
+                                        data-bs-toggle="dropdown" aria-expanded="false" role="button">
+                                        <div class="row">
+                                            <div class="col"><i class="bi bi-translate avatar avatar-18 me-1"></i>
+                                                Language
+                                            </div>
+                                            <div class="col-auto"><small class="vm">EN - English</small> <i
+                                                    class="bi bi-translate"></i></div>
+                                            <div class="col-auto"><span class="arrow bi bi-chevron-right"></span></div>
+                                        </div>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <div><a class="dropdown-item active" data-value="EN">EN - English</a></div>
+                                        <div><a class="dropdown-item" data-value="FR">FR - French</a></div>
+                                        <div><a class="dropdown-item" data-value="CH">CH - Chinese</a></div>
+                                        <div><a class="dropdown-item" data-value="HI">HI - Hindi</a></div>
+                                    </div>
+                                </div>
+                                <div><a class="dropdown-item" href="investment-settings.html"><i data-feather="settings"
+                                            class="avatar avatar-18 me-1"></i> Account Setting</a></div>
+                                <div><a class="dropdown-item theme-red" href="investment-login.html"><i
+                                            data-feather="power" class="avatar avatar-18 me-1"></i> Logout</a></div>
+                            </div>
+                        </div>
+                    </div><button class="navbar-toggler btn btn-link btn-link-header btn-square btn-icon collapsed"
+                        type="button" data-bs-toggle="collapse" data-bs-target="#header-navbar"
+                        aria-controls="header-navbar" aria-expanded="false" aria-label="Toggle navigation"><i
+                            data-feather="more-vertical" class="openbtn"></i> <i data-feather="x"
+                            class="closebtn"></i></button>
+                </div>
+            </div>
+        </nav>
+        <div class="adminuiux-search-full">
+            <div class="row gx-2 align-items-center">
+                <div class="col-auto"><button class="btn btn-link btn-square" type="button" onclick="closeSearch()"><i
+                            data-feather="arrow-left"></i></button></div>
+                <div class="col"><input class="form-control pe-0 border-0" type="search"
+                        placeholder="Type something here..."></div>
+                <div class="col-auto">
+                    <div class="dropdown input-group-text border-0 p-0"><button
+                            class="dropdown-toggle btn btn-link btn-square no-caret" type="button" id="searchfilter2"
+                            data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="sliders"></i></button>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-dontclose width-300">
+                            <ul class="nav adminuiux-nav" id="searchtab2" role="tablist">
+                                <li class="nav-item" role="presentation"><button class="nav-link active"
+                                        id="searchall-tab2" data-bs-toggle="tab" data-bs-target="#searchall2"
+                                        type="button" role="tab" aria-controls="searchall2"
+                                        aria-selected="true">All</button></li>
+                                <li class="nav-item" role="presentation"><button class="nav-link" id="searchorders-tab2"
+                                        data-bs-toggle="tab" data-bs-target="#searchorders2" type="button" role="tab"
+                                        aria-controls="searchorders2" aria-selected="false"
+                                        tabindex="-1">Orders</button>
+                                </li>
+                                <li class="nav-item" role="presentation"><button class="nav-link"
+                                        id="searchcontacts-tab2" data-bs-toggle="tab" data-bs-target="#searchcontacts2"
+                                        type="button" role="tab" aria-controls="searchcontacts2" aria-selected="false"
+                                        tabindex="-1">Contacts</button></li>
+                            </ul>
+                            <div class="tab-content py-3" id="searchtabContent">
+                                <div class="tab-pane fade active show" id="searchall2" role="tabpanel"
+                                    aria-labelledby="searchall-tab2">
+                                    <ul class="list-group adminuiux-list-group list-group-flush bg-none show">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">Search apps</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch1"> <label
+                                                            class="form-check-label" for="searchswitch1"></label></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">Include Pages</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch2" checked="">
+                                                        <label class="form-check-label" for="searchswitch2"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">Internet resource</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch3" checked="">
+                                                        <label class="form-check-label" for="searchswitch3"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">News and Blogs</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch4"> <label
+                                                            class="form-check-label" for="searchswitch4"></label></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane fade" id="searchorders2" role="tabpanel"
+                                    aria-labelledby="searchorders-tab2">
+                                    <ul class="list-group adminuiux-list-group list-group-flush bg-none show">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">Show order ID</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch5"> <label
+                                                            class="form-check-label" for="searchswitch5"></label></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">International Order</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch6" checked="">
+                                                        <label class="form-check-label" for="searchswitch6"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">Taxable Product</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch7" checked="">
+                                                        <label class="form-check-label" for="searchswitch7"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">Published Product</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch8"> <label
+                                                            class="form-check-label" for="searchswitch8"></label></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane fade" id="searchcontacts2" role="tabpanel"
+                                    aria-labelledby="searchcontacts-tab2">
+                                    <ul class="list-group adminuiux-list-group list-group-flush bg-none show">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">Have email ID</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch9"> <label
+                                                            class="form-check-label" for="searchswitch9"></label></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">Have phone number</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch10"
+                                                            checked="">
+                                                        <label class="form-check-label" for="searchswitch10"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">Photo available</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch11"
+                                                            checked="">
+                                                        <label class="form-check-label" for="searchswitch11"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col">Referral</div>
+                                                <div class="col-auto">
+                                                    <div class="form-check form-switch"><input class="form-check-input"
+                                                            type="checkbox" role="switch" id="searchswitch12"> <label
+                                                            class="form-check-label" for="searchswitch12"></label></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="row">
+                                    <div class="col"><button class="btn btn-link">Reset</button></div>
+                                    <div class="col-auto"><button class="btn btn-theme">Apply</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="adminuiux-wrap">
+
+        <div class="adminuiux-sidebar">
+            <div class="adminuiux-sidebar-inner">
+                <div class="px-3 not-iconic mt-3">
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <h6 class="fw-medium">Main Menu</h6>
+                        </div>
+                        <div class="col-auto"><a class="btn btn-link btn-square" data-bs-toggle="collapse"
+                                data-bs-target="#usersidebarprofile" aria-expanded="false" role="button"
+                                aria-controls="usersidebarprofile"><i data-feather="user"></i></a></div>
+                    </div>
+                    <div class="text-center collapse" id="usersidebarprofile">
+                        <figure class="avatar avatar-100 rounded-circle coverimg my-3"><img
+                                src="{% static 'img/modern-ai-image/user-6.jpg' %}" alt=""></figure>
+                        <h5 class="mb-1 fw-medium">AdminUIUX</h5>
+                        <p class="small">The Investment UI Kit</p>
+                    </div>
+                </div>
+                <ul class="nav flex-column menu-active-line">
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard' %}" class="nav-link"><i class="menu-icon bi bi-columns-gap"></i>
+                            <span class="menu-name">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'wallet' %}" class="nav-link">
+                            <i class="menu-icon bi bi-wallet"></i>
+                            <span class="menu-name">Wallet</span>
+                        </a>
+                    </li>
+                    <li class="nav-item"><a href="investment-goals.html" class="nav-link"><i
+                                class="menu-icon bi bi-bullseye"></i> <span class="menu-name">My Goals</span></a></li>
+                    <li class="nav-item"><a href="investment-loan-list.html" class="nav-link"><i
+                                class="menu-icon bi bi-bank"></i> <span class="menu-name">My Loans</span></a></li>
+                    <li class="nav-item dropdown"><a href="javascrit:void(0)" class="nav-link dropdown-toggle"
+                            data-bs-toggle="dropdown"><i class="menu-icon bi bi-piggy-bank"></i> <span
+                                class="menu-name">Investment</span></a>
+                        <div class="dropdown-menu">
+                            <div class="nav-item"><a href="investment-company-shares.html" class="nav-link"><i
+                                        class="menu-icon bi bi-bank"></i> <span class="menu-name">Company
+                                        Share</span></a>
+                            </div>
+                            <div class="nav-item"><a href="investment-mutual-funds.html" class="nav-link"><i
+                                        class="menu-icon bi bi-cash-coin"></i> <span class="menu-name">Mutual
+                                        Fund</span></a></div>
+                            <div class="nav-item"><a href="investment-deposit.html" class="nav-link"><i
+                                        class="menu-icon bi bi-percent"></i> <span class="menu-name">Deposit</span></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="investment-explore.html" class="nav-link"><i
+                                class="menu-icon bi bi-search"></i> <span class="menu-name">Explore</span></a></li>
+                    <li class="nav-item"><a href="investment-statistics.html" class="nav-link"><i
+                                class="menu-icon bi bi-bar-chart-line"></i> <span
+                                class="menu-name">Statistics</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'calculator' %}" class="nav-link" active>
+                            <i class="menu-icon bi bi-calculator">
+                            </i> <span class="menu-name">Calculator</span>
+                        </a>
+                    </li>
+                    <li class="nav-item"><a href="investment-pages.html" class="nav-link"><i
+                                class="menu-icon bi bi-layers"></i> <span class="menu-name">Pages</span> <span
+                                class="badge text-bg-primary mx-2">55+</span></a></li>
+                    <li class="nav-item"><a href="investment-personalization.html" class="nav-link"><i
+                                class="menu-icon bi bi-palette h4"></i> <span class="menu-name">Personalize
+                                ❤️</span></a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="components.html"><i class="menu-icon bi bi-cpu"></i>
+                            <span class="menu-name">Components</span></a></li>
+                </ul>
+                <div class="mt-auto"></div>
+                <div class="px-3 mb-3 not-iconic">
+                    <h6 class="mb-3 fw-medium">Quick Links</h6>
+                    <div class="card adminuiux-card">
+                        <div class="card-body p-2">
+                            <div class="row gx-2">
+                                <div class="col-12 d-flex justify-content-between"><a
+                                        href="investment-search-mutual-funds.html"
+                                        class="btn btn-square btn-link theme-red"><span class="position-relative"><i
+                                                data-feather="heart"></i> <span
+                                                class="position-absolute top-0 start-100 translate-middle p-1 bg-success rounded-circle"><span
+                                                    class="visually-hidden">New alerts</span> </span></span></a><a
+                                        href="investment-schedule.html" class="btn btn-square btn-link"><span
+                                            class="position-relative"><i data-feather="calendar"></i> <span
+                                                class="position-absolute top-0 start-100 translate-middle p-1 bg-warning rounded-circle"><span
+                                                    class="visually-hidden">New alerts</span> </span></span></a><a
+                                        href="investment-inbox.html" class="btn btn-square btn-link"><i
+                                            data-feather="inbox"></i> </a><a href="investment-help-center.html"
+                                        class="btn btn-square btn-link"><i data-feather="help-circle"></i></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav flex-column menu-active-line">
+                    <li class="nav-item"><a href="investment-referral.html" class="nav-link"><i class="menu-icon"
+                                data-feather="users"></i> <span class="menu-name">Referral</span></a></li>
+                    <li class="nav-item"><a href="investment-settings.html" class="nav-link"><i class="menu-icon"
+                                data-feather="settings"></i> <span class="menu-name">Settings</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <main class="adminuiux-content has-sidebar" onclick="contentClick()">
+            <div class="container-fluid mt-4">
+                <div class="row gx-3 align-items-center">
+                    <div class="col-12 col-sm">
+                        <nav aria-label="breadcrumb" class="mb-2">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item bi"><a href="investment-dashboard.html"><i
+                                            class="bi bi-house-door me-1 fs-14"></i> Dashboard</a></li>
+                                <li class="breadcrumb-item active bi" aria-current="page">Calculator</li>
+                            </ol>
+                        </nav>
+                        <h5>Calculator</h5>
+                    </div>
+                    <div class="col-auto py-1"></div>
+                </div>
+            </div>
+            <div class="container mt-4" id="main-content">
+                <div class="position-sticky z-index-5 mb-4 adminuiux-header" style="top: 5rem;">
+                    <nav class="navbar rounded p-1">
+                        <ul class="nav nav-pills bg-none" role="tablist">
+                            <li class="nav-item"><a class="nav-link active" href="#pills-sip" id="pills-sip-tab"
+                                    data-bs-toggle="pill" role="tab" aria-controls="pills-sip"
+                                    aria-selected="true">SIP</a>
+                            </li>
+                            <li class="nav-item mx-1"><a class="nav-link" href="#pills-lumpsum" id="pills-lumpsum-tab"
+                                    data-bs-toggle="pill" role="tab" aria-controls="pills-lumpsum"
+                                    aria-selected="false">Lumpsum</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="tab-content mb-4" id="pills-tabContent">
+
+                    <!-- SIP -->
+                    <div class="tab-pane fade show active" id="pills-sip" role="tabpanel"
+                        aria-labelledby="pills-sip-tab" tabindex="0">
+                        <h5>SIP (Systematic Investment Plan)</h5>
+                        <p class="text-secondary">Calculate how much you need to save or how much you will accumulate
+                            with your SIP</p>
+                        <div class="row">
+                            <div class="col-12 col-lg-8 order-2 order-lg-1">
+                                <div class="card adminuiux-card mb-4">
+                                    <div class="card-body">
+                                        <!-- Monthly Investment Amount -->
+                                        <div class="mb-4">
+                                            <div class="row align-items-center">
+                                                <div class="col-12 col-sm mb-3">
+                                                    <p>Monthly investment amount</p>
+                                                </div>
+                                                <div class="col-12 col-sm-auto mb-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-none">₹</span>
+                                                        <input class="form-control text-end rangevalues" value="10000"
+                                                            id="value1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="range" id="range1" class="range1 rangevalue" min="100"
+                                                max="150000" value="10000" data-value="value1">
+                                        </div>
+
+                                        <!-- Expected Return Rate Per Annum -->
+                                        <div class="mb-4">
+                                            <div class="row align-items-center">
+                                                <div class="col-12 col-sm mb-3">
+                                                    <p>Expected return rate per annum</p>
+                                                </div>
+                                                <div class="col-12 col-sm-auto mb-3">
+                                                    <div class="input-group">
+                                                        <input class="form-control text-end rangevalues" value="11.5"
+                                                            id="value2">
+                                                        <span class="input-group-text bg-none">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="range" id="range2" class="range1 rangevalue" min="1" max="30"
+                                                step="0.1" value="11.5" data-value="value2">
+                                        </div>
+
+                                        <!-- Time Period in Years -->
+                                        <div class="mb-4">
+                                            <div class="row align-items-center">
+                                                <div class="col-12 col-sm mb-3">
+                                                    <p>Time period in years</p>
+                                                </div>
+                                                <div class="col-12 col-sm-auto mb-3">
+                                                    <div class="input-group">
+                                                        <input class="form-control text-end rangevalues" value="10"
+                                                            id="value3">
+                                                        <span class="input-group-text bg-none">Yr</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="range" id="range3" class="range1 rangevalue" min="1" max="40"
+                                                step="1" value="10" data-value="value3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-4 order-1 order-lg-2">
+                                <div class="card adminuiux-card mb-4">
+                                    <div class="card-body">
+                                        <!-- Calculated Results -->
+                                        <div class="text-center mt-2 mb-4">
+
+                                            <h2 class="mb-0 total-value">₹ 0</h2> <!-- Total Value -->
+                                            <p class="text-secondary">Total Value</p>
+                                        </div>
+
+                                        <div class="row justify-content-between mb-4">
+                                            <div class="col-auto">
+                                                <p>
+                                                    <span
+                                                        class="avatar avatar-20 rounded-circle bg-theme-1 align-middle me-2"></span>
+                                                    <span class="d-inline-block align-middle">
+                                                        Investment Amount<br>
+                                                        <small class="text-secondary investment-amount">₹ 0</small>
+                                                        <!-- Investment Amount -->
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-auto">
+                                                <p>
+                                                    <span
+                                                        class="avatar avatar-20 rounded-circle bg-theme-1 align-middle me-2"></span>
+                                                    <span class="d-inline-block align-middle">
+                                                        Estimated Return<br>
+                                                        <small class="text-secondary estimated-return">₹ 0</small>
+                                                        <!-- Estimated Return -->
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lumpsum -->
+                    <div class="tab-pane fade" id="pills-lumpsum" role="tabpanel" aria-labelledby="pills-lumpsum-tab"
+                        tabindex="0">
+                        <h5>Lumpsum</h5>
+                        <p class="text-secondary">Calculate returns for lumpsum investments to achieve your financial
+                            goals</p>
+                        <div class="row">
+                            <div class="col-12 col-lg-8">
+                                <div class="card adminuiux-card mb-4">
+                                    <div class="card-body">
+                                        <!-- Total Investment Amount -->
+                                        <div class="mb-4">
+                                            <div class="row align-items-center">
+                                                <div class="col-12 col-sm mb-3">
+                                                    <p>Total investment amount</p>
+                                                </div>
+                                                <div class="col-12 col-sm-auto mb-3">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-none">₹</span>
+                                                        <input class="form-control text-end rangevalues" value="1000000"
+                                                            id="value11">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="range" id="range11" class="range1 rangevalue" min="100"
+                                                max="5000000" value="1000000" data-value="value11">
+                                        </div>
+
+                                        <!-- Expected Return Rate Per Annum -->
+                                        <div class="mb-4">
+                                            <div class="row align-items-center">
+                                                <div class="col-12 col-sm mb-3">
+                                                    <p>Expected return rate per annum</p>
+                                                </div>
+                                                <div class="col-12 col-sm-auto mb-3">
+                                                    <div class="input-group">
+                                                        <input class="form-control text-end rangevalues" value="11.5"
+                                                            id="value21">
+                                                        <span class="input-group-text bg-none">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="range" id="range21" class="range1 rangevalue" min="1" max="30"
+                                                step="0.1" value="11.5" data-value="value21">
+                                        </div>
+
+                                        <!-- Time Period in Years -->
+                                        <div class="mb-4">
+                                            <div class="row align-items-center">
+                                                <div class="col-12 col-sm mb-3">
+                                                    <p>Time period in years</p>
+                                                </div>
+                                                <div class="col-12 col-sm-auto mb-3">
+                                                    <div class="input-group">
+                                                        <input class="form-control text-end rangevalues" value="10"
+                                                            id="value31">
+                                                        <span class="input-group-text bg-none">Yr</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="range" id="range31" class="range1 rangevalue" min="1" max="40"
+                                                step="1" value="10" data-value="value31">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-4">
+                                <div class="card adminuiux-card mb-4">
+                                    <div class="card-body">
+                                        <!-- Calculated Results -->
+                                        <div class="text-center mt-2 mb-4">
+                                            <h2 class="mb-0 total-value-lumpsum">₹ 0</h2> <!-- Total Value -->
+                                            <p class="text-secondary">Total Value</p>
+                                        </div>
+
+                                        <div class="row justify-content-between mb-4">
+                                            <div class="col-auto">
+                                                <p>
+                                                    <span
+                                                        class="avatar avatar-20 rounded-circle bg-theme-1 align-middle me-2"></span>
+                                                    <span class="d-inline-block align-middle">
+                                                        Investment Amount<br>
+                                                        <small class="text-secondary investment-amount-lumpsum">₹
+                                                            0</small> <!-- Investment Amount -->
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-auto">
+                                                <p>
+                                                    <span
+                                                        class="avatar avatar-20 rounded-circle bg-theme-1 align-middle me-2"></span>
+                                                    <span class="d-inline-block align-middle">
+                                                        Estimated Return<br>
+                                                        <small class="text-secondary estimated-return-lumpsum">₹
+                                                            0</small> <!-- Estimated Return -->
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <footer class="adminuiux-footer has-adminuiux-sidebar mt-auto">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md col-lg py-2">
+                    <span class="small">Copyright @2024, FinSight </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/investment/investment-goals.js' %}"></script>
+
+    <!-- JavaScript for Range Sliders and Calculations -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const monthlyInvestment = document.getElementById('value1');
+            const expectedReturnRate = document.getElementById('value2');
+            const timePeriod = document.getElementById('value3');
+
+            const rangeMonthlyInvestment = document.getElementById('range1');
+            const rangeExpectedReturnRate = document.getElementById('range2');
+            const rangeTimePeriod = document.getElementById('range3');
+
+            const totalValueElement = document.querySelector('.total-value');
+            const investmentAmountElement = document.querySelector('.investment-amount');
+            const estimatedReturnElement = document.querySelector('.estimated-return');
+
+            function updateValues() {
+                const p = parseFloat(monthlyInvestment.value);
+                const r = parseFloat(expectedReturnRate.value) / 100 / 12;
+                const n = parseInt(timePeriod.value) * 12;
+
+                const totalInvestment = p * n;
+                const totalValue = p * (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
+                const estimatedReturn = totalValue - totalInvestment;
+
+                totalValueElement.textContent = `₹ ${totalValue.toFixed(2)}`;
+                investmentAmountElement.textContent = `₹ ${totalInvestment.toFixed(2)}`;
+                estimatedReturnElement.textContent = `₹ ${estimatedReturn.toFixed(2)}`;
+            }
+
+            [monthlyInvestment, rangeMonthlyInvestment].forEach(element => {
+                element.addEventListener('input', (e) => {
+                    monthlyInvestment.value = rangeMonthlyInvestment.value = e.target.value;
+                    updateValues();
+                });
+            });
+
+            [expectedReturnRate, rangeExpectedReturnRate].forEach(element => {
+                element.addEventListener('input', (e) => {
+                    expectedReturnRate.value = rangeExpectedReturnRate.value = e.target.value;
+                    updateValues();
+                });
+            });
+
+            [timePeriod, rangeTimePeriod].forEach(element => {
+                element.addEventListener('input', (e) => {
+                    timePeriod.value = rangeTimePeriod.value = e.target.value;
+                    updateValues();
+                });
+            });
+
+            updateValues(); // Initialize values on page load
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const investmentAmountLumpsum = document.getElementById('value11');
+            const expectedReturnRateLumpsum = document.getElementById('value21');
+            const timePeriodLumpsum = document.getElementById('value31');
+
+            const rangeInvestmentAmountLumpsum = document.getElementById('range11');
+            const rangeExpectedReturnRateLumpsum = document.getElementById('range21');
+            const rangeTimePeriodLumpsum = document.getElementById('range31');
+
+            const totalValueElementLumpsum = document.querySelector('.total-value-lumpsum');
+            const investmentAmountElementLumpsum = document.querySelector('.investment-amount-lumpsum');
+            const estimatedReturnElementLumpsum = document.querySelector('.estimated-return-lumpsum');
+
+            function updateLumpsumValues() {
+                const principal = parseFloat(investmentAmountLumpsum.value);
+                const rate = parseFloat(expectedReturnRateLumpsum.value) / 100;
+                const time = parseInt(timePeriodLumpsum.value);
+
+                const totalValue = principal * Math.pow((1 + rate), time);
+                const estimatedReturn = totalValue - principal;
+
+                totalValueElementLumpsum.textContent = `₹ ${totalValue.toFixed(2)}`;
+                investmentAmountElementLumpsum.textContent = `₹ ${principal.toFixed(2)}`;
+                estimatedReturnElementLumpsum.textContent = `₹ ${estimatedReturn.toFixed(2)}`;
+            }
+
+            [investmentAmountLumpsum, rangeInvestmentAmountLumpsum].forEach(element => {
+                element.addEventListener('input', (e) => {
+                    investmentAmountLumpsum.value = rangeInvestmentAmountLumpsum.value = e.target.value;
+                    updateLumpsumValues();
+                });
+            });
+
+            [expectedReturnRateLumpsum, rangeExpectedReturnRateLumpsum].forEach(element => {
+                element.addEventListener('input', (e) => {
+                    expectedReturnRateLumpsum.value = rangeExpectedReturnRateLumpsum.value = e.target.value;
+                    updateLumpsumValues();
+                });
+            });
+
+            [timePeriodLumpsum, rangeTimePeriodLumpsum].forEach(element => {
+                element.addEventListener('input', (e) => {
+                    timePeriodLumpsum.value = rangeTimePeriodLumpsum.value = e.target.value;
+                    updateLumpsumValues();
+                });
+            });
+
+            updateLumpsumValues(); // Initialize values on page load
+        });
+    </script>
+
+</body>
+
+</html>
