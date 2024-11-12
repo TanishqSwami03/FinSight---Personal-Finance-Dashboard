@@ -6,6 +6,10 @@ class CustomUser(AbstractUser):
     mobile_code = models.CharField(max_length=5)
     mobile_number = models.CharField(max_length=15)
     
+    # Wallet balance for the user in INR, defaulting to 0
+    wallet_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
+
     # first_name, last_name, and username are already included in AbstractUser
     # We're keeping username for compatibility, but using email as the main identifier
 

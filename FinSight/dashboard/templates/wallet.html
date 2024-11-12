@@ -88,8 +88,8 @@
                                                 src="{% static 'img/modern-ai-image/user-6.jpg' %}" alt=""></figure>
                                     </div>
                                     <div class="col align-self-center">
-                                        <p class="mb-1"><span>AdminUIUX</span></p>
-                                        <p><i class="bi bi-wallet2 me-2"></i> $1100.00 <small
+                                        <p class="mb-1"><span>{{ user.first_name }}</span></p>
+                                        <p><i class="bi bi-wallet2 me-2"></i>₹ {{ user.wallet_balance }} <small
                                                 class="opacity-50">Balance</small></p>
                                     </div>
                                 </div>
@@ -151,7 +151,7 @@
                                 </div>
                                 <div><a class="dropdown-item" href="investment-settings.html"><i data-feather="settings"
                                             class="avatar avatar-18 me-1"></i> Account Setting</a></div>
-                                <div><a class="dropdown-item theme-red" href="investment-login.html"><i
+                                <div><a class="dropdown-item theme-red" href="{% url 'logout' %}"><i
                                             data-feather="power" class="avatar avatar-18 me-1"></i> Logout</a></div>
                             </div>
                         </div>
@@ -480,6 +480,8 @@
             </div>
             <div class="container mt-4" id="main-content">
                 <div class="row">
+
+                    <!-- wallet balance, send and receive -->
                     <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="card adminuiux-card bg-theme-1">
                             <div class="card-body z-index-1">
@@ -502,11 +504,13 @@
                                             data-bs-toggle="modal" data-bs-target="#addmoneymodal" title="Add Money"><i
                                                 class="bi bi-plus-lg"></i></a></div>
                                 </div>
-                                <h1>$25052.00</h1>
+                                <h1>₹ {{ user.wallet_balance }}</h1>
                                 <h5 class="opacity-75 fw-normal mb-1">Your total balance</h5>
                             </div>
                         </div>
                     </div>
+
+
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="row">
                             <div class="col-12 col-sm-6 col-md-12">
@@ -1444,6 +1448,7 @@
         </div>
     </div>
 
+    <!-- Add Money pop up -->
     <div class="modal adminuiux-modal fade" id="addmoneymodal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -1454,33 +1459,15 @@
                 <div class="modal-body">
                     <div class="row mb-4">
                         <div class="col"><input type="number" class="form-control form-control-lg text-center"
-                                placeholder="Add Amount..." value="100.00"></div>
-                        <div class="col-auto"><select class="form-select form-select-lg">
-                                <option>USD Wallet</option>
-                                <option>CAD Wallet</option>
-                                <option>AUD Wallet</option>
-                            </select></div>
+                                placeholder="Add Amount..." value="100.00">
+                        </div>
                     </div>
                     <div class="text-center mb-4">
                         <h5 class="fw-normal"><b class="fw-bold">Great!</b> You are going to add</h5>
-                        <h1 class="mb-0 text-theme-1">100.00</h1>
-                        <p class="text-secondary small">money in CAD Wallet</p>
+                        <h1 class="mb-0 text-theme-1">₹ 100.00</h1>
                     </div>
-                    <h6>Add money using</h6>
-                    <ul class="list-group adminuiux-list-group">
-                        <li class="list-group-item"><input class="form-check-input me-1" type="radio"
-                                name="listGroupRadio" value="" id="firstRadio2" checked=""> <label
-                                class="form-check-label stretched-link" for="firstRadio2">Net Banking</label></li>
-                        <li class="list-group-item"><input class="form-check-input me-1" type="radio"
-                                name="listGroupRadio" value="" id="secondRadio2"> <label
-                                class="form-check-label stretched-link" for="secondRadio2">Credit / Debit Card</label>
-                        </li>
-                        <li class="list-group-item"><input class="form-check-input me-1" type="radio"
-                                name="listGroupRadio" value="" id="thirdRadio2"> <label
-                                class="form-check-label stretched-link" for="thirdRadio2">UPI Payment</label></li>
-                    </ul>
                 </div>
-                <div class="modal-footer justify-content-between"><button class="btn btn-theme">Pay Now</button> <button
+                <div class="modal-footer justify-content-between"><button class="btn btn-theme">Add Now</button> <button
                         type="button" class="btn btn-link mx-2 theme-red" data-bs-dismiss="modal">Cancel</button></div>
             </div>
         </div>

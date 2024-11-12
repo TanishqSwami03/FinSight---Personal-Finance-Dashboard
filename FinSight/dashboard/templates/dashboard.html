@@ -90,8 +90,8 @@
                                                 src="{% static 'img/modern-ai-image/user-6.jpg' %}" alt=""></figure>
                                     </div>
                                     <div class="col align-self-center">
-                                        <p class="mb-1"><span>AdminUIUX</span></p>
-                                        <p><i class="bi bi-wallet2 me-2"></i> $1100.00 <small
+                                        <p class="mb-1"><span>{{ user_name }}</span></p>
+                                        <p><i class="bi bi-wallet2 me-2"></i>₹ {{ wallet_balance }} <small
                                                 class="opacity-50">Balance</small></p>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
                                 </div>
                                 <div><a class="dropdown-item" href="investment-settings.html"><i data-feather="settings"
                                             class="avatar avatar-18 me-1"></i> Account Setting</a></div>
-                                <div><a class="dropdown-item theme-red" href="investment-login.html"><i
+                                <div><a class="dropdown-item theme-red" href="{% url 'logout' %}"><i
                                             data-feather="power" class="avatar avatar-18 me-1"></i> Logout</a></div>
                             </div>
                         </div>

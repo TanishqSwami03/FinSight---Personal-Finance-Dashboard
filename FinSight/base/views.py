@@ -6,15 +6,18 @@ from .forms import *
 
 # Create your views here.
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
+        print("post request received !!")
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        user = authenticate(request, username=email, password=password)
+        user = authenticate(request, email=email, password=password)
+        print("user authenticated !!", user)
         if user is not None:
             login(request, user)
             messages.success(request, "Login successful!")
+            print("user logged in ! ", user)
             return redirect('dashboard')  # Redirect to your dashboard or another page
         else:
             messages.error(request, "Invalid email or password.")

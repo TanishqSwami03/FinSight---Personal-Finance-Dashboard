@@ -89,7 +89,7 @@
                                                 placeholder="Enter your password" required>
                                             <label for="passwd">Password</label>
                                         </div>
-                                        <button id="togglePassword"
+                                        <button type="button" id="togglePassword"
                                             class="btn btn-square btn-link text-theme-1 position-absolute end-0 top-0 mt-2 me-2">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
@@ -106,7 +106,10 @@
                                                 class="">Forget
                                                 Password?</a></div>
                                     </div>
-                                    <a href="{% url 'dashboard' %}" class="btn btn-lg btn-theme w-100 mb-4">Login</a>
+                                    <!-- <a type="submit" href="{% url 'dashboard' %}"
+                                        class="btn btn-lg btn-theme w-100 mb-4">Login</a> -->
+                                    <button type="submit" class="btn btn-lg btn-theme w-100 mb-4">Login</button>
+
                                     <div class="text-center mb-3">Don't have account? <a href="{% url 'signup' %}"
                                             class="">Create Account</a>
                                     </div>
