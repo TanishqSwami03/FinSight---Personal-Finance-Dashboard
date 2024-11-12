@@ -584,67 +584,26 @@
                             <div class="col-12 col-sm-10">
                                 <div class="swiper swipernav">
                                     <div class="swiper-wrapper">
+                                        {% for stock in top_stocks %}
                                         <div class="swiper-slide width-200">
-                                            <h6 class="mb-0 text-success">24,806.00</h6>
-                                            <p class="small"><span class="text-secondary">GIFTS NIFTYS:</span> <span
-                                                    class="text-success"><i class="bi bi-caret-up-fill"></i>
-                                                    1.40%</span>
+                                            <h6 class="mb-0 {{ stock.change_class }}">{{ stock.price }}</h6>
+                                            <p class="small">
+                                                <span class="text-secondary">{{ stock.company }}:</span>
+                                                <span class="{{ stock.change_class }}">
+                                                    <i class="bi {{ stock.icon_class }}"></i>
+                                                    {{ stock.percent_change }} %
+                                                </span>
                                             </p>
                                         </div>
-                                        <div class="swiper-slide width-200">
-                                            <h6 class="mb-0 text-success">41,118.13</h6>
-                                            <p class="small"><span class="text-secondary">Nikkies 2250:</span> <span
-                                                    class="text-success"><i class="bi bi-caret-up-fill"></i>
-                                                    0.40%</span>
-                                            </p>
-                                        </div>
-                                        <div class="swiper-slide width-200">
-                                            <h6 class="mb-0 text-danger">30,006.00</h6>
-                                            <p class="small"><span class="text-secondary">JOHN DOUES:</span> <span
-                                                    class="text-danger"><i class="bi bi-caret-down-fill"></i>
-                                                    0.40%</span>
-                                            </p>
-                                        </div>
-                                        <div class="swiper-slide width-200">
-                                            <h6 class="mb-0 text-success">90,105.00</h6>
-                                            <p class="small"><span class="text-secondary">Adminuiux Love:</span> <span
-                                                    class="text-success"><i class="bi bi-caret-up-fill"></i>
-                                                    1.40%</span>
-                                            </p>
-                                        </div>
-                                        <div class="swiper-slide width-200">
-                                            <h6 class="mb-0 text-success">24,806.00</h6>
-                                            <p class="small"><span class="text-secondary">GIFTS NIFTYS:</span> <span
-                                                    class="text-success"><i class="bi bi-caret-up-fill"></i>
-                                                    1.40%</span>
-                                            </p>
-                                        </div>
-                                        <div class="swiper-slide width-200">
-                                            <h6 class="mb-0 text-success">41,118.13</h6>
-                                            <p class="small"><span class="text-secondary">Nikkies 2250:</span> <span
-                                                    class="text-success"><i class="bi bi-caret-up-fill"></i>
-                                                    0.40%</span>
-                                            </p>
-                                        </div>
-                                        <div class="swiper-slide width-200">
-                                            <h6 class="mb-0 text-danger">30,006.00</h6>
-                                            <p class="small"><span class="text-secondary">JOHN DOUES:</span> <span
-                                                    class="text-danger"><i class="bi bi-caret-down-fill"></i>
-                                                    0.40%</span>
-                                            </p>
-                                        </div>
-                                        <div class="swiper-slide width-200">
-                                            <h6 class="mb-0 text-success">90,105.00</h6>
-                                            <p class="small"><span class="text-secondary">Adminuiux Love:</span> <span
-                                                    class="text-success"><i class="bi bi-caret-up-fill"></i>
-                                                    1.40%</span>
-                                            </p>
-                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-auto"><button class="btn btn-sm btn-square btn-link"><i
-                                        class="bi bi-arrow-clockwise"></i></button></div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-square btn-link">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 col-lg-12 col-xl-8 mb-4">
