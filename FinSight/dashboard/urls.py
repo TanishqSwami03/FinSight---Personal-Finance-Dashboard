@@ -7,5 +7,6 @@ urlpatterns = [
     path('dashboard/transaction/', transaction, name='transaction'),
     path('dashboard/portfolio/', portfolio, name='portfolio'),
     path('dashboard/wallet/', wallet, name='wallet'),
+    path('add_money/', add_money, name='add_money'),
     path('dashboard/calculator/', calculator, name='calculator'),
 ]

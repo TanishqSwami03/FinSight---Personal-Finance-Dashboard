@@ -693,144 +693,68 @@
                         </div>
                     </div>
 
+                    <!-- Recent Transactions -->
                     <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="card adminuiux-card">
                             <div class="card-header">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h6>Recent Transaction</h6>
+                                        <h6>Recent Transactions</h6>
                                     </div>
-                                    <div class="col-auto px-0"><a class="btn btn-sm btn btn-link">See All</a></div>
-                                    <div class="col-auto"><button class="btn btn-sm btn-outline-theme"><i
-                                                class="bi bi-arrow-up-right me-1"></i> Send</button></div>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <p class="small text-secondary">Recently connected contacts</p>
-                                <div class="swiper swipernav">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide w-auto">
-                                            <div
-                                                class="avatar avatar-40 rounded-circle border border-dotted border-theme">
-                                                <span class="h4">+</span>
+                                {% if transactions %}
+                                <ul class="list-group list-group-flush">
+                                    {% for transaction in transactions %}
+                                    <li class="list-group-item">
+                                        <div class="row gx-3 align-items-center">
+                                            <div class="col-auto">
+                                                {% if transaction.transaction_type == 'add' %}
+                                                <!-- Add Money Icon -->
+                                                <div
+                                                    class="avatar avatar-40 rounded-circle border border-dotted border-theme">
+                                                    <span class="h4">+</span>
+                                                </div>
+                                                {% elif transaction.transaction_type == 'send' %}
+                                                <!-- Send Money Icon -->
+                                                <div class="avatar avatar-40 rounded-circle border">
+                                                    <i class="bi bi-arrow-up-right h5"></i>
+                                                </div>
+                                                {% elif transaction.transaction_type == 'receive' %}
+                                                <!-- Receive Money Icon -->
+                                                <div
+                                                    class="avatar avatar-40 rounded-circle border bg-theme-1-subtle text-theme-1">
+                                                    <i class="bi bi-arrow-down-left h5"></i>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-1 fw-medium">{{ transaction.get_transaction_type_display }}
+                                                </p>
+                                                <p class="text-secondary small">{{ transaction.date }}</p>
+                                            </div>
+                                            <div class="col-auto">
+                                                {% if transaction.transaction_type == 'receive' %}
+                                                <h6 class="text-theme-1">+ ₹{{ transaction.amount }}</h6>
+                                                {% elif transaction.transaction_type == 'add' %}
+                                                <h6 class="text-theme-1">+ ₹{{ transaction.amount }}</h6>
+                                                {% elif transaction.transaction_type == 'send' %}
+                                                <h6>- ₹{{ transaction.amount }}</h6>
+                                                {% endif %}
                                             </div>
                                         </div>
-                                        <div class="swiper-slide w-auto">
-                                            <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                                    src="{% static 'img/modern-ai-image/user-1.jpg' %}" alt=""></div>
-                                        </div>
-                                        <div class="swiper-slide w-auto">
-                                            <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                                    src="{% static 'img/modern-ai-image/user-3.jpg' %}" alt=""></div>
-                                        </div>
-                                        <div class="swiper-slide w-auto">
-                                            <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                                    src="{% static 'img/modern-ai-image/user-4.jpg' %}" alt=""></div>
-                                        </div>
-                                        <div class="swiper-slide w-auto">
-                                            <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                                    src="{% static 'img/modern-ai-image/user-5.jpg' %}" alt=""></div>
-                                        </div>
-                                        <div class="swiper-slide w-auto">
-                                            <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                                    src="{% static 'img/modern-ai-image/user-6.jpg' %}" alt=""></div>
-                                        </div>
-                                        <div class="swiper-slide w-auto">
-                                            <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                                    src="{% static 'img/modern-ai-image/user-8.jpg' %}" alt=""></div>
-                                        </div>
-                                        <div class="swiper-slide w-auto">
-                                            <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                                    src="{% static 'img/modern-ai-image/user-3.jpg' %}" alt=""></div>
-                                        </div>
-                                        <div class="swiper-slide w-auto">
-                                            <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                                    src="{% static 'img/modern-ai-image/user-4.jpg' %}" alt=""></div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <p class="text-center text-muted">No recent transactions found</p>
+                                {% endif %}
                             </div>
-                            <ul class="list-group list-group-flush border-top bg-none">
-                                <li class="list-group-item">
-                                    <div class="row gx-3 align-items-center">
-                                        <div class="col-auto">
-                                            <div class="avatar avatar-40 rounded-circle border"><i
-                                                    class="bi bi-arrow-up-right h5"></i></div>
-                                        </div>
-                                        <div class="col">
-                                            <p class="mb-1 fw-medium">Send money</p>
-                                            <p class="text-secondary small">12 December 2024, 12:50 PM</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <h6>- $ 150.00</h6>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="row gx-3 align-items-center">
-                                        <div class="col-auto">
-                                            <div class="avatar avatar-40 rounded-circle border"><i
-                                                    class="bi bi-arrow-up-right h5"></i></div>
-                                        </div>
-                                        <div class="col">
-                                            <p class="mb-1 fw-medium">Paid Bill</p>
-                                            <p class="text-secondary small">11 December 2024, 7:15 AM</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <h6>- $ 145.00</h6>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="row gx-3 align-items-center">
-                                        <div class="col-auto">
-                                            <div class="avatar avatar-40 rounded-circle border"><i
-                                                    class="bi bi-arrow-up-right h5"></i></div>
-                                        </div>
-                                        <div class="col">
-                                            <p class="mb-1 fw-medium">Paid Bill</p>
-                                            <p class="text-secondary small">10 November 2024, 1:20 PM</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <h6>- $ 325.00</h6>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item theme-green">
-                                    <div class="row gx-3 align-items-center">
-                                        <div class="col-auto">
-                                            <div
-                                                class="avatar avatar-40 rounded-circle border border-theme-1 bg-theme-1-subtle text-theme-1">
-                                                <i class="bi bi-arrow-down-left h5"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <p class="mb-1 fw-medium">Received money</p>
-                                            <p class="text-secondary small">5 November 2024, 1:45 AM</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <h6 class="text-theme-1">+ $ 562.00</h6>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="row gx-3 align-items-center">
-                                        <div class="col-auto">
-                                            <div class="avatar avatar-40 rounded-circle border"><i
-                                                    class="bi bi-arrow-up-right h5"></i></div>
-                                        </div>
-                                        <div class="col">
-                                            <p class="mb-1 fw-medium">Send money</p>
-                                            <p class="text-secondary small">3 November 2024, 1:30 PM</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <h6>- $ 356.00</h6>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                     </div>
+
+                    <!-- Goals and Savings -->
                     <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="card adminuiux-card">
                             <div class="card-header">
@@ -936,6 +860,8 @@
                             </ul>
                         </div>
                     </div>
+
+                    <!-- My cards -->
                     <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="card adminuiux-card overflow-hidden">
                             <div class="card-header">
@@ -1233,6 +1159,8 @@
             </div>
         </main>
     </div>
+
+    <!-- QR CODE modal -->
     <div class="modal adminuiux-modal fade" id="qrcodemodal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -1283,6 +1211,7 @@
         </div>
     </div>
 
+    <!-- Send Money modal -->
     <div class="modal adminuiux-modal fade" id="sendmoneymodal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -1374,6 +1303,7 @@
         </div>
     </div>
 
+    <!-- Receive Money modal -->
     <div class="modal adminuiux-modal fade" id="receivemoneymodal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -1453,25 +1383,29 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <p class="modal-title h5">Add Money</p><button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Close"></button>
+                    <p class="modal-title h5">Add Money</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row mb-4">
-                        <div class="col"><input type="number" class="form-control form-control-lg text-center"
-                                placeholder="Add Amount..." value="100.00">
+                <form method="POST" action="{% url 'add_money' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row mb-4">
+                            <div class="col">
+                                <input type="number" name="amount" class="form-control form-control-lg text-center"
+                                    placeholder="Add Amount..." min="0" step="0.01">
+                            </div>
                         </div>
                     </div>
-                    <div class="text-center mb-4">
-                        <h5 class="fw-normal"><b class="fw-bold">Great!</b> You are going to add</h5>
-                        <h1 class="mb-0 text-theme-1">₹ 100.00</h1>
+                    <div class="modal-footer justify-content-between">
+                        <button type="submit" class="btn btn-theme">Add Now</button>
+                        <button type="button" class="btn btn-link mx-2 theme-red"
+                            data-bs-dismiss="modal">Cancel</button>
                     </div>
-                </div>
-                <div class="modal-footer justify-content-between"><button class="btn btn-theme">Add Now</button> <button
-                        type="button" class="btn btn-link mx-2 theme-red" data-bs-dismiss="modal">Cancel</button></div>
+                </form>
             </div>
         </div>
     </div>
+
 
     <footer class="adminuiux-footer has-adminuiux-sidebar mt-auto">
         <div class="container-fluid">

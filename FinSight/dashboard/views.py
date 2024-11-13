@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from decimal import Decimal, InvalidOperation
+from django.contrib import  messages
+from .models import *
 
 from .utils import *
 # Create your views here.
@@ -39,7 +42,30 @@ def portfolio(request):
 def wallet(request):
     user = request.user
 
-    return render(request, 'wallet.html', {'user':user})
+    transactions = Transaction.objects.filter(user=user).order_by('-date')[:5]  # Fetch last 5 transactions
+
+    return render(request, 'wallet.html', {'user':user, 'transactions': transactions})
+
+User = get_user_model()
+
+def add_money(request):
+    if request.method == 'POST':
+        try:
+            amount = Decimal(request.POST.get('amount', '0'))
+            if amount > 0:
+                request.user.wallet_balance += amount
+                request.user.save()
+                
+                # Create a transaction record
+                Transaction.objects.create(user=request.user, transaction_type='add', amount=amount)
+                
+                messages.success(request, f"₹{amount:.2f} added to your wallet successfully!")
+            else:
+                messages.error(request, "Please enter a valid amount.")
+        except (ValueError, InvalidOperation):
+            messages.error(request, "Invalid amount entered.")
+    
+    return redirect('wallet')
 
 def calculator(request):
     return render(request, 'calculator.html')
