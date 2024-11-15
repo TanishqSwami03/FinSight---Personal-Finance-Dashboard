@@ -387,7 +387,7 @@
                             data-bs-toggle="dropdown"><i class="menu-icon bi bi-piggy-bank"></i> <span
                                 class="menu-name">Investment</span></a>
                         <div class="dropdown-menu">
-                            <div class="nav-item"><a href="investment-company-shares.html" class="nav-link"><i
+                            <div class="nav-item"><a href="{% url 'company_shares' %}" class="nav-link"><i
                                         class="menu-icon bi bi-bank"></i> <span class="menu-name">Company
                                         Share</span></a>
                             </div>
@@ -510,9 +510,10 @@
                         </div>
                     </div>
 
-
+                    <!-- Total income and total expense -->
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="row">
+
                             <div class="col-12 col-sm-6 col-md-12">
                                 <div class="card adminuiux-card mb-4">
                                     <div class="card-body z-index-1">
@@ -522,15 +523,15 @@
                                                         class="bi bi-graph-down-arrow h4"></i></div>
                                             </div>
                                             <div class="col">
-                                                <h4 class="fw-medium">$5560.50</h4>
-                                                <p class="text-secondary">Total Income <span
-                                                        class="text-success fs-14"><i class="bi bi-arrow-up"></i>
-                                                        11.5%</span></p>
+                                                <h4 class="fw-medium text-success">₹ {{ total_income|floatformat:2 }}
+                                                </h4>
+                                                <p class="text-secondary">Total Income</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-12 col-sm-6 col-md-12">
                                 <div class="card adminuiux-card mb-4">
                                     <div class="card-body z-index-1">
@@ -540,17 +541,18 @@
                                                         class="bi bi-graph-up-arrow h4"></i></div>
                                             </div>
                                             <div class="col">
-                                                <h4 class="fw-medium">$3586.15</h4>
-                                                <p class="text-secondary">Total Expense <span
-                                                        class="text-success fs-14"><i class="bi bi-arrow-up"></i>
-                                                        11.5%</span></p>
+                                                <h4 class="fw-medium">₹ {{ total_expense|floatformat:2 }}</h4>
+                                                <p class="text-secondary">Total Expense</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
+
+
                     <div class="col-12 col-md-12 col-lg-4">
                         <div class="row">
                             <div class="col-12 col-sm-6 col-lg-12">
@@ -727,10 +729,21 @@
                                                     class="avatar avatar-40 rounded-circle border bg-theme-1-subtle text-theme-1">
                                                     <i class="bi bi-arrow-down-left h5"></i>
                                                 </div>
+                                                {% elif transaction.transaction_type == 'buy_stock' %}
+                                                <!-- Buy Stock Icon -->
+                                                <div class="avatar avatar-40 rounded-circle border">
+                                                    <i class="bi bi-shop h5"></i>
+                                                </div>
                                                 {% endif %}
                                             </div>
                                             <div class="col">
-                                                <p class="mb-1 fw-medium">{{ transaction.get_transaction_type_display }}
+                                                <p class="mb-1 fw-medium">
+                                                    {% if transaction.transaction_type == 'buy_stock' %}
+                                                    Bought {{ transaction.amount|floatformat:2 }} worth of {{
+                                                    transaction.stock_symbol }}
+                                                    {% else %}
+                                                    {{ transaction.get_transaction_type_display }}
+                                                    {% endif %}
                                                 </p>
                                                 <p class="text-secondary small">{{ transaction.date }}</p>
                                             </div>
@@ -741,6 +754,9 @@
                                                 <h6 class="text-theme-1">+ ₹{{ transaction.amount }}</h6>
                                                 {% elif transaction.transaction_type == 'send' %}
                                                 <h6>- ₹{{ transaction.amount }}</h6>
+                                                {% elif transaction.transaction_type == 'buy_stock' %}
+                                                <h6>- ₹{{ transaction.amount }}</h6>
+                                                <!-- Negative amount as money is spent -->
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -753,6 +769,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     <!-- Goals and Savings -->
                     <div class="col-12 col-md-6 col-lg-4 mb-4">
@@ -1155,6 +1172,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </main>
@@ -1214,171 +1232,75 @@
     <!-- Send Money modal -->
     <div class="modal adminuiux-modal fade" id="sendmoneymodal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <p class="modal-title h5">Send Money</p><button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-floating mb-4"><input class="form-control" id="contact"
-                            placeholder="Enter contact..." value="Jonathan"> <label for="contact">Send money to</label>
+            <form method="POST" action="{% url 'send_money' %}">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title h5">Send Money</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <p class="small text-secondary text-center">Recently connected contacts</p>
-                    <div class="swiper swipernav mb-3">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle border border-dotted border-theme"><span
-                                        class="h4">+</span></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-1.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-3.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-4.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-5.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-6.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-8.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-3.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-4.jpg' %}" alt=""></div>
-                            </div>
+                    <div class="modal-body">
+                        <div class="form-floating mb-4">
+                            <input type="text" name="contact" class="form-control" id="contact"
+                                placeholder="Enter contact..." required>
+                            <label for="contact">Send money to</label>
                         </div>
-                    </div><input type="number" class="form-control form-control-lg text-center mb-3" id="ihavei"
-                        placeholder="Convert Amount..." value="100.00">
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-floating mb-1"><select class="form-select" id="ihavecurrencyi">
-                                    <option>USD Wallet</option>
-                                    <option>CAD Wallet</option>
-                                    <option>AUD Wallet</option>
-                                </select> <label for="ihavecurrencyi">From...</label></div>
-                            <p class="small text-secondary text-center">1.00 USD</p>
-                        </div>
-                        <div class="col-auto"><button class="btn btn-square btn-theme mt-2"><i
-                                    class="bi bi-arrow-left-right"></i></button></div>
-                        <div class="col">
-                            <div class="form-floating mb-1"><select class="form-select" id="ihavecurrency2i">
-                                    <option>USD</option>
-                                    <option selected="">CAD</option>
-                                    <option>AUD</option>
-                                </select> <label for="ihavecurrency2i">Send in...</label></div>
-                            <p class="small text-secondary text-center">1.38 CAD</p>
+                        <!-- Set step to 0.5 for incrementing/decrementing by 0.5 -->
+                        <input type="number" name="amount" class="form-control form-control-lg text-center mb-3"
+                            id="ihavei" placeholder="Amount..." step="0.5" min="0" required>
+
+                        <div class="text-center">
+                            <h5 class="fw-normal"><b class="fw-bold">Great!</b> You are going to send</h5>
+                            <h1 class="mb-0 text-theme-1">₹<span id="display-amount">0.00</span></h1>
                         </div>
                     </div>
-                    <div class="text-center">
-                        <h5 class="fw-normal"><b class="fw-bold">Great!</b> You are going to send</h5>
-                        <h1 class="mb-0 text-theme-1">100.00</h1>
-                        <p class="text-secondary small">in Canadian Dollar</p>
+                    <div class="modal-footer justify-content-between">
+                        <button type="submit" class="btn btn-theme">Send Money</button>
+                        <button type="button" class="btn btn-link mx-2 theme-red"
+                            data-bs-dismiss="modal">Cancel</button>
                     </div>
-                    <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert"><strong><i
-                                class="bi bi-exclamation-triangle me-1"></i> Low balance!</strong><br><small>Your wallet
-                            account does not have enough money to send. Kindly add money or choose different wallet
-                            account.</small> <button type="button" class="btn-close" data-bs-dismiss="alert"
-                            aria-label="Close"></button></div>
                 </div>
-                <div class="modal-footer justify-content-between"><button class="btn btn-theme">Send Money</button>
-                    <button type="button" class="btn btn-link mx-2 theme-red" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
     <!-- Receive Money modal -->
     <div class="modal adminuiux-modal fade" id="receivemoneymodal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <p class="modal-title h5">Receive/Request Money</p><button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-floating mb-4"><input class="form-control" id="contact"
-                            placeholder="Enter contact..." value="Jonathan"> <label for="contact">Receive money
-                            from</label></div>
-                    <p class="small text-secondary text-center">Recently connected contacts</p>
-                    <div class="swiper swipernav mb-4">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle border border-dotted border-theme"><span
-                                        class="h4">+</span></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-1.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-3.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-4.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-5.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-6.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-8.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-3.jpg' %}" alt=""></div>
-                            </div>
-                            <div class="swiper-slide w-auto">
-                                <div class="avatar avatar-40 rounded-circle coverimg"><img
-                                        src="{% static 'img/modern-ai-image/user-4.jpg' %}" alt=""></div>
-                            </div>
+            <form method="POST" action="{% url 'receive_money' %}">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title h5">Receive/Request Money</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-floating mb-4">
+                            <input type="text" name="contact" class="form-control" id="contact"
+                                placeholder="Enter contact..." required>
+                            <label for="contact">Receive money from</label>
+                        </div>
+
+                        <!-- Set step to 0.5 for incrementing/decrementing by 0.5 -->
+                        <input type="number" name="amount" class="form-control form-control-lg text-center mb-3"
+                            id="receiveAmount" placeholder="Amount..." step="0.5" min="0" required>
+
+                        <div class="text-center">
+                            <h5 class="fw-normal"><b class="fw-bold">Great!</b> You are going to receive</h5>
+                            <h1 class="mb-0 text-theme-1">₹<span id="receive-display-amount">0.00</span></h1>
                         </div>
                     </div>
-                    <div class="row mb-4">
-                        <div class="col"><input type="number" class="form-control form-control-lg"
-                                placeholder="Convert Amount..." value="100.00"></div>
-                        <div class="col-auto"><select class="form-select form-select-lg">
-                                <option>USD Wallet</option>
-                                <option selected="selected">CAD Wallet</option>
-                                <option>AUD Wallet</option>
-                            </select></div>
-                    </div>
-                    <div class="text-center">
-                        <h5 class="fw-normal"><b class="fw-bold">Great!</b> You are going to receive</h5>
-                        <h1 class="mb-0 text-theme-1">100.00</h1>
-                        <p class="text-secondary small">in CAD wallet</p>
+                    <div class="modal-footer justify-content-between">
+                        <button type="submit" class="btn btn-theme">Request Money</button>
+                        <button type="button" class="btn btn-link mx-2 theme-red"
+                            data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between"><button class="btn btn-theme">Request Money</button>
-                    <button type="button" class="btn btn-link mx-2 theme-red" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
-    <!-- Add Money pop up -->
+    <!-- Add Money modal -->
     <div class="modal adminuiux-modal fade" id="addmoneymodal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -1391,9 +1313,15 @@
                     <div class="modal-body">
                         <div class="row mb-4">
                             <div class="col">
-                                <input type="number" name="amount" class="form-control form-control-lg text-center"
-                                    placeholder="Add Amount..." min="0" step="0.01">
+                                <input type="number" name="amount" id="add-amount"
+                                    class="form-control form-control-lg text-center" placeholder="Enter amount in INR"
+                                    min="0" step="0.5" value="0.00" required>
                             </div>
+                        </div>
+
+                        <div class="text-center">
+                            <h5 class="fw-normal"><b class="fw-bold">Great!</b> You are going to add</h5>
+                            <h1 class="mb-0 text-theme-1">₹<span id="add-display-amount">0.00</span></h1>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -1462,6 +1390,7 @@
         });
     </script> -->
 
+    <!-- For the exchange -->
     <script>
         const apiKey = "4214af9000bebf96be2b8628";
 
@@ -1494,6 +1423,53 @@
         }
     </script>
 
+    <!-- For send money -->
+    <script>
+        const amountInput = document.getElementById("ihavei");
+        const displayAmount = document.getElementById("display-amount");
+
+        // Update display with two decimal places as the user types
+        amountInput.addEventListener("input", function () {
+            let amountValue = parseFloat(this.value).toFixed(2); // Format to two decimals
+            if (!isNaN(amountValue)) {
+                displayAmount.textContent = amountValue;
+            } else {
+                displayAmount.textContent = "0.00";
+            }
+        });
+    </script>
+
+    <!-- For receive money -->
+    <script>
+        const receiveAmountInput = document.getElementById("receiveAmount");
+        const receiveDisplayAmount = document.getElementById("receive-display-amount");
+
+        // Update display with two decimal places as the user types
+        receiveAmountInput.addEventListener("input", function () {
+            let amountValue = parseFloat(this.value).toFixed(2); // Format to two decimals
+            if (!isNaN(amountValue)) {
+                receiveDisplayAmount.textContent = amountValue;
+            } else {
+                receiveDisplayAmount.textContent = "0.00";
+            }
+        });
+    </script>
+
+    <!-- For add money -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addAmountInput = document.getElementById('add-amount');
+            const displayAmount = document.getElementById('add-display-amount');
+
+            // Update the displayed amount as user types
+            addAmountInput.addEventListener('input', function () {
+                const amount = parseFloat(addAmountInput.value);
+                if (!isNaN(amount)) {
+                    displayAmount.textContent = amount.toFixed(2);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

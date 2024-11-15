@@ -8,5 +8,10 @@ urlpatterns = [
     path('dashboard/portfolio/', portfolio, name='portfolio'),
     path('dashboard/wallet/', wallet, name='wallet'),
     path('add_money/', add_money, name='add_money'),
+    path('send-money/', send_money, name='send_money'),
+    path('receive_money/', receive_money, name='receive_money'),
     path('dashboard/calculator/', calculator, name='calculator'),
+    path('company_shares/', company_shares, name = 'company_shares'),
+    path('search_stock/', search_stock, name='search_stock'),
+    path('buy_stock/', buy_stock, name='buy_stock'),
 ]
