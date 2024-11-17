@@ -36,7 +36,12 @@ def dashboard(request):
         return redirect('login')  # Redirect to login if not authenticated
 
 def transaction(request):
-    return render(request, 'transaction.html')
+     # Fetch all transactions from the database
+    transactions = Transaction.objects.all().order_by('-date')  # Sort by date descending
+
+    return render(request, 'transaction.html',{
+        'transactions' : transactions
+    })
 
 def portfolio(request):
     return render(request, 'portfolio.html')
@@ -111,6 +116,11 @@ def receive_money(request):
         if amount <= 0:
             messages.error(request, "Invalid amount.")
             return redirect('wallet')
+
+        # Update the wallet balance
+        user = request.user
+        user.wallet_balance += amount
+        user.save()
 
         # Log the transaction for receiving money
         Transaction.objects.create(
@@ -220,3 +230,17 @@ def buy_stock(request):
 
     # If the request is GET, simply render the buy stock page (you can customize this view)
     return render(request, 'company_shares.html')
+
+def get_stock_price(request):
+    print("get_stock_price view called!")  # Debugging
+    stock_symbol = request.GET.get('symbol')  # Retrieve the stock symbol from the request
+    print(f"Received stock symbol: {stock_symbol}")  # Debugging
+
+    if stock_symbol:
+        price = get_stock_data(stock_symbol)
+        print(f"Price fetched for {stock_symbol}: {price}")  # Debugging output
+        if price:
+            return JsonResponse({'price': price})
+        else:
+            print("Price not found or invalid response from API.")
+    return JsonResponse({'price': None}, status=404)

@@ -27,7 +27,6 @@
     <!-- <link href="assets/css/app7e23.css?b1b4e75de865b54102d8" rel="stylesheet"> -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-
 </head>
 
 <body
@@ -459,449 +458,77 @@
                     <div class="col-12 col-sm">
                         <nav aria-label="breadcrumb" class="mb-2">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item bi"><a href="investment-dashboard.html">Home</a></li>
+                                <li class="breadcrumb-item bi"><a href="{% url 'dashboard' %}">Home</a></li>
                                 <li class="breadcrumb-item active bi" aria-current="page">Transactions</li>
                             </ol>
                         </nav>
                         <h5>Transactions</h5>
                     </div>
-                    <div class="col-auto py-1"><a href="investment-add-invoice.html" class="btn btn-theme"><i
-                                data-feather="plus" class="me-0 me-md-1"></i> <span
-                                class="d-none d-md-inline-block">Invoice</span></a></div>
-                    <div class="col-auto py-1 ms-auto ms-sm-0"><button class="btn btn-link btn-square btn-icon"
-                            data-bs-toggle="collapse" data-bs-target="#filterschedule" aria-expanded="false"
-                            aria-controls="filterschedule"><i data-feather="filter"></i></button></div>
                 </div>
             </div>
             <div class="container" id="main-content">
-                <div class="collapse" id="filterschedule">
-                    <div class="card adminuiux-card mt-4">
-                        <div class="card-body pb-0">
-                            <div class="row">
-                                <div class="col-12 col-md-6 col-lg-3 mb-3">
-                                    <div class="form-floating"><input class="form-control" placeholder="Search...">
-                                        <label>Search...</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-3 mb-3">
-                                    <div class="form-floating"><select class="form-select">
-                                            <option selected="selected">All</option>
-                                            <option value="1">My Self</option>
-                                            <option value="2">Agent</option>
-                                            <option value="2">Users</option>
-                                        </select> <label>User Role</label></div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-3 mb-3">
-                                    <div class="form-floating"><select class="form-select">
-                                            <option selected="selected">All</option>
-                                            <option value="1">Completed</option>
-                                            <option value="2">Requested</option>
-                                            <option value="3">Pending</option>
-                                            <option value="4">Error</option>
-                                            <option value="5">Waiting</option>
-                                            <option value="6">Blocked</option>
-                                        </select> <label>Status</label></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="card adminuiux-card mt-4 mb-0">
+
                     <div class="card-body">
+                        <!-- Search Bar -->
+                        <div class="mb-3" style="max-width: 300px;">
+                            <input type="text" id="search" class="form-control" placeholder="Search">
+                        </div>
+
+                        <!-- Data Table -->
                         <table id="dataTable" class="table w-100 nowrap">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th class="all">Date and Time</th>
-                                    <th data-breakpoints="xs sm">User Name</th>
-                                    <th data-breakpoints="xs sm md">Contact info</th>
                                     <th data-breakpoints="xs sm">Amount</th>
                                     <th data-breakpoints="xs sm">Status</th>
-                                    <th class="all">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for transaction in transactions %}
                                 <tr>
-                                    <td>2054ID</td>
                                     <td>
-                                        <p class="mb-0">25-12-2024</p>
-                                        <p class="text-secondary small">08:30 PM</p>
-                                    </td>
-                                    <td>
-                                        <div class="row align-items-center flex-nowrap">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-40 mb-0 rounded-circle bg-red text-white">
-                                                    <span class="h6">MD</span>
-                                                </div>
-                                            </div>
-                                            <div class="col ps-0">
-                                                <p class="mb-0 fw-medium">Mc. Doweelds</p>
-                                                <p class="text-secondary small">Storefront, United Kingdom</p>
-                                            </div>
-                                        </div>
+                                        <p class="mb-0">{{ transaction.date|date:"d M. Y" }}</p>
+                                        <p class="text-secondary small">{{ transaction.date|date:"h:i A" }}</p>
                                     </td>
                                     <td>
-                                        <p class="mb-0">info@maxd..core.com</p>
-                                        <p class="text-secondary small">+44 846655****1154</p>
+                                        <h6>₹{{ transaction.amount }}</h6>
                                     </td>
                                     <td>
-                                        <h6>$ 110.00</h6>
-                                    </td>
-                                    <td><span class="badge badge-light rounded-pill text-bg-success">Completed</span>
-                                    </td>
-                                    <td><a href="investment-myprofile.html" class="btn btn-square btn-link"
-                                            data-bs-toggle="tooltip" title="View"><i class="bi bi-eye"></i></a>
-                                        <div class="dropdown d-inline-block"><a class="btn btn-link no-caret"
-                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Edit</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Move</a></li>
-                                                <li><a class="dropdown-item theme-red"
-                                                        href="javascript:void(0)">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        {% if transaction.transaction_type == 'buy_stock' %}
+                                        <span class="badge badge-light rounded-pill text-bg-success">Shares
+                                            Bought</span>
+                                        {% elif transaction.transaction_type == 'add' %}
+                                        <span class="badge badge-light rounded-pill text-bg-primary">Money Added</span>
+                                        {% elif transaction.transaction_type == 'send' %}
+                                        <span class="badge badge-light rounded-pill text-bg-warning">Money Sent</span>
+                                        {% elif transaction.transaction_type == 'receive' %}
+                                        <span class="badge badge-light rounded-pill text-bg-info">Money Received</span>
+                                        {% endif %}
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>105ID</td>
-                                    <td>
-                                        <p class="mb-0">22-12-2024</p>
-                                        <p class="text-secondary small">9:00 PM</p>
-                                    </td>
-                                    <td>
-                                        <div class="row align-items-center flex-nowrap">
-                                            <div class="col-auto">
-                                                <figure class="avatar avatar-40 mb-0 coverimg rounded-circle"><img
-                                                        src="{% static 'img/modern-ai-image/user-8.jpg' %}" alt="">
-                                                </figure>
-                                            </div>
-                                            <div class="col ps-0">
-                                                <p class="mb-0 fw-medium">Winnie John</p>
-                                                <p class="text-secondary small">18 years, Australia</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0">winnie@sales..core.com</p>
-                                        <p class="text-secondary small">+44 8466585****1154</p>
-                                    </td>
-                                    <td>
-                                        <h6>$ 63.00</h6>
-                                    </td>
-                                    <td><span class="badge badge-light rounded-pill text-bg-success">Completed</span>
-                                    </td>
-                                    <td><a href="investment-myprofile.html" class="btn btn-square btn-link"
-                                            data-bs-toggle="tooltip" title="View"><i class="bi bi-eye"></i></a>
-                                        <div class="dropdown d-inline-block"><a class="btn btn-link no-caret"
-                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Edit</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Move</a></li>
-                                                <li><a class="dropdown-item theme-red"
-                                                        href="javascript:void(0)">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>058ID</td>
-                                    <td>
-                                        <p class="mb-0">22-12-2024</p>
-                                        <p class="text-secondary small">07:15 PM</p>
-                                    </td>
-                                    <td>
-                                        <div class="row align-items-center flex-nowrap">
-                                            <div class="col-auto">
-                                                <figure class="avatar avatar-40 mb-0 coverimg rounded-circle"><img
-                                                        src="{% static 'img/modern-ai-image/user-1.jpg' %}" alt="">
-                                                </figure>
-                                            </div>
-                                            <div class="col ps-0">
-                                                <p class="mb-0 fw-medium">Alicia Smith</p>
-                                                <p class="text-secondary small">30 years, United States</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0">alicia@sales..core.com</p>
-                                        <p class="text-secondary small">+44 8466585****1154</p>
-                                    </td>
-                                    <td>
-                                        <h6>$ 75.00</h6>
-                                    </td>
-                                    <td><span class="badge badge-light rounded-pill text-bg-success">Completed</span>
-                                    </td>
-                                    <td><a href="investment-myprofile.html" class="btn btn-square btn-link"
-                                            data-bs-toggle="tooltip" title="View"><i class="bi bi-eye"></i></a>
-                                        <div class="dropdown d-inline-block"><a class="btn btn-link no-caret"
-                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Edit</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Move</a></li>
-                                                <li><a class="dropdown-item theme-red"
-                                                        href="javascript:void(0)">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>500ID</td>
-                                    <td>
-                                        <p class="mb-0">21-12-2024</p>
-                                        <p class="text-secondary small">01:15 PM</p>
-                                    </td>
-                                    <td>
-                                        <div class="row align-items-center flex-nowrap">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-40 mb-0 rounded-circle bg-purple text-white">
-                                                    <span class="h6">JG</span>
-                                                </div>
-                                            </div>
-                                            <div class="col ps-0">
-                                                <p class="mb-0 fw-medium">JJohnson Bags</p>
-                                                <p class="text-secondary small">eCommerce, United States</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0">sales@JJohnso..led.com</p>
-                                        <p class="text-secondary small">+44 8466585****1154</p>
-                                    </td>
-                                    <td>
-                                        <h6>$ 65.00</h6>
-                                    </td>
-                                    <td><span class="badge badge-light rounded-pill text-bg-danger">Error</span> <button
-                                            class="btn btn-link btn-square" type="button" data-bs-toggle="tooltip"
-                                            title="Retry"><i class="bi bi-arrow-clockwise"></i></button></td>
-                                    <td><a href="investment-myprofile.html" class="btn btn-square btn-link"
-                                            data-bs-toggle="tooltip" title="View"><i class="bi bi-eye"></i></a>
-                                        <div class="dropdown d-inline-block"><a class="btn btn-link no-caret"
-                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Edit</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Retry</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Move</a></li>
-                                                <li><a class="dropdown-item theme-red"
-                                                        href="javascript:void(0)">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2054ID</td>
-                                    <td>
-                                        <p class="mb-0">20-12-2024</p>
-                                        <p class="text-secondary small">08:18 PM</p>
-                                    </td>
-                                    <td>
-                                        <div class="row align-items-center flex-nowrap">
-                                            <div class="col-auto">
-                                                <figure class="avatar avatar-40 mb-0 coverimg rounded-circle"><img
-                                                        src="{% static 'img/modern-ai-image/user-3.jpg' %}" alt="">
-                                                </figure>
-                                            </div>
-                                            <div class="col ps-0">
-                                                <p class="mb-0 fw-medium">David Warner</p>
-                                                <p class="text-secondary small">30 years, United States</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0">david@sales..core.com</p>
-                                        <p class="text-secondary small">+44 8466585****1154</p>
-                                    </td>
-                                    <td>
-                                        <h6>$ 84.00</h6>
-                                    </td>
-                                    <td><span class="badge badge-light rounded-pill text-bg-warning">Pending</span></td>
-                                    <td><a href="investment-myprofile.html" class="btn btn-square btn-link"
-                                            data-bs-toggle="tooltip" title="View"><i class="bi bi-eye"></i></a>
-                                        <div class="dropdown d-inline-block"><a class="btn btn-link no-caret"
-                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Edit</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Move</a></li>
-                                                <li><a class="dropdown-item theme-red"
-                                                        href="javascript:void(0)">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>105ID</td>
-                                    <td>
-                                        <p class="mb-0">20-12-2024</p>
-                                        <p class="text-secondary small">05:07 PM</p>
-                                    </td>
-                                    <td>
-                                        <div class="row align-items-center flex-nowrap">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-40 mb-0 rounded-circle bg-theme-1 text-white">
-                                                    <span class="h6">WJ</span>
-                                                </div>
-                                            </div>
-                                            <div class="col ps-0">
-                                                <p class="mb-0 fw-medium">Winnie John</p>
-                                                <p class="text-secondary small">15 years, Australia</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0">winnie@sales..core.com</p>
-                                        <p class="text-secondary small">+44 8466585****1154</p>
-                                    </td>
-                                    <td>
-                                        <h6>$ 65.00</h6>
-                                    </td>
-                                    <td><span class="badge badge-light rounded-pill text-bg-info">Pending</span></td>
-                                    <td><a href="investment-myprofile.html" class="btn btn-square btn-link"
-                                            data-bs-toggle="tooltip" title="View"><i class="bi bi-eye"></i></a>
-                                        <div class="dropdown d-inline-block"><a class="btn btn-link no-caret"
-                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Edit</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Move</a></li>
-                                                <li><a class="dropdown-item theme-red"
-                                                        href="javascript:void(0)">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>058ID</td>
-                                    <td>
-                                        <p class="mb-0">19-12-2024</p>
-                                        <p class="text-secondary small">11:30 AM</p>
-                                    </td>
-                                    <td>
-                                        <div class="row align-items-center flex-nowrap">
-                                            <div class="col-auto">
-                                                <figure class="avatar avatar-40 mb-0 coverimg rounded-circle"><img
-                                                        src="{% static 'img/modern-ai-image/user-5.jpg' %}" alt="">
-                                                </figure>
-                                            </div>
-                                            <div class="col ps-0">
-                                                <p class="mb-0 fw-medium">Alicia Smith</p>
-                                                <p class="text-secondary small">21 years, United States</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0">alicia@sales..core.com</p>
-                                        <p class="text-secondary small">+44 8466585****1154</p>
-                                    </td>
-                                    <td>
-                                        <h6>$ 15.00</h6>
-                                    </td>
-                                    <td><span class="badge badge-light rounded-pill text-bg-success">Completed</span>
-                                    </td>
-                                    <td><a href="investment-myprofile.html" class="btn btn-square btn-link"
-                                            data-bs-toggle="tooltip" title="View"><i class="bi bi-eye"></i></a>
-                                        <div class="dropdown d-inline-block"><a class="btn btn-link no-caret"
-                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Edit</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Move</a></li>
-                                                <li><a class="dropdown-item theme-red"
-                                                        href="javascript:void(0)">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>501ID</td>
-                                    <td>
-                                        <p class="mb-0">19-12-2024</p>
-                                        <p class="text-secondary small">08:30 AM</p>
-                                    </td>
-                                    <td>
-                                        <div class="row align-items-center flex-nowrap">
-                                            <div class="col-auto">
-                                                <figure class="avatar avatar-40 mb-0 coverimg rounded-circle"><img
-                                                        src="{% static 'img/modern-ai-image/user-6.jpg' %}" alt="">
-                                                </figure>
-                                            </div>
-                                            <div class="col ps-0">
-                                                <p class="mb-0 fw-medium">Jr. Sham Co</p>
-                                                <p class="text-secondary small">45 years, United Kingdom</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0">cheli@sales..core.com</p>
-                                        <p class="text-secondary small">+44 8466585****1154</p>
-                                    </td>
-                                    <td>
-                                        <h6>$ 212.00</h6>
-                                    </td>
-                                    <td><span class="badge badge-light rounded-pill text-bg-success">Completed</span>
-                                    </td>
-                                    <td><a href="investment-myprofile.html" class="btn btn-square btn-link"
-                                            data-bs-toggle="tooltip" title="View"><i class="bi bi-eye"></i></a>
-                                        <div class="dropdown d-inline-block"><a class="btn btn-link no-caret"
-                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Edit</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Move</a></li>
-                                                <li><a class="dropdown-item theme-red"
-                                                        href="javascript:void(0)">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3052ID</td>
-                                    <td>
-                                        <p class="mb-0">19-12-2024</p>
-                                        <p class="text-secondary small">12:46 PM</p>
-                                    </td>
-                                    <td>
-                                        <div class="row align-items-center flex-nowrap">
-                                            <div class="col-auto">
-                                                <figure class="avatar avatar-40 mb-0 coverimg rounded-circle"><img
-                                                        src="{% static 'img/modern-ai-image/user-7.jpg' %}" alt="">
-                                                </figure>
-                                            </div>
-                                            <div class="col ps-0">
-                                                <p class="mb-0 fw-medium">David Warner</p>
-                                                <p class="text-secondary small">55 years, United Kingdom</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0">david@sales..core.com</p>
-                                        <p class="text-secondary small">+44 8466585****1154</p>
-                                    </td>
-                                    <td>
-                                        <h6>$ 180.00</h6>
-                                    </td>
-                                    <td><span class="badge badge-light rounded-pill text-bg-success">Completed</span>
-                                    </td>
-                                    <td><a href="investment-view-patient.html" class="btn btn-square btn-link"
-                                            data-bs-toggle="tooltip" title="View"><i class="bi bi-eye"></i></a>
-                                        <div class="dropdown d-inline-block"><a class="btn btn-link no-caret"
-                                                data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Edit</a></li>
-                                                <li><a class="dropdown-item" href="javascript:void(0)">Move</a></li>
-                                                <li><a class="dropdown-item theme-red"
-                                                        href="javascript:void(0)">Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
+
+                        <!-- Pagination -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- Left: Showing 1 to 6 of 9 entries -->
+                            <div class="text-muted">
+                                Showing 1 to 6 of 9 entries
+                            </div>
+
+                            <!-- Right: Pagination buttons -->
+                            <div>
+                                <a href="#" class="btn btn-link">«</a>
+                                <a href="#" class="btn btn-link">‹</a>
+                                <span class="btn btn-link">1</span>
+                                <a href="#" class="btn btn-link">›</a>
+                                <a href="#" class="btn btn-link">»</a>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </main>
@@ -913,18 +540,26 @@
                 <div class="col-12 col-md col-lg py-2">
                     <span class="small">Copyright @2024, FinSight </span>
                 </div>
-                <!-- <div class="col-12 col-md-auto col-lg-auto align-self-center">
-                    <ul class="nav small">
-                        <li class="nav-item"><a class="nav-link" href="help-center.html">Help</a></li>
-                        <li class="nav-item">|</li>
-                        <li class="nav-item"><a class="nav-link" href="terms-of-use.html">Terms of Use</a></li>
-                        <li class="nav-item">|</li>
-                        <li class="nav-item"><a class="nav-link" href="privacy-policy.html">Privacy Policy</a></li>
-                    </ul>
-                </div> -->
             </div>
         </div>
     </footer>
+
+    <!-- Real-Time Search Script -->
+    <script>
+        document.getElementById('search').addEventListener('keyup', function () {
+            var filter = this.value.toLowerCase();
+            var rows = document.querySelectorAll('#dataTable tbody tr');
+
+            rows.forEach(function (row) {
+                var text = row.innerText.toLowerCase();
+                if (text.indexOf(filter) > -1) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 
 </body>
 

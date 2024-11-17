@@ -27,6 +27,8 @@
     <!-- <link href="assets/css/app7e23.css?b1b4e75de865b54102d8" rel="stylesheet"> -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 
 </head>
 
@@ -732,15 +734,15 @@
                                                 {% elif transaction.transaction_type == 'buy_stock' %}
                                                 <!-- Buy Stock Icon -->
                                                 <div class="avatar avatar-40 rounded-circle border">
-                                                    <i class="bi bi-shop h5"></i>
+                                                    <!-- <i class="bi bi-shop h5"></i> -->
+                                                    <i class="fa-sharp fa-solid fa-indian-rupee-sign"></i>
                                                 </div>
                                                 {% endif %}
                                             </div>
                                             <div class="col">
                                                 <p class="mb-1 fw-medium">
                                                     {% if transaction.transaction_type == 'buy_stock' %}
-                                                    Bought {{ transaction.amount|floatformat:2 }} worth of {{
-                                                    transaction.stock_symbol }}
+                                                    Shares Bought
                                                     {% else %}
                                                     {{ transaction.get_transaction_type_display }}
                                                     {% endif %}

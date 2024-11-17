@@ -22,33 +22,32 @@ def get_top_stocks():
 
 
 def get_stock_data(symbol):
-    # URL-encode the stock name to handle spaces and special characters
+    # print(f"Fetching stock data for: {symbol}")  # Debugging
     encoded_symbol = quote(symbol)
 
-    # Initialize connection
     conn = http.client.HTTPSConnection("indian-stock-exchange-api2.p.rapidapi.com")
-
     headers = {
-        'x-rapidapi-key': "06ce2c117emshb10dee7b44d4c4ep11e44cjsn2a53a7965b9f",  # Your API Key
+        'x-rapidapi-key': "06ce2c117emshb10dee7b44d4c4ep11e44cjsn2a53a7965b9f",
         'x-rapidapi-host': "indian-stock-exchange-api2.p.rapidapi.com"
     }
 
-    # Send GET request to the API with the properly URL-encoded stock name
-    conn.request("GET", f"/historical_data?stock_name={encoded_symbol}&period=1m&filter=price", headers=headers)
-    
-    res = conn.getresponse()
-    data = res.read()
+    try:
+        conn.request("GET", f"/historical_data?stock_name={encoded_symbol}&period=1m&filter=price", headers=headers)
+        res = conn.getresponse()
+        # print(f"API Response Status: {res.status}")  # Debugging
 
-    # Log the entire API response for debugging
-    # print("API Response:", data.decode("utf-8"))
+        data = res.read()
+        stock_data = json.loads(data.decode("utf-8"))
+        # print(f"API Data: {stock_data}")  # Debugging
 
-    # Parse the JSON response
-    stock_data = json.loads(data.decode("utf-8"))
-
-    # Check if stock data is available and return the most recent price
-    if stock_data and "datasets" in stock_data:
-        # Extract the most recent price from the "values" array under "Price"
-        values = stock_data["datasets"][0]["values"]
-        if values:
-            return values[-1][1]  # Return the most recent price (last entry in values)
+        if stock_data and "datasets" in stock_data:
+            values = stock_data["datasets"][0]["values"]
+            if values:
+                return values[-1][1]  # Return the most recent price
+            else:
+                print("No stock values available.")
+        else:
+            print("Stock data or datasets not found.")
+    except Exception as e:
+        print(f"Error during API request: {e}")
     return None
