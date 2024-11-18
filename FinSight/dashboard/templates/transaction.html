@@ -34,7 +34,7 @@
     data-theme="theme-blue" data-sidebarfill="adminuiux-sidebar-fill-white" data-bs-spy="scroll"
     data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0">
 
-    <header class="adminuiux-header">
+    <!-- <header class="adminuiux-header">
         <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container-fluid">
                 <button class="btn btn-link btn-square sidebar-toggler" type="button" onclick="initSidebar()">
@@ -55,7 +55,6 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="{% url 'transaction' %}">Transaction</a>
                         </li>
-                        <!-- <li class="nav-item"><a class="nav-link" href="investment-blogs.html">News</a></li> -->
                     </ul>
                 </div>
                 <div class="ms-auto">
@@ -345,11 +344,13 @@
                 </div>
             </div>
         </div>
-    </header>
+    </header> -->
+
+    {% include 'header.html' %}
 
     <div class="adminuiux-wrap">
 
-        <div class="adminuiux-sidebar">
+        <!-- <div class="adminuiux-sidebar">
             <div class="adminuiux-sidebar-inner">
                 <div class="px-3 not-iconic mt-3">
                     <div class="row">
@@ -450,7 +451,9 @@
                                 data-feather="settings"></i> <span class="menu-name">Settings</span></a></li>
                 </ul>
             </div>
-        </div>
+        </div> -->
+
+        {% include 'sidebar.html' %}
 
         <main class="adminuiux-content has-sidebar" onclick="contentClick()">
             <div class="container-fluid mt-4">

@@ -24,21 +24,29 @@ class Transaction(models.Model):
 
 
 class Portfolio(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="portfolio", null = True, blank = True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="portfolio", null=True, blank=True)
     stock_symbol = models.CharField(max_length=10)
-    company_name = models.CharField(max_length=100)
     quantity = models.IntegerField()
-    purchase_price = models.DecimalField(max_digits=10, decimal_places=2)
-    current_price = models.DecimalField(max_digits=10, decimal_places=2)
-    last_updated = models.DateTimeField(auto_now=True)
+    average_price = models.DecimalField(max_digits=10, decimal_places=2)
 
     @property
-    def total_value(self):
-        return self.current_price * self.quantity
+    def invested_value(self):
+        return self.average_price * self.quantity  # Total amount invested
+
+    def get_current_price(self):
+        from .utils import get_stock_data  # Assuming the API call function is in a utils.py file
+        return get_stock_data(self.stock_symbol)
 
     @property
     def profit(self):
-        return (self.current_price - self.purchase_price) * self.quantity
+        current_price = self.get_current_price()
+        return (current_price - self.average_price) * self.quantity
+
+    @property
+    def percentage_change(self):
+        current_price = self.get_current_price()
+        return ((current_price - self.average_price) / self.average_price) * 100
+
 
 class StockTransaction(models.Model):
     TRANSACTION_TYPES = [

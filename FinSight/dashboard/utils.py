@@ -7,7 +7,7 @@ from urllib.parse import quote
 def get_top_stocks():
     url = "https://indian-stock-exchange-api2.p.rapidapi.com/NSE_most_active"
     headers = {
-        "x-rapidapi-key": "06ce2c117emshb10dee7b44d4c4ep11e44cjsn2a53a7965b9f",
+        "x-rapidapi-key": "047c89427dmsh4abf46c87883640p1bab6cjsnda99588c24f1",
         "x-rapidapi-host": "indian-stock-exchange-api2.p.rapidapi.com"
     }
     response = requests.get(url, headers=headers)
@@ -27,7 +27,7 @@ def get_stock_data(symbol):
 
     conn = http.client.HTTPSConnection("indian-stock-exchange-api2.p.rapidapi.com")
     headers = {
-        'x-rapidapi-key': "06ce2c117emshb10dee7b44d4c4ep11e44cjsn2a53a7965b9f",
+        'x-rapidapi-key': "047c89427dmsh4abf46c87883640p1bab6cjsnda99588c24f1",
         'x-rapidapi-host': "indian-stock-exchange-api2.p.rapidapi.com"
     }
 

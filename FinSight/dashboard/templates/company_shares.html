@@ -36,7 +36,7 @@
     data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0">
 
 
-    <header class="adminuiux-header">
+    <!-- <header class="adminuiux-header">
         <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container-fluid">
                 <button class="btn btn-link btn-square sidebar-toggler" type="button" onclick="initSidebar()">
@@ -346,11 +346,13 @@
                 </div>
             </div>
         </div>
-    </header>
+    </header> -->
+
+    {% include 'header.html' %}
 
     <div class="adminuiux-wrap">
 
-        <div class="adminuiux-sidebar">
+        <!-- <div class="adminuiux-sidebar">
             <div class="adminuiux-sidebar-inner">
                 <div class="px-3 not-iconic mt-3">
                     <div class="row">
@@ -452,7 +454,9 @@
                                 data-feather="settings"></i> <span class="menu-name">Settings</span></a></li>
                 </ul>
             </div>
-        </div>
+        </div> -->
+
+        {% include 'sidebar.html' %}
 
         <main class="adminuiux-content has-sidebar" onclick="contentClick()">
             <div class="container-fluid mt-4">
@@ -662,69 +666,86 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="card-body">
-                                <table class="table mb-0" data-show-toggle="true" id="dataTable">
+                                <table class="table mb-0" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th class="">Company</th>
-                                            <th> Current Price</th>
-                                            <th data-breakpoints="xs">Holding</th>
-                                            <th data-breakpoints="xs sm">Profit/Loss</th>
-                                            <th data-breakpoints="xs">Today's Trend</th>
-                                            <th>% Change</th>
-                                            <th>Action</th>
+                                            <th>Stock Symbol</th>
+                                            <th>Current Price</th>
+                                            <th>Holding</th>
+                                            <th>Profit/Loss</th>
+                                            <th>Today's Trend</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for portfolio in portfolios %}
                                         <tr>
+                                            <!-- Stock Symbol -->
+                                            <td>{{ portfolio.stock_symbol }}</td>
+
+                                            <!-- Current Price -->
                                             <td>
-                                                <p class="mb-0">Jintudal</p>
-                                                <p class="small text-theme-1"><i class="bi bi-award-fill"></i> Event</p>
-                                            </td>
-                                            <td>
-                                                <p class="mb-0">$ 100.45</p>
-                                                <p class="small"><span class="text-secondary" data-bs-toggle="tooltip"
-                                                        title="Last top price">LTP:</span> 152</p>
-                                            </td>
-                                            <td>
-                                                <p class="mb-0">102 units</p>
-                                                <p class="small"><span class="text-secondary">Invested:</span> $ 1400.45
+                                                <p class="mb-0">₹ {{ portfolio.current_price }}</p>
+                                                <p class="small">
+                                                    <span class="text-secondary">Avg Price:</span>
+                                                    ₹ {{ portfolio.average_price }}
                                                 </p>
                                             </td>
+
+                                            <!-- Holding -->
                                             <td>
-                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 25.30%
-                                                </p>
-                                                <p class="small"><span class="text-secondary">Profit:</span> $ 305.5</p>
-                                            </td>
-                                            <td>
-                                                <p class="mb-0 text-success"><i class="bi bi-graph-up-arrow"></i>
-                                                    Bullish
-                                                </p>
-                                            </td>
-                                            <td>
-                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 1.24%
+                                                <p class="mb-0">{{ portfolio.quantity }} units</p>
+                                                <p class="small">
+                                                    <span class="text-secondary">Invested:</span>
+                                                    ₹ {{ portfolio.invested_value }}
                                                 </p>
                                             </td>
-                                            <td><button class="btn btn-sm btn-outline-success">Invest</button> <button
-                                                    class="btn btn-sm btn-outline-danger">Sell</button>
-                                                <div class="dropdown d-inline-block"><a
-                                                        class="btn btn-link btn-square no-caret"
-                                                        data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                        <li><a class="dropdown-item"
-                                                                href="javascript:void(0)">Favorite</a>
-                                                        </li>
-                                                        <li><a class="dropdown-item" href="javascript:void(0)">View
-                                                                Chart</a></li>
-                                                        <li><a class="dropdown-item" href="javascript:void(0)">Company
-                                                                Events</a></li>
-                                                    </ul>
-                                                </div>
+
+                                            <!-- Profit/Loss -->
+                                            <td>
+                                                {% if portfolio.profit >= 0 %}
+                                                <p class="mb-0 text-success">
+                                                    <i class="bi bi-caret-up-fill"></i>
+                                                    {{ portfolio.percentage_change|floatformat:2 }} %
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Profit:</span>
+                                                    ₹ {{ portfolio.profit }}
+                                                </p>
+                                                {% else %}
+                                                <p class="mb-0 text-danger">
+                                                    <i class="bi bi-caret-down-fill"></i> {{
+                                                    portfolio.percentage_change|floatformat:2 }}%
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Loss:</span> ₹ {{
+                                                    portfolio.profit|abs }}</p>
+                                                {% endif %}
+                                            </td>
+
+                                            <!-- Today's Trend -->
+                                            <td>
+                                                {% if portfolio.today_trend == "Bullish" %}
+                                                <p class="mb-0 text-success">
+                                                    <i class="bi bi-graph-up-arrow"></i> {{ portfolio.today_trend }}
+                                                </p>
+                                                {% else %}
+                                                <p class="mb-0 text-danger">
+                                                    <i class="bi bi-graph-down-arrow"></i> {{ portfolio.today_trend }}
+                                                </p>
+                                                {% endif %}
                                             </td>
                                         </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="5">No data available</td>
+                                        </tr>
+                                        {% endfor %}
+
                                     </tbody>
                                 </table>
+
                             </div>
+
                         </div>
                     </div>
                 </div>
