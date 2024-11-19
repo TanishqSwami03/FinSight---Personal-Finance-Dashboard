@@ -147,9 +147,14 @@ def company_shares(request):
         stock['icon_class'] = 'bi-caret-up-fill' if stock['percent_change'] >= 0 else 'bi-caret-down-fill'
         stock['percent_change'] = abs(stock['percent_change'])
 
-    # Fetch user portfolio
-    user_portfolio = Portfolio.objects.filter(user=request.user)
+    # Fetch user portfolio, ordered by the most recent additions
+    user_portfolio = Portfolio.objects.filter(user=request.user).order_by('-date_added')
     portfolio_data = []
+
+    # Initialize portfolio summary values
+    total_value = Decimal('0.0')
+    total_investment = Decimal('0.0')
+    total_profit = Decimal('0.0')
 
     for portfolio in user_portfolio:
         try:
@@ -159,14 +164,14 @@ def company_shares(request):
             
             # Calculate derived values
             average_price = portfolio.average_price
-            invested_value = portfolio.invested_value
+            invested_value = portfolio.quantity * average_price
             profit = (current_price - average_price) * portfolio.quantity
             percentage_change = ((current_price - average_price) / average_price) * 100
-            today_trend = "Bullish" if percentage_change > 0 else "Bearish"
 
-            # Print for debugging
-            print(f"Current Price: {current_price}, Average Price: {average_price}, Invested Value: {invested_value}")
-            print(f"Profit: {profit}, Percentage Change: {percentage_change}, Trend: {today_trend}")
+            # Update portfolio summary
+            total_value += current_price * portfolio.quantity
+            total_investment += invested_value
+            total_profit += profit
 
             # Add to portfolio data
             portfolio_data.append({
@@ -177,15 +182,38 @@ def company_shares(request):
                 "invested_value": invested_value,
                 "percentage_change": percentage_change,
                 "profit": profit,
-                "today_trend": today_trend,
             })
         except Exception as e:
             print(f"Error processing stock {portfolio.stock_symbol}: {e}")
 
+    # Sort stocks by percentage change (descending order)
+    sorted_stocks = sorted(portfolio_data, key=lambda x: x['percentage_change'], reverse=True)
+
+    # Split stocks into positive and negative changes
+    positive_stocks = [stock for stock in sorted_stocks if stock['percentage_change'] >= 0]
+    negative_stocks = [stock for stock in sorted_stocks if stock['percentage_change'] < 0]
+
+    # Get top 2 positive and 2 negative stocks
+    top_positive_stocks = positive_stocks[:2]
+    top_negative_stocks = negative_stocks[:2]
+
+    # Combine both lists to get the top 4 stocks
+    sorted_stocks = top_positive_stocks + top_negative_stocks
+
+    # Calculate portfolio growth percentage
+    portfolio_growth = ((total_value - total_investment) / total_investment) * 100 if total_investment else 0
+
     return render(request, 'company_shares.html', {
         'top_stocks': top_stocks,
-        'portfolios': portfolio_data,  # Pass processed portfolio data
+        'portfolios': portfolio_data,
+        'sorted_stocks': sorted_stocks,
+        'total_value': total_value,
+        'total_investment': total_investment,
+        'total_profit': total_profit,
+        'portfolio_growth': portfolio_growth,
     })
+
+
 
 from django.http import JsonResponse
 from .utils import get_stock_data

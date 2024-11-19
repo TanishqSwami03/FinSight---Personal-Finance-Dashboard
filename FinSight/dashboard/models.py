@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from django.contrib.auth import get_user_model
 
@@ -28,6 +29,7 @@ class Portfolio(models.Model):
     stock_symbol = models.CharField(max_length=10)
     quantity = models.IntegerField()
     average_price = models.DecimalField(max_digits=10, decimal_places=2)
+    date_added = models.DateTimeField(auto_now_add = True)  # Track when the stock was added
 
     @property
     def invested_value(self):
@@ -46,6 +48,7 @@ class Portfolio(models.Model):
     def percentage_change(self):
         current_price = self.get_current_price()
         return ((current_price - self.average_price) / self.average_price) * 100
+
 
 
 class StockTransaction(models.Model):

@@ -514,104 +514,61 @@
                     </div>
 
                 </div>
+
                 <div class="row">
+                    <!-- Stocks Cards -->
+                    {% for stock in sorted_stocks %}
                     <div class="col-12 col-sm-6 col-md-6 col-lg-3">
                         <div class="card adminuiux-card mb-4">
                             <div class="card-body">
                                 <div class="row gx-3 align-items-center mb-3">
                                     <div class="col-auto">
-                                        <div class="avatar avatar-60 bg-theme-1 text-white rounded"><span
-                                                class="h6">GCL</span></div>
+                                        <div class="avatar avatar-60 bg-theme-1 text-white rounded">
+                                            <span class="h6">{{ stock.stock_symbol }}</span>
+                                        </div>
                                     </div>
-                                    <div class="col"><a href="investment-share-details.html" class="style-none">
-                                            <h5 class="fw-medium mb-1">Goods Co.</h5>
-                                        </a>
-                                        <p class="text-secondary">200 Shares</p>
+                                    <div class="col">
+                                        <h5 class="fw-medium mb-1">{{ stock.stock_symbol }}</h5>
+                                        <p class="text-secondary">{{ stock.quantity }} Shares</p>
                                     </div>
                                 </div>
-                                <h4 class="fw-medium">$5560.50</h4>
-                                <p class="text-secondary">$56.1 <span class="text-success fs-14"><i
-                                            class="bi bi-arrow-up"></i> 1.75%</span> Today</p>
+                                <h4 class="fw-medium">₹ {{ stock.current_price|floatformat:2 }}</h4>
+                                <p class="text-secondary">₹ {{ stock.profit|floatformat:2 }}
+                                    <span
+                                        class="{% if stock.percentage_change >= 0 %}text-success{% else %}text-danger{% endif %} fs-14">
+                                        <i
+                                            class="bi {% if stock.percentage_change >= 0 %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
+                                        {{ stock.percentage_change|floatformat:2 }}%
+                                    </span>
+                                    Today
+                                </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-                        <div class="card adminuiux-card mb-4">
-                            <div class="card-body">
-                                <div class="row gx-3 align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-60 bg-indigo text-white rounded"><i
-                                                class="h5 bi bi-bootstrap"></i></div>
-                                    </div>
-                                    <div class="col"><a href="investment-share-details.html" class="style-none">
-                                            <h5 class="fw-medium mb-1">Bootstraps Co.</h5>
-                                        </a>
-                                        <p class="text-secondary">150 Shares</p>
-                                    </div>
-                                </div>
-                                <h4 class="fw-medium">$4526.50</h4>
-                                <p class="text-secondary">$51.0 <span class="text-success fs-14"><i
-                                            class="bi bi-arrow-up"></i> 2.35%</span> Today</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-                        <div class="card adminuiux-card mb-4">
-                            <div class="card-body">
-                                <div class="row gx-3 align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-60 bg-cyan text-white rounded"><i
-                                                class="h5 bi bi-twitter"></i></div>
-                                    </div>
-                                    <div class="col"><a href="investment-share-details.html" class="style-none">
-                                            <h5 class="fw-medium mb-1">Tweets LLP.</h5>
-                                        </a>
-                                        <p class="text-secondary">520 Shares</p>
-                                    </div>
-                                </div>
-                                <h4 class="fw-medium">$8596.50</h4>
-                                <p class="text-secondary">$25.0 <span class="text-success fs-14"><i
-                                            class="bi bi-arrow-up"></i> 1.5%</span> Today</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-                        <div class="card adminuiux-card mb-4">
-                            <div class="card-body">
-                                <div class="row gx-3 align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-60 bg-success text-white rounded"><span
-                                                class="h6">EVS</span></div>
-                                    </div>
-                                    <div class="col"><a href="investment-share-details.html" class="style-none">
-                                            <h5 class="fw-medium mb-1">Eventos SM.</h5>
-                                        </a>
-                                        <p class="text-secondary">100 Shares</p>
-                                    </div>
-                                </div>
-                                <h4 class="fw-medium">$2541.50</h4>
-                                <p class="text-secondary">$26.0 <span class="text-success fs-14"><i
-                                            class="bi bi-arrow-up"></i> 2.15%</span> Today</p>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
+                </div>
+
+
+                <div class="row">
                     <div class="col-12 col-lg-6 col-xl-4 mb-4">
                         <div class="card adminuiux-card">
                             <div class="card-body pb-0">
-                                <div class="avatar avatar-60 bg-theme-1-subtle text-theme-1 rounded mb-4"><i
-                                        class="bi bi-bar-chart-line h4"></i></div>
+                                <div class="avatar avatar-60 bg-theme-1-subtle text-theme-1 rounded mb-4">
+                                    <i class="bi bi-bar-chart-line h4"></i>
+                                </div>
                                 <h5 class="fw-medium">Your portfolio value is</h5>
-                                <h1 class="fw-medium">$ 65.52k <span class="text-success fs-14"><i
-                                            class="bi bi-arrow-up-short me-1"></i> 18.5%</span></h1>
-                                <p class="text-secondary mb-4">Your portfolio has been grown to<br>$ 152.00 at 7% last
-                                    week.
-                                </p>
+                                <!-- Displaying the total portfolio value dynamically -->
+                                <h1 class="fw-medium">₹ {{ total_value|floatformat:2 }}</h1>
+                                <!-- Format to 2 decimal places -->
+
                                 <div class="row">
                                     <div class="col">
                                         <div class="card mb-3">
                                             <div class="card-body">
-                                                <p class="text-secondary mb-2">Profit Revenue</p>
-                                                <h4 class="fw-medium">$ 15.51k</h4>
+                                                <p class="text-secondary mb-2">Profit / Loss</p>
+                                                <!-- Displaying total profit dynamically -->
+                                                <h4 class="fw-medium">₹ {{ total_profit|floatformat:2 }}</h4>
+                                                <!-- Format to 2 decimal places -->
                                             </div>
                                         </div>
                                     </div>
@@ -619,7 +576,9 @@
                                         <div class="card mb-3">
                                             <div class="card-body">
                                                 <p class="text-secondary mb-2">Investment</p>
-                                                <h4 class="fw-medium">$ 45.00k</h4>
+                                                <!-- Displaying total investment dynamically -->
+                                                <h4 class="fw-medium">₹ {{ total_investment|floatformat:2 }}</h4>
+                                                <!-- Format to 2 decimal places -->
                                             </div>
                                         </div>
                                     </div>
@@ -627,129 +586,101 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- <div class="col-12 col-lg-6 col-xl-8 mb-4">
-                        <div class="card adminuiux-card">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <nav aria-label="Page navigation example">
-                                            <ul class="pagination pagination-sm justify-content-end mb-0">
-                                                <li class="page-item"><a class="page-link" href="#">1D</a></li>
-                                                <li class="page-item"><a class="page-link active" href="#">1W</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">1M</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">1Y</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">All</a></li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                    <div class="col position-relative text-end"><input
-                                            class="form-control d-inline-block w-auto align-middle mx-3"
-                                            id="daterangepicker"> <button
-                                            class="btn btn-square btn-theme d-inline-block align-middle"
-                                            onclick="$(this).prev().click()"><i data-feather="calendar"></i></button>
-                                    </div>
+
+                <div class="col-12">
+                    <div class="card adminuiux-card mb-4">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6>My Portfolio</h6>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="w-100 height-270"><canvas id="summarychart"></canvas></div>
-                            </div>
                         </div>
-                    </div> -->
 
-                    <div class="col-12">
-                        <div class="card adminuiux-card mb-4">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h6>My Portfolio</h6>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card-body">
+                            <table class="table mb-0" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Stock Symbol</th>
+                                        <th>Current Price</th>
+                                        <th>Holding</th>
+                                        <th>Profit/Loss</th>
+                                        <th>Today's Trend</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for portfolio in portfolios %}
+                                    <tr>
+                                        <!-- Stock Symbol -->
+                                        <td>{{ portfolio.stock_symbol }}</td>
 
-                            <div class="card-body">
-                                <table class="table mb-0" id="dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Stock Symbol</th>
-                                            <th>Current Price</th>
-                                            <th>Holding</th>
-                                            <th>Profit/Loss</th>
-                                            <th>Today's Trend</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for portfolio in portfolios %}
-                                        <tr>
-                                            <!-- Stock Symbol -->
-                                            <td>{{ portfolio.stock_symbol }}</td>
+                                        <!-- Current Price -->
+                                        <td>
+                                            <p class="mb-0">₹ {{ portfolio.current_price }}</p>
+                                            <p class="small">
+                                                <span class="text-secondary">Avg Price:</span>
+                                                ₹ {{ portfolio.average_price }}
+                                            </p>
+                                        </td>
 
-                                            <!-- Current Price -->
-                                            <td>
-                                                <p class="mb-0">₹ {{ portfolio.current_price }}</p>
-                                                <p class="small">
-                                                    <span class="text-secondary">Avg Price:</span>
-                                                    ₹ {{ portfolio.average_price }}
-                                                </p>
-                                            </td>
+                                        <!-- Holding -->
+                                        <td>
+                                            <p class="mb-0">{{ portfolio.quantity }} units</p>
+                                            <p class="small">
+                                                <span class="text-secondary">Invested:</span>
+                                                ₹ {{ portfolio.invested_value }}
+                                            </p>
+                                        </td>
 
-                                            <!-- Holding -->
-                                            <td>
-                                                <p class="mb-0">{{ portfolio.quantity }} units</p>
-                                                <p class="small">
-                                                    <span class="text-secondary">Invested:</span>
-                                                    ₹ {{ portfolio.invested_value }}
-                                                </p>
-                                            </td>
+                                        <!-- Profit/Loss -->
+                                        <td>
+                                            {% if portfolio.profit >= 0 %}
+                                            <p class="mb-0 text-success">
+                                                <i class="bi bi-caret-up-fill"></i>
+                                                {{ portfolio.percentage_change|floatformat:2 }} %
+                                            </p>
+                                            <p class="small"><span class="text-secondary">Profit:</span>
+                                                ₹ {{ portfolio.profit }}
+                                            </p>
+                                            {% else %}
+                                            <p class="mb-0 text-danger">
+                                                <i class="bi bi-caret-down-fill"></i>
+                                                {{ portfolio.percentage_change|floatformat:2 }}%
+                                            </p>
+                                            <p class="small"><span class="text-secondary">Loss:</span>
+                                                ₹ {{ portfolio.profit }}</p>
+                                            {% endif %}
+                                        </td>
 
-                                            <!-- Profit/Loss -->
-                                            <td>
-                                                {% if portfolio.profit >= 0 %}
-                                                <p class="mb-0 text-success">
-                                                    <i class="bi bi-caret-up-fill"></i>
-                                                    {{ portfolio.percentage_change|floatformat:2 }} %
-                                                </p>
-                                                <p class="small"><span class="text-secondary">Profit:</span>
-                                                    ₹ {{ portfolio.profit }}
-                                                </p>
-                                                {% else %}
-                                                <p class="mb-0 text-danger">
-                                                    <i class="bi bi-caret-down-fill"></i> {{
-                                                    portfolio.percentage_change|floatformat:2 }}%
-                                                </p>
-                                                <p class="small"><span class="text-secondary">Loss:</span> ₹ {{
-                                                    portfolio.profit|abs }}</p>
-                                                {% endif %}
-                                            </td>
+                                        <!-- Today's Trend -->
+                                        <td>
+                                            {% if portfolio.today_trend == "Bullish" %}
+                                            <p class="mb-0 text-success">
+                                                <i class="bi bi-graph-up-arrow"></i> {{ portfolio.today_trend }}
+                                            </p>
+                                            {% else %}
+                                            <p class="mb-0 text-danger">
+                                                <i class="bi bi-graph-down-arrow"></i> {{ portfolio.today_trend }}
+                                            </p>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="5">No data available</td>
+                                    </tr>
+                                    {% endfor %}
 
-                                            <!-- Today's Trend -->
-                                            <td>
-                                                {% if portfolio.today_trend == "Bullish" %}
-                                                <p class="mb-0 text-success">
-                                                    <i class="bi bi-graph-up-arrow"></i> {{ portfolio.today_trend }}
-                                                </p>
-                                                {% else %}
-                                                <p class="mb-0 text-danger">
-                                                    <i class="bi bi-graph-down-arrow"></i> {{ portfolio.today_trend }}
-                                                </p>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                        {% empty %}
-                                        <tr>
-                                            <td colspan="5">No data available</td>
-                                        </tr>
-                                        {% endfor %}
-
-                                    </tbody>
-                                </table>
-
-                            </div>
+                                </tbody>
+                            </table>
 
                         </div>
+
                     </div>
                 </div>
-            </div>
+
         </main>
     </div>
 
