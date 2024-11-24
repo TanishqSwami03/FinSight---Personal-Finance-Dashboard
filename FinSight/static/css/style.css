@@ -34725,7 +34725,8 @@ textarea:focus {
 .adminuiux-header .navbar .navbar-brand {
     align-items: center;
     display: flex;
-    flex-direction: row
+    flex-direction: row;
+    padding-left: inherit;
 }
 
 .adminuiux-header .navbar .navbar-brand img {

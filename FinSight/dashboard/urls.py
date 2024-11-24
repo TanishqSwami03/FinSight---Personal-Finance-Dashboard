@@ -15,4 +15,5 @@ urlpatterns = [
     path('search_stock/', search_stock, name='search_stock'),
     path('buy_stock/', buy_stock, name='buy_stock'),
     path('get_stock_price/', get_stock_price, name='get_stock_price'),
+    path('mutual_funds/', mutual_funds, name='mutual_funds'),
 ]

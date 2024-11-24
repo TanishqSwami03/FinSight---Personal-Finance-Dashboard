@@ -55,11 +55,41 @@ def wallet(request):
 
     transactions = Transaction.objects.filter(user=user).order_by('-date')[:6]  # Fetch last 5 transactions
 
+    # Get the user's portfolio (assuming each user has a related portfolio)
+    portfolio = Portfolio.objects.filter(user=request.user)
+    
+    # Initialize variables as float to ensure numeric operations
+    total_value = 0.0
+    total_investment = 0.0
+    total_profit_loss = 0.0
+
+    # Ensure portfolio exists
+    if portfolio.exists():
+        for stock in portfolio:
+            # Get the current price of the stock using the method defined in the Portfolio model
+            current_price = stock.get_current_price()
+            if current_price is not None:  # Ensure current price is not None
+                current_value = stock.quantity * float(current_price)
+                total_value += current_value
+                total_investment += float(stock.invested_value)  # Using the 'invested_value' property
+                total_profit_loss += float(stock.profit)  # Using the 'profit' property
+
+        # Calculate profit/loss percentage
+        if total_investment > 0:
+            profit_loss_percentage = (total_profit_loss / total_investment) * 100
+        else:
+            profit_loss_percentage = 0
+    else:
+        total_value = 0
+        profit_loss_percentage = 0
+
     return render(request, 'wallet.html', {
         'user':user, 
         'transactions': transactions,
         'total_income': total_income,
         'total_expense': total_expense,
+        'total_value': total_value,
+        'profit_loss_percentage': profit_loss_percentage,
         }
     )
 
@@ -310,3 +340,7 @@ def get_stock_price(request):
         else:
             print("Price not found or invalid response from API.")
     return JsonResponse({'price': None}, status=404)
+
+
+def mutual_funds(request):
+    return render(request, 'mutual_funds.html', {})

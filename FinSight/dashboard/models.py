@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from decimal import Decimal
 
 from django.contrib.auth import get_user_model
 
@@ -37,7 +38,8 @@ class Portfolio(models.Model):
 
     def get_current_price(self):
         from .utils import get_stock_data  # Assuming the API call function is in a utils.py file
-        return get_stock_data(self.stock_symbol)
+        current_price = get_stock_data(self.stock_symbol)
+        return Decimal(current_price)  # Convert to Decimal to match `average_price`
 
     @property
     def profit(self):

@@ -1,0 +1,821 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+</html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>FinSight - Personal Finance Dashboard</title>
+    <link rel="icon" type="image/png" href="{% static 'logo/fav-transparent.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --adminuiux-content-font: "Open Sans", sans-serif;
+            --adminuiux-content-font-weight: 400;
+            --adminuiux-title-font: "Lexend", sans-serif;
+            --adminuiux-title-font-weight: 600
+        }
+    </style>
+    <!-- <script defer="defer" src="assets/js/app7e23.js?b1b4e75de865b54102d8"></script> -->
+    <script src="{% static 'js/app.js' %}"></script>
+    <!-- <link href="assets/css/app7e23.css?b1b4e75de865b54102d8" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+</head>
+
+<body
+    class="main-bg main-bg-opac main-bg-blur adminuiux-sidebar-fill-white adminuiux-sidebar-boxed theme-blue roundedui"
+    data-theme="theme-blue" data-sidebarfill="adminuiux-sidebar-fill-white" data-bs-spy="scroll"
+    data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0">
+
+    {% include 'header.html' %}
+
+    <div class="adminuiux-wrap">
+
+        {% include 'sidebar.html' %}
+
+        <main class="adminuiux-content has-sidebar" onclick="contentClick()">
+
+            <div class="container-fluid mt-4">
+                <div class="row gx-3 align-items-center">
+                    <div class="col-12 col-sm">
+                        <nav aria-label="breadcrumb" class="mb-2">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item bi"><a href="{% url 'dashboard' %}"><i
+                                            class="bi bi-house-door me-1 fs-14"></i> Dashboard</a></li>
+                                <li class="breadcrumb-item active bi" aria-current="page">Mutual Funds</li>
+                            </ol>
+                        </nav>
+                        <h5>Mutual Funds</h5>
+                    </div>
+                    <div class="col-12 col-sm-auto text-end py-3 py-sm-0"></div>
+                </div>
+            </div>
+
+            <div class="container mt-4" id="main-content">
+
+                <div class="row">
+
+                    <!-- profit and loss card -->
+                    <div class="col-12 col-xl-6 col-xxl-4 mb-4">
+                        <div class="card adminuiux-card">
+                            <div class="card-body">
+                                <p class="mb-4"><span class="badge badge-light text-bg-theme-1 theme-green">Mutual fund
+                                        overview</span></p>
+                                <h5 class="fw-medium">Your profit & Loss</h5>
+                                <h1 class="fw-medium text-success">$ 15510.00 <span class="text-success fs-14"><i
+                                            class="bi bi-arrow-up-short"></i> 18.5%</span></h1>
+                                <p class="text-secondary mb-4">Your portfolio has been grown to<br>$ 152.00 at 7% last
+                                    week.
+                                </p>
+                                <div class="row border-top border-bottom mb-3">
+                                    <div class="col text-start py-3">
+                                        <p class="text-secondary mb-2">Investment</p>
+                                        <h4 class="fw-medium">$ 45.00k</h4>
+                                    </div>
+                                    <div class="col text-end py-3">
+                                        <p class="text-secondary mb-2">Current</p>
+                                        <h4 class="fw-medium">$ 60.51k</h4>
+                                    </div>
+                                </div>
+                                <h6 class="text-secondary"><span class="text-secondary fw-normal">XIRR</span> <span
+                                        class="text-success"><i class="bi bi-arrow-up-short"></i> 25.5%</span></h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-4">
+                        <div class="card adminuiux-card bg-theme-1-subtle">
+                            <div class="card-body pb-0">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                                        <div class="card adminuiux-card mb-3">
+                                            <div class="card-body">
+                                                <p><span class="badge badge-light text-bg-theme-1">NFO</span></p>
+                                                <h5 class="fw-medium mb-1">JACKY New age EV and automotive Fund</h5>
+                                                <p class="text-secondary mb-4">Direct <i
+                                                        class="bi bi-chevron-right"></i>
+                                                    Growth <i class="bi bi-chevron-right"></i> Thematic</p>
+                                                <h6 class="fw-medium">$100.00</h6>
+                                                <p class="text-secondary small mb-4">Min. Investment</p>
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto"><button class="btn btn-theme">Apply</button>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <p class="text-success">3 days available</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                                        <div class="card adminuiux-card mb-3">
+                                            <div class="card-body">
+                                                <p><span class="badge badge-light text-bg-theme-1">NFO</span></p>
+                                                <h5 class="fw-medium mb-1">Energy and New Technology Funds</h5>
+                                                <p class="text-secondary mb-4">Direct <i
+                                                        class="bi bi-chevron-right"></i>
+                                                    Growth <i class="bi bi-chevron-right"></i> Thematic</p>
+                                                <h6 class="fw-medium">$50.00</h6>
+                                                <p class="text-secondary small mb-4">Min. Investment</p>
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto"><button class="btn btn-theme">Apply</button>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <p class="text-success">15 days available</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                                        <div class="card adminuiux-card mb-3">
+                                            <div class="card-body">
+                                                <p><span class="badge badge-light text-bg-theme-1">NFO</span></p>
+                                                <h5 class="fw-medium mb-1">Rolls Rolling Large Cap Fin-serve</h5>
+                                                <p class="text-secondary mb-4">Direct <i
+                                                        class="bi bi-chevron-right"></i>
+                                                    Growth <i class="bi bi-chevron-right"></i> ETF</p>
+                                                <h6 class="fw-medium">$100.00</h6>
+                                                <p class="text-secondary small mb-4">Min. Investment</p>
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto"><button class="btn btn-theme">Apply</button>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <p class="text-success">30 days available</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                                        <div class="card adminuiux-card mb-3">
+                                            <div class="card-body">
+                                                <p><span class="badge badge-light text-bg-theme-1">NFO</span></p>
+                                                <h5 class="fw-medium mb-1">OrganicX Agriculture innovation Fund</h5>
+                                                <p class="text-secondary mb-4">Direct <i
+                                                        class="bi bi-chevron-right"></i>
+                                                    Growth <i class="bi bi-chevron-right"></i> FoF</p>
+                                                <h6 class="fw-medium">$150.00</h6>
+                                                <p class="text-secondary small mb-4">Min. Investment</p>
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto"><button class="btn btn-theme">Apply</button>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <p class="text-success">26 days available</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card adminuiux-card mb-4">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6>Market with Technical Trend</h6>
+                                    </div>
+                                    <div class="col-auto px-0"><select class="form-select form-select-sm">
+                                            <option>1 Year CAGR</option>
+                                            <option>2 Year CAGR</option>
+                                            <option selected="selected">3 Year CAGR</option>
+                                            <option>4 Year CAGR</option>
+                                            <option>5 Year CAGR</option>
+                                        </select></div>
+                                    <div class="col-auto"><button class="btn btn-sm btn-square btn-link"><i
+                                                class="bi bi-arrow-clockwise"></i></button></div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table mb-0" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="">Fund Name</th>
+                                            <th>NAV</th>
+                                            <th data-breakpoints="xs">Holding</th>
+                                            <th data-breakpoints="xs sm">Profit/Loss</th>
+                                            <th data-breakpoints="xs">Charges</th>
+                                            <th>CAGR</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <p class="mb-0"><a href="investment-fund-details.html"
+                                                        class="style-none">Energy and New Technology Funds <i
+                                                            class="bi bi-arrow-right-short"></i></a></p>
+                                                <p class="small text-secondary">Growth - Direct - ETF <span
+                                                        class="text-theme-1"><i class="bi bi-award-fill"></i>
+                                                        Event</span>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">$ 100.45</p>
+                                                <p class="small"><span class="text-secondary" data-bs-toggle="tooltip"
+                                                        title="Last top price">LTP:</span> 152</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">102 units</p>
+                                                <p class="small"><span class="text-secondary">Invested:</span> $ 1400.45
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 25.30%
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Profit:</span> $ 305.5</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0"><span>Exit load:</span> 0.24%</p>
+                                                <p class="mb-0 small"><span class="text-secondary">Expansion
+                                                        Ratio:</span>
+                                                    0.80%</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 21.85%
+                                                </p>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-success">Buy</button> <button
+                                                    class="btn btn-sm btn-outline-theme">Redeem</button>
+                                                <div class="dropdown d-inline-block"><a
+                                                        class="btn btn-link btn-square no-caret"
+                                                        data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item"
+                                                                href="javascript:void(0)">Favorite</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">View
+                                                                Chart</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">Fund
+                                                                Events</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class="mb-0"><a href="investment-fund-details.html"
+                                                        class="style-none">OrganicX Agriculture innovation Fund <i
+                                                            class="bi bi-arrow-right-short"></i></a></p>
+                                                <p class="small text-secondary">Growth - Direct - ELSS</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">$ 520.45</p>
+                                                <p class="small"><span class="text-secondary" data-bs-toggle="tooltip"
+                                                        title="Last top price">LTP:</span> 521.05</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">50 units</p>
+                                                <p class="small"><span class="text-secondary">Invested:</span> $ 1520.45
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 15.40%
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Profit:</span> $ 408.65
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0"><span>Exit load:</span> 0.24%</p>
+                                                <p class="mb-0 small"><span class="text-secondary">Expansion
+                                                        Ratio:</span>
+                                                    0.80%</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 20.85%
+                                                </p>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-success">Buy</button> <button
+                                                    class="btn btn-sm btn-outline-theme">Redeem</button>
+                                                <div class="dropdown d-inline-block"><a
+                                                        class="btn btn-link btn-square no-caret"
+                                                        data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item"
+                                                                href="javascript:void(0)">Favorite</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">View
+                                                                Chart</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">Fund
+                                                                Events</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class="mb-0"><a href="investment-fund-details.html"
+                                                        class="style-none">Rolls Rolling Mid Cap Fin-serve <i
+                                                            class="bi bi-arrow-right-short"></i></a></p>
+                                                <p class="small text-secondary">Growth - Direct - FoF</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">$ 856.45</p>
+                                                <p class="small"><span class="text-secondary" data-bs-toggle="tooltip"
+                                                        title="Last top price">LTP:</span> 856.55</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">20 units</p>
+                                                <p class="small"><span class="text-secondary">Invested:</span> $ 2050.00
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 35.15%
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Profit:</span> $ 685.00
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0"><span>Exit load:</span> 0.24%</p>
+                                                <p class="mb-0 small"><span class="text-secondary">Expansion
+                                                        Ratio:</span>
+                                                    0.80%</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 21.03%
+                                                </p>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-success">Buy</button> <button
+                                                    class="btn btn-sm btn-outline-theme">Redeem</button>
+                                                <div class="dropdown d-inline-block"><a
+                                                        class="btn btn-link btn-square no-caret"
+                                                        data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item"
+                                                                href="javascript:void(0)">Favorite</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">View
+                                                                Chart</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">Fund
+                                                                Events</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class="mb-0"><a href="investment-fund-details.html"
+                                                        class="style-none">Energy and New Technology Funds <i
+                                                            class="bi bi-arrow-right-short"></i></a></p>
+                                                <p class="small text-secondary">Growth - Direct - Thematic <span
+                                                        class="text-theme-1"><i class="bi bi-award-fill"></i>
+                                                        Event</span>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">$ 100.45</p>
+                                                <p class="small"><span class="text-secondary" data-bs-toggle="tooltip"
+                                                        title="Last top price">LTP:</span> 152</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">102 units</p>
+                                                <p class="small"><span class="text-secondary">Invested:</span> $ 1400.45
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 25.30%
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Profit:</span> $ 305.5</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0"><span>Exit load:</span> 0.24%</p>
+                                                <p class="mb-0 small"><span class="text-secondary">Expansion
+                                                        Ratio:</span>
+                                                    0.80%</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 21.24%
+                                                </p>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-success">Buy</button> <button
+                                                    class="btn btn-sm btn-outline-theme">Redeem</button>
+                                                <div class="dropdown d-inline-block"><a
+                                                        class="btn btn-link btn-square no-caret"
+                                                        data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item"
+                                                                href="javascript:void(0)">Favorite</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">View
+                                                                Chart</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">Fund
+                                                                Events</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class="mb-0"><a href="investment-fund-details.html"
+                                                        class="style-none">Johnny's Technology and Logistic Fund <i
+                                                            class="bi bi-arrow-right-short"></i></a></p>
+                                                <p class="small text-secondary">Interim - Direct - ELSS</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">$ 150.00</p>
+                                                <p class="small"><span class="text-secondary" data-bs-toggle="tooltip"
+                                                        title="Last top price">LTP:</span> 153.00</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">3 units</p>
+                                                <p class="small"><span class="text-secondary">Invested:</span> $ 450.00
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 10.00%
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Profit:</span> $ 45.0</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0"><span>Exit load:</span> 0.24%</p>
+                                                <p class="mb-0 small"><span class="text-secondary">Expansion
+                                                        Ratio:</span>
+                                                    0.80%</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 20.65%
+                                                </p>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-success">Buy</button> <button
+                                                    class="btn btn-sm btn-outline-theme">Redeem</button>
+                                                <div class="dropdown d-inline-block"><a
+                                                        class="btn btn-link btn-square no-caret"
+                                                        data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item"
+                                                                href="javascript:void(0)">Favorite</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">View
+                                                                Chart</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">Fund
+                                                                Events</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class="mb-0"><a href="investment-fund-details.html"
+                                                        class="style-none">Rolls Rolling Small Cap Fin-serve <i
+                                                            class="bi bi-arrow-right-short"></i></a></p>
+                                                <p class="small text-secondary">Growth - Direct - ETF</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">$ 130.45</p>
+                                                <p class="small"><span class="text-secondary" data-bs-toggle="tooltip"
+                                                        title="Last top price">LTP:</span> 135.52</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">100 units</p>
+                                                <p class="small"><span class="text-secondary">Invested:</span> $ 150.45
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 5.52%
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Profit:</span> $ 10.15</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0"><span>Exit load:</span> 0.24%</p>
+                                                <p class="mb-0 small"><span class="text-secondary">Expansion
+                                                        Ratio:</span>
+                                                    0.80%</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 24.24%
+                                                </p>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-success">Buy</button> <button
+                                                    class="btn btn-sm btn-outline-theme">Redeem</button>
+                                                <div class="dropdown d-inline-block"><a
+                                                        class="btn btn-link btn-square no-caret"
+                                                        data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item"
+                                                                href="javascript:void(0)">Favorite</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">View
+                                                                Chart</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">Fund
+                                                                Events</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class="mb-0"><a href="investment-fund-details.html"
+                                                        class="style-none">Energy and New Technology Funds <i
+                                                            class="bi bi-arrow-right-short"></i></a></p>
+                                                <p class="small text-theme-1"><i class="bi bi-award-fill"></i> Event</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">$ 100.45</p>
+                                                <p class="small"><span class="text-secondary" data-bs-toggle="tooltip"
+                                                        title="Last top price">LTP:</span> 152</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">102 units</p>
+                                                <p class="small"><span class="text-secondary">Invested:</span> $ 1400.45
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 25.30%
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Profit:</span> $ 305.5</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0"><span>Exit load:</span> 0.24%</p>
+                                                <p class="mb-0 small"><span class="text-secondary">Expansion
+                                                        Ratio:</span>
+                                                    0.80%</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 26.62%
+                                                </p>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-success">Buy</button> <button
+                                                    class="btn btn-sm btn-outline-theme">Redeem</button>
+                                                <div class="dropdown d-inline-block"><a
+                                                        class="btn btn-link btn-square no-caret"
+                                                        data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item"
+                                                                href="javascript:void(0)">Favorite</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">View
+                                                                Chart</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">Fund
+                                                                Events</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class="mb-0"><a href="investment-fund-details.html"
+                                                        class="style-none">Lincoln saving healthcare funds <i
+                                                            class="bi bi-arrow-right-short"></i></a></p>
+                                                <p class="small text-secondary">Growth - Direct - ETF <span
+                                                        class="text-theme-1"><i class="bi bi-award-fill"></i>
+                                                        Event</span>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">$ 100.45</p>
+                                                <p class="small"><span class="text-secondary" data-bs-toggle="tooltip"
+                                                        title="Last top price">LTP:</span> 152</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">102 units</p>
+                                                <p class="small"><span class="text-secondary">Invested:</span> $ 1400.45
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 25.30%
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Profit:</span> $ 305.5</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0"><span>Exit load:</span> 0.24%</p>
+                                                <p class="mb-0 small"><span class="text-secondary">Expansion
+                                                        Ratio:</span>
+                                                    0.80%</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 23.20%
+                                                </p>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-success">Buy</button> <button
+                                                    class="btn btn-sm btn-outline-theme">Redeem</button>
+                                                <div class="dropdown d-inline-block"><a
+                                                        class="btn btn-link btn-square no-caret"
+                                                        data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item"
+                                                                href="javascript:void(0)">Favorite</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">View
+                                                                Chart</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">Fund
+                                                                Events</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <p class="mb-0"><a href="investment-fund-details.html"
+                                                        class="style-none">Johnny's Technology and Logistic Fund <i
+                                                            class="bi bi-arrow-right-short"></i></a></p>
+                                                <p class="small text-secondary">Interim - Direct - ELSS <span
+                                                        class="text-theme-1"><i class="bi bi-award-fill"></i>
+                                                        Event</span>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">$ 100.45</p>
+                                                <p class="small"><span class="text-secondary" data-bs-toggle="tooltip"
+                                                        title="Last top price">LTP:</span> 152</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0">102 units</p>
+                                                <p class="small"><span class="text-secondary">Invested:</span> $ 1400.45
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 25.30%
+                                                </p>
+                                                <p class="small"><span class="text-secondary">Profit:</span> $ 305.5</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0"><span>Exit load:</span> 0.24%</p>
+                                                <p class="mb-0 small"><span class="text-secondary">Expansion
+                                                        Ratio:</span>
+                                                    0.80%</p>
+                                            </td>
+                                            <td>
+                                                <p class="mb-0 text-success"><i class="bi bi-caret-up-fill"></i> 21.30%
+                                                </p>
+                                            </td>
+                                            <td><button class="btn btn-sm btn-outline-success">Buy</button> <button
+                                                    class="btn btn-sm btn-outline-theme">Redeem</button>
+                                                <div class="dropdown d-inline-block"><a
+                                                        class="btn btn-link btn-square no-caret"
+                                                        data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li><a class="dropdown-item"
+                                                                href="javascript:void(0)">Favorite</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">View
+                                                                Chart</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:void(0)">Fund
+                                                                Events</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="row justify-content-center text-center mb-4">
+                            <div class="col-12 col-md-8 col-lg-6">
+                                <div class="input-group"><input class="form-control form-control-lg border-end-0"
+                                        placeholder="Search mutual funds"> <a href="investment-search-mutual-funds.html"
+                                        class="btn btn-lg btn-theme btn-square"><i class="bi bi-search"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card adminuiux-card mb-4">
+                                    <div class="card-body">
+                                        <h5 class="fw-medium mb-1">JACKY New age EV and automotive Fund</h5>
+                                        <p class="text-secondary mb-4">Direct <i class="bi bi-chevron-right"></i> Growth
+                                            <i class="bi bi-chevron-right"></i> Thematic
+                                        </p>
+                                        <div class="row align-items-center mb-4">
+                                            <div class="col-6 text-start mb-3">
+                                                <h6 class="fw-medium">$150.1250</h6>
+                                                <p class="text-secondary small">Current NAV <span>10 Aug 2025</span></p>
+                                            </div>
+                                            <div class="col-6 text-end mb-3">
+                                                <h6 class="fw-medium">$2426.50 cr</h6>
+                                                <p class="text-secondary small">AUM</p>
+                                            </div>
+                                            <div class="col-6 text-start">
+                                                <h6 class="fw-medium text-success">+32.5%</h6>
+                                                <p class="text-secondary small">CAGR <span>5 Years</span></p>
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                <h6 class="fw-medium">0.79%</h6>
+                                                <p class="text-secondary small">Expanse Ratio</p>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center">
+                                            <div class="col-auto"><button class="btn btn-theme">Buy</button> <button
+                                                    class="btn btn-theme mx-2">SIP</button></div>
+                                            <div class="col"></div>
+                                            <div class="col-auto"><button
+                                                    class="btn btn-square btn-outline-theme theme-red"><i
+                                                        class="bi bi-heart"></i></button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card adminuiux-card mb-4">
+                                    <div class="card-body">
+                                        <h5 class="fw-medium mb-1">OrganicX Agriculture and innovation Fund</h5>
+                                        <p class="text-secondary mb-4">Direct <i class="bi bi-chevron-right"></i> Growth
+                                            <i class="bi bi-chevron-right"></i> FoF
+                                        </p>
+                                        <div class="row align-items-center mb-4">
+                                            <div class="col-6 text-start mb-3">
+                                                <h6 class="fw-medium">$205.6530</h6>
+                                                <p class="text-secondary small">Current NAV <span>10 Aug 2025</span></p>
+                                            </div>
+                                            <div class="col-6 text-end mb-3">
+                                                <h6 class="fw-medium">$9586.50 cr</h6>
+                                                <p class="text-secondary small">AUM</p>
+                                            </div>
+                                            <div class="col-6 text-start">
+                                                <h6 class="fw-medium text-success">+15.5%</h6>
+                                                <p class="text-secondary small">CAGR <span>5 Years</span></p>
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                <h6 class="fw-medium">0.65%</h6>
+                                                <p class="text-secondary small">Expanse Ratio</p>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center">
+                                            <div class="col-auto"><button class="btn btn-theme">Buy</button> <button
+                                                    class="btn btn-theme mx-2">SIP</button></div>
+                                            <div class="col"></div>
+                                            <div class="col-auto"><button
+                                                    class="btn btn-square btn-outline-theme theme-red"><i
+                                                        class="bi bi-heart"></i></button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card adminuiux-card mb-4">
+                                    <div class="card-body">
+                                        <h5 class="fw-medium mb-1">Energy and New Smart Technology Fund</h5>
+                                        <p class="text-secondary mb-4">Direct <i class="bi bi-chevron-right"></i> Growth
+                                            <i class="bi bi-chevron-right"></i> ELSS
+                                        </p>
+                                        <div class="row align-items-center mb-4">
+                                            <div class="col-6 text-start mb-3">
+                                                <h6 class="fw-medium">$156.1250</h6>
+                                                <p class="text-secondary small">Current NAV <span>10 Aug 2025</span></p>
+                                            </div>
+                                            <div class="col-6 text-end mb-3">
+                                                <h6 class="fw-medium">$3265.50 cr</h6>
+                                                <p class="text-secondary small">AUM</p>
+                                            </div>
+                                            <div class="col-6 text-start">
+                                                <h6 class="fw-medium text-success">+25.5%</h6>
+                                                <p class="text-secondary small">CAGR <span>5 Years</span></p>
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                <h6 class="fw-medium">0.65%</h6>
+                                                <p class="text-secondary small">Expanse Ratio</p>
+                                            </div>
+                                        </div>
+                                        <div class="row align-items-center">
+                                            <div class="col-auto"><button class="btn btn-theme">Buy</button> <button
+                                                    class="btn btn-theme mx-2">SIP</button></div>
+                                            <div class="col"></div>
+                                            <div class="col-auto"><button
+                                                    class="btn btn-square btn-outline-theme theme-red"><i
+                                                        class="bi bi-heart"></i></button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <footer class="adminuiux-footer has-adminuiux-sidebar mt-auto">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md col-lg py-2">
+                    <span class="small">Copyright @2024, FinSight </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/investment/investment-dashboard.js' %}"></script>
+
+</body>
+
+</html>
