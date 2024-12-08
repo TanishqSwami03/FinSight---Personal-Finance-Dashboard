@@ -502,18 +502,17 @@
             </div>
             <div class="container mt-4" id="main-content">
                 <div class="col-12 col-md-11 col-xl-8 mb-4">
-                    <div class="col-12 col-md-11 col-xl-8 mb-4">
-                        <div class="input-group">
-                            <input class="form-control border-end-0" placeholder="Search for stocks"
-                                id="stock-search-input">
-                            <button class="btn btn-lg btn-theme btn-square" id="stock-search-button">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
-                        <div id="stock-search-results" class="mt-3"></div>
+                    <div class="input-group">
+                        <input class="form-control border-end-0" placeholder="Search for stocks"
+                            id="stock-search-input">
+                        <button class="btn btn-lg btn-theme btn-square" id="stock-search-button">
+                            <i class="bi bi-search"></i>
+                        </button>
                     </div>
-
+                    <div id="stock-search-results" class="mt-3"></div>
                 </div>
+
+
 
                 <div class="row">
                     <!-- Stocks Cards -->
@@ -608,6 +607,7 @@
                                         <th>Holding</th>
                                         <th>Profit/Loss</th>
                                         <th>Today's Trend</th>
+                                        <th>Invest/Sell</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -666,6 +666,15 @@
                                             </p>
                                             {% endif %}
                                         </td>
+
+                                        <!-- Invest More / Sell -->
+                                        <td>
+                                            <!-- Sell Button -->
+                                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#sellModal"
+                                                onclick="setSellStock('{{ portfolio.stock_symbol }}')">Sell</button>
+                                        </td>
+
                                     </tr>
                                     {% empty %}
                                     <tr>
@@ -684,35 +693,67 @@
         </main>
     </div>
 
-    <!-- Modal for buying stock -->
-    <div class="modal adminuiux-modal fade" id="buystockmodal" tabindex="-1" aria-hidden="true">
+    <!-- Buy Stock Modal -->
+    <div class="modal fade" id="buystockmodal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <form method="POST" action="{% url 'buy_stock' %}">
                 {% csrf_token %}
                 <div class="modal-content">
                     <div class="modal-header">
-                        <p class="modal-title h5">Buy Shares</p>
+                        <h5 class="modal-title">Buy Shares</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="stock-symbol" name="symbol">
                         <input type="hidden" id="stock-price-hidden" name="price">
                         <div class="text-center">
-                            <h5 class="fw-normal">Price per Share</h5>
-                            <h1 class="mb-0 text-theme-1">₹<span id="stock-price">0.00</span></h1>
+                            <h5>Price per Share</h5>
+                            <h1>₹<span id="stock-price">0.00</span></h1>
                         </div>
                         <div class="form-floating my-4">
                             <input type="number" name="quantity" class="form-control text-center" id="quantity"
-                                placeholder="Enter quantity" min="1" step="1" required>
+                                placeholder="Enter quantity" min="1" required>
                             <label for="quantity">Quantity</label>
                         </div>
                         <div class="text-center">
-                            <h5 class="fw-normal">Total Amount</h5>
-                            <h1 class="mb-0 text-theme-1">₹<span id="total-amount">0.00</span></h1>
+                            <h5>Total Amount</h5>
+                            <h1>₹<span id="total-amount">0.00</span></h1>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Buy Now</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Sell Modal -->
+    <div class="modal adminuiux-modal fade" id="sellModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form method="POST" action="{% url 'sell_stock' %}">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="modal-title h5">Sell Shares</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="sell-stock-symbol" name="stock_symbol">
+                        <div class="text-center">
+                            <h5 class="fw-normal">Current Price per Share</h5>
+                            <h1 class="mb-0 text-theme-1">₹<span id="sell-stock-price">0.00</span></h1>
+                        </div>
+                        <div class="form-floating my-4">
+                            <input type="number" name="quantity" class="form-control text-center" id="sell-quantity"
+                                placeholder="Enter quantity" min="1" step="1" required>
+                            <label for="sell-quantity">Quantity</label>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="submit" class="btn btn-theme">Buy Now</button>
+                        <button type="submit" class="btn btn-theme">Sell Now</button>
                         <button type="button" class="btn btn-link mx-2 theme-red"
                             data-bs-dismiss="modal">Cancel</button>
                     </div>
@@ -799,23 +840,16 @@
             document.getElementById('total-amount').textContent = totalAmount.toFixed(2);
         });
 
-        // Function to fetch stock price for dynamic updates
+        // Function to fetch stock price for dynamic updates (optional feature)
         async function fetchStockPrice(stockSymbol) {
-            console.log(`Fetching stock price for: ${stockSymbol}`); // Debugging
-
             try {
                 const response = await fetch(`/get_stock_price/?symbol=${stockSymbol}`);
-                console.log(`Response Status: ${response.status}`); // Debugging
-
                 if (!response.ok) {
-                    console.error("Failed to fetch stock price:", response.statusText);
                     alert("Unable to fetch stock price.");
                     return;
                 }
 
                 const data = await response.json();
-                console.log(`Received data: ${JSON.stringify(data)}`); // Debugging
-
                 if (data.price) {
                     updateStockDetails(data.price, stockSymbol);
                 } else {
@@ -827,7 +861,7 @@
             }
         }
 
-        // Reusable function to update stock details in the modal
+        // Reusable function to update stock details in the modal (optional)
         function updateStockDetails(price, symbol) {
             document.getElementById('stock-symbol').value = symbol;
             document.getElementById('stock-price').textContent = price.toFixed(2);
@@ -835,6 +869,45 @@
         }
 
     </script>
+
+    <script>
+        function setSellStock(symbol) {
+            console.log("Sell Modal Triggered with symbol:", symbol);
+
+            if (!symbol) {
+                console.error("Stock symbol is missing!");
+                document.getElementById('sell-stock-price').textContent = "Error fetching price";
+                return;
+            }
+
+            // Set the hidden input value for stock symbol
+            document.getElementById('sell-stock-symbol').value = symbol;
+
+            // Fetch the current stock price
+            fetch(`/get_stock_price?symbol=${encodeURIComponent(symbol)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error("Error fetching stock price:", data.error);
+                        document.getElementById('sell-stock-price').textContent = "Error fetching price";
+                        return;
+                    }
+
+                    const price = parseFloat(data.price);
+                    if (!isNaN(price)) {
+                        document.getElementById('sell-stock-price').textContent = price.toFixed(2);
+                    } else {
+                        console.error("Invalid price received:", data.price);
+                        document.getElementById('sell-stock-price').textContent = "Invalid price";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching stock price:", error);
+                    document.getElementById('sell-stock-price').textContent = "Error fetching price";
+                });
+        }
+    </script>
+
 
 
 </body>

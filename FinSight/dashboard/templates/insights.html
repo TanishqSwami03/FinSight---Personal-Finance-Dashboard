@@ -1,0 +1,130 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+</html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>FinSight - Personal Finance Dashboard</title>
+    <link rel="icon" type="image/png" href="{% static 'logo/fav-transparent.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --adminuiux-content-font: "Open Sans", sans-serif;
+            --adminuiux-content-font-weight: 400;
+            --adminuiux-title-font: "Lexend", sans-serif;
+            --adminuiux-title-font-weight: 600
+        }
+    </style>
+    <!-- <script defer="defer" src="assets/js/app7e23.js?b1b4e75de865b54102d8"></script> -->
+    <script src="{% static 'js/app.js' %}"></script>
+    <!-- <link href="assets/css/app7e23.css?b1b4e75de865b54102d8" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+</head>
+
+<body
+    class="main-bg main-bg-opac main-bg-blur adminuiux-sidebar-fill-white adminuiux-sidebar-boxed theme-blue roundedui"
+    data-theme="theme-blue" data-sidebarfill="adminuiux-sidebar-fill-white" data-bs-spy="scroll"
+    data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0">
+
+    {% include 'header.html' %}
+
+    <div class="adminuiux-wrap">
+
+        {% include 'sidebar.html' %}
+
+        <main class="adminuiux-content has-sidebar" onclick="contentClick()">
+
+            <div class="container-fluid mt-4">
+                <div class="row gx-3 align-items-center">
+                    <div class="col-12 col-sm">
+                        <nav aria-label="breadcrumb" class="mb-2">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item bi"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                                <li class="breadcrumb-item active bi" aria-current="page">Insights</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container mt-4" id="main-content">
+                <div class="card adminuiux-card bg-theme-1 position-relative overflow-hidden mb-4">
+                    <div class="coverimg h-100 w-100 start-0 top-0 position-absolute z-index-0 opacity-50">
+                        <img src="{% static 'img/modern-ai-image/modern-bg-1.jpg' %}" alt="">
+                    </div>
+                    <div class="card-body z-index-1 p-lg-4 p-xl-5 position-relative">
+                        <h1 class="display-5">Insights on your investments</h1>
+                    </div>
+                </div>
+
+                <div class="container mt-4" id="main-content">
+                    <div class="text-center my-4 my-xl-5">
+                        <h1>Investment Insights</h1>
+                        <p class="text-secondary">Stay informed with expert recommendations on your portfolio.</p>
+                    </div>
+                
+                    <!-- Portfolio Insights -->
+                    {% for suggestion in suggestions %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ suggestion.stock }}</h5>
+                            <p class="card-text">Action: <strong>{{ suggestion.action }}</strong></p>
+                            <p class="card-text">Profit: ₹{{ suggestion.profit }}</p>
+                            <p class="card-text">Percentage Change: {{ suggestion.percentage_change }}%</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                
+                    <!-- High-Potential Stocks -->
+                    <div class="mt-5">
+                        <h3>Stocks with High Potential</h3>
+                        {% if high_potential_stocks %}
+                            {% for stock in high_potential_stocks %}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ stock.stock }}</h5>
+                                    <p class="card-text">{{ stock.reason }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No high-potential stocks identified at the moment. Please check again later.</p>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+                
+
+                <div class="text-center my-4 my-xl-5">
+                    <p class="text-secondary">Stay up to date for latest insights.</p>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <footer class="adminuiux-footer has-adminuiux-sidebar mt-auto">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md col-lg py-2">
+                    <span class="small">Copyright @2024, FinSight </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

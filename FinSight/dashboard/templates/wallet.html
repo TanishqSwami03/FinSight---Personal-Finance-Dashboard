@@ -388,9 +388,6 @@
                                     </div>
                                     <div class="col px-0"></div>
                                     <div class="col-auto py-2"><a class="btn btn-lg btn-square btn-outline-light"
-                                            data-bs-toggle="modal" data-bs-target="#qrcodemodal" title="Scan to pay"><i
-                                                class="bi bi-qr-code"></i></a></div>
-                                    <div class="col-auto py-2"><a class="btn btn-lg btn-square btn-outline-light"
                                             data-bs-toggle="modal" data-bs-target="#sendmoneymodal"
                                             title="Send Money"><i class="bi bi-arrow-up-right"></i></a></div>
                                     <div class="col-auto py-2"><a class="btn btn-lg btn-square btn-outline-light"
@@ -539,14 +536,10 @@
                     </div> -->
 
                     <!-- Recent Transactions -->
-                    <div class="col-12 col-md-12 col-lg-6">
+                    <div class="col-12 col-md-12 col-lg-4">
                         <div class="card adminuiux-card">
                             <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h6>Recent Transactions</h6>
-                                    </div>
-                                </div>
+                                <h6>Recent Transactions</h6>
                             </div>
                             <div class="card-body">
                                 {% if transactions %}
@@ -556,27 +549,27 @@
                                         <div class="row gx-3 align-items-center">
                                             <div class="col-auto">
                                                 {% if transaction.transaction_type == 'add' %}
-                                                <!-- Add Money Icon -->
                                                 <div
                                                     class="avatar avatar-40 rounded-circle border border-dotted border-theme">
                                                     <span class="h4">+</span>
                                                 </div>
                                                 {% elif transaction.transaction_type == 'send' %}
-                                                <!-- Send Money Icon -->
                                                 <div class="avatar avatar-40 rounded-circle border">
                                                     <i class="bi bi-arrow-up-right h5"></i>
                                                 </div>
                                                 {% elif transaction.transaction_type == 'receive' %}
-                                                <!-- Receive Money Icon -->
                                                 <div
                                                     class="avatar avatar-40 rounded-circle border bg-theme-1-subtle text-theme-1">
                                                     <i class="bi bi-arrow-down-left h5"></i>
                                                 </div>
                                                 {% elif transaction.transaction_type == 'buy_stock' %}
-                                                <!-- Buy Stock Icon -->
                                                 <div class="avatar avatar-40 rounded-circle border">
-                                                    <!-- <i class="bi bi-shop h5"></i> -->
-                                                    <i class="fa-sharp fa-solid fa-indian-rupee-sign"></i>
+                                                    <i class="fa fa-shopping-cart"></i>
+                                                </div>
+                                                {% elif transaction.transaction_type == 'sell_stock' %}
+                                                <div
+                                                    class="avatar avatar-40 rounded-circle border bg-danger-subtle text-danger">
+                                                    <i class="bi bi-currency-exchange h5"></i>
                                                 </div>
                                                 {% endif %}
                                             </div>
@@ -584,6 +577,8 @@
                                                 <p class="mb-1 fw-medium">
                                                     {% if transaction.transaction_type == 'buy_stock' %}
                                                     Shares Bought
+                                                    {% elif transaction.transaction_type == 'sell_stock' %}
+                                                    Shares Sold
                                                     {% else %}
                                                     {{ transaction.get_transaction_type_display }}
                                                     {% endif %}
@@ -593,13 +588,10 @@
                                             <div class="col-auto">
                                                 {% if transaction.transaction_type == 'receive' %}
                                                 <h6 class="text-theme-1">+ ₹{{ transaction.amount }}</h6>
-                                                {% elif transaction.transaction_type == 'add' %}
+                                                {% elif transaction.tranaction_type == 'add' %}
                                                 <h6 class="text-theme-1">+ ₹{{ transaction.amount }}</h6>
-                                                {% elif transaction.transaction_type == 'send' %}
+                                                {% else %}
                                                 <h6>- ₹{{ transaction.amount }}</h6>
-                                                {% elif transaction.transaction_type == 'buy_stock' %}
-                                                <h6>- ₹{{ transaction.amount }}</h6>
-                                                <!-- Negative amount as money is spent -->
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -613,8 +605,55 @@
                         </div>
                     </div>
 
+                    <!-- Stock Transactions -->
+                    <div class="col-12 col-md-12 col-lg-4">
+                        <div class="card adminuiux-card">
+                            <div class="card-header">
+                                <h6>Stock Transactions</h6>
+                            </div>
+                            <div class="card-body">
+                                {% if stock_transactions %}
+                                <ul class="list-group list-group-flush">
+                                    {% for stock_transaction in stock_transactions %}
+                                    <li class="list-group-item">
+                                        <div class="row gx-3 align-items-center">
+                                            <div class="col-auto">
+                                                <div class="avatar avatar-40 rounded-circle border">
+                                                    {% if stock_transaction.transaction_type == 'buy' %}
+                                                    <div class="avatar avatar-40 rounded-circle border border-dotted border-theme">
+                                                        <span class="h4" style="color: #009400;">+</span>
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="avatar avatar-40 rounded-circle border border-dotted border-theme">
+                                                        <span class="h4" style="color : #ff0000">-</span>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-1 fw-medium">
+                                                    {{ stock_transaction.stock_symbol }}
+                                                    {% if stock_transaction.transaction_type == 'buy' %}
+                                                    Bought
+                                                    {% else %}
+                                                    Sold
+                                                    {% endif %}
+                                                </p>
+                                                <p class="text-secondary small">{{ stock_transaction.transaction_date }}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <p class="text-center text-muted">No stock transactions found</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>                                                            
+
                     <!-- Quick Exchange -->
-                    <div class="col-12 col-md-12 col-lg-6">
+                    <div class="col-12 col-md-12 col-lg-4">
                         <div class="card adminuiux-card">
                             <div class="card-header">
                                 <div class="row align-items-center">

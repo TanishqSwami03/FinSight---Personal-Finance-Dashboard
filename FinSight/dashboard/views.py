@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal, InvalidOperation
 from django.contrib import  messages
-from django.db.models import Sum
+from django.db.models import Sum, F, Sum
 from django.http import JsonResponse
 from .models import *
+import json
 
 from .utils import *
 # Create your views here.
@@ -13,35 +14,95 @@ def dashboard(request):
     # Get the logged-in user
     user = request.user
 
-    # Check if the user is authenticated
     if user.is_authenticated:
         # Get the user's wallet balance
         wallet_balance = user.wallet_balance
 
-        # Get top stocks
-        top_stocks = get_top_stocks()
-        for stock in top_stocks:
+        # Fetch the portfolio distribution (invested value for each stock)
+        portfolio_data = (
+            Portfolio.objects.filter(user=user)
+            .annotate(total_investment=F('average_price') * F('quantity'))
+            .values('stock_symbol', 'total_investment')
+        )
+
+        # Sort portfolio by total investment in descending order
+        sorted_portfolio = sorted(portfolio_data, key=lambda x: x['total_investment'], reverse=True)
+
+        # Separate the top 4 stocks and group the rest as "Others"
+        top_stocks = sorted_portfolio[:4]
+        other_stocks = sorted_portfolio[4:]
+
+        # Calculate total investment for "Others" category
+        others_total = sum(stock['total_investment'] for stock in other_stocks)
+
+        # Prepare labels and values for the pie chart
+        portfolio_chart_data = {
+            "labels": [stock['stock_symbol'] for stock in top_stocks],
+            "values": [float(stock['total_investment']) for stock in top_stocks],
+        }
+
+        # Add "Others" to the chart if there are additional stocks
+        if others_total > 0:
+            portfolio_chart_data["labels"].append("Others")
+            portfolio_chart_data["values"].append(float(others_total))
+
+        # Calculate the total portfolio value
+        total_portfolio_value = sum(portfolio_chart_data["values"])
+
+        # Format portfolio values for rendering in the template
+        def format_currency(value):
+            if value >= 10000000:
+                return f"₹{(value / 10000000):.2f} Cr"  # Crore
+            if value >= 100000:
+                return f"₹{(value / 100000):.2f} L"  # Lakh
+            return f"₹{value:.2f}"
+
+        # Prepare formatted portfolio data for the UI
+        formatted_portfolio_data = [
+            {
+                'stock_symbol': stock['stock_symbol'],
+                'total_investment': format_currency(stock['total_investment']),
+            }
+            for stock in top_stocks
+        ]
+
+        # Add "Others" to formatted data if applicable
+        if others_total > 0:
+            formatted_portfolio_data.append({
+                'stock_symbol': "Others",
+                'total_investment': format_currency(others_total),
+            })
+
+        # Get top stocks for the dashboard (this could be part of another helper)
+        top_stocks_list = get_top_stocks()
+        for stock in top_stocks_list:
             stock['change_class'] = 'text-success' if stock['percent_change'] >= 0 else 'text-danger'
             stock['icon_class'] = 'bi-caret-up-fill' if stock['percent_change'] >= 0 else 'bi-caret-down-fill'
-            stock['percent_change'] = abs(stock['percent_change'])  # Calculate the absolute value here
+            stock['percent_change'] = abs(stock['percent_change'])
 
-        # Pass the user details to the template
+        # Pass data to the template
         return render(request, 'dashboard.html', {
-            'top_stocks': top_stocks,
-            'user_name': user.first_name,  # Or user.username if you prefer
-            'wallet_balance': wallet_balance,
+            'top_stocks': top_stocks_list,
+            'user_name': user.first_name,
+            'wallet_balance': format_currency(wallet_balance),
+            'portfolio_chart_json': json.dumps(portfolio_chart_data),  # Pass chart data
+            'formatted_portfolio_data': formatted_portfolio_data,  # Pass formatted portfolio data
+            'total_portfolio_value': format_currency(total_portfolio_value),  # Total value
         })
-
     else:
-        return redirect('login')  # Redirect to login if not authenticated
+        return redirect('login')
+
+
 
 def transaction(request):
-     # Fetch all transactions from the database
-    transactions = Transaction.objects.all().order_by('-date')  # Sort by date descending
+    # Fetch transactions only for the logged-in user
+    user = request.user
+    transactions = Transaction.objects.filter(user=user).order_by('-date')  # Sort by date descending
 
-    return render(request, 'transaction.html',{
-        'transactions' : transactions
+    return render(request, 'transaction.html', {
+        'transactions': transactions,
     })
+
 
 def portfolio(request):
     return render(request, 'portfolio.html')
@@ -53,45 +114,41 @@ def wallet(request):
     total_income = Transaction.objects.filter(user=request.user, transaction_type='receive').aggregate(total_income=Sum('amount'))['total_income'] or Decimal(0)
     total_expense = Transaction.objects.filter(user=request.user, transaction_type='send').aggregate(total_expense=Sum('amount'))['total_expense'] or Decimal(0)
 
-    transactions = Transaction.objects.filter(user=user).order_by('-date')[:6]  # Fetch last 5 transactions
+    # Fetch recent transactions (including shares bought and sold)
+    transactions = Transaction.objects.filter(user=user).order_by('-date')[:6]
 
-    # Get the user's portfolio (assuming each user has a related portfolio)
+    # Fetch stock transactions
+    stock_transactions = StockTransaction.objects.filter(user=user).order_by('-transaction_date')[:6]
+
+    # Portfolio and other calculations remain unchanged
     portfolio = Portfolio.objects.filter(user=request.user)
-    
-    # Initialize variables as float to ensure numeric operations
     total_value = 0.0
     total_investment = 0.0
     total_profit_loss = 0.0
 
-    # Ensure portfolio exists
     if portfolio.exists():
         for stock in portfolio:
-            # Get the current price of the stock using the method defined in the Portfolio model
             current_price = stock.get_current_price()
-            if current_price is not None:  # Ensure current price is not None
+            if current_price is not None:
                 current_value = stock.quantity * float(current_price)
                 total_value += current_value
-                total_investment += float(stock.invested_value)  # Using the 'invested_value' property
-                total_profit_loss += float(stock.profit)  # Using the 'profit' property
+                total_investment += float(stock.invested_value)
+                total_profit_loss += float(stock.profit)
 
-        # Calculate profit/loss percentage
-        if total_investment > 0:
-            profit_loss_percentage = (total_profit_loss / total_investment) * 100
-        else:
-            profit_loss_percentage = 0
+        profit_loss_percentage = (total_profit_loss / total_investment) * 100 if total_investment > 0 else 0
     else:
-        total_value = 0
         profit_loss_percentage = 0
 
     return render(request, 'wallet.html', {
-        'user':user, 
+        'user': user,
         'transactions': transactions,
-        'total_income': total_income,
-        'total_expense': total_expense,
+        'stock_transactions': stock_transactions,  # Pass plain queryset
         'total_value': total_value,
         'profit_loss_percentage': profit_loss_percentage,
-        }
-    )
+        'total_income': total_income,
+        'total_expense': total_expense,
+    })
+
 
 User = get_user_model()
 
@@ -177,8 +234,8 @@ def company_shares(request):
         stock['icon_class'] = 'bi-caret-up-fill' if stock['percent_change'] >= 0 else 'bi-caret-down-fill'
         stock['percent_change'] = abs(stock['percent_change'])
 
-    # Fetch user portfolio, ordered by the most recent additions
-    user_portfolio = Portfolio.objects.filter(user=request.user).order_by('-date_added')
+    # Fetch user portfolio, ordered by stock symbol (fallback sorting)
+    user_portfolio = Portfolio.objects.filter(user=request.user).order_by('stock_symbol')
     portfolio_data = []
 
     # Initialize portfolio summary values
@@ -248,99 +305,166 @@ def company_shares(request):
 from django.http import JsonResponse
 from .utils import get_stock_data
 
+@login_required
 def search_stock(request):
-    query = request.GET.get('query')
-    if query:
-        # Assuming query is the stock name, we need to pass it directly to the function
-        stock_price = get_stock_data(query)
-        
-        if stock_price is None:
-            return JsonResponse({'error': 'Stock not found'}, status=404)
-        
-        # Return the stock price to the frontend
-        return JsonResponse({'price': stock_price})
-    return JsonResponse({'error': 'No stock query provided'}, status=400)
+    query = request.GET.get('query', '').strip()
+    if not query:
+        return JsonResponse({'error': 'No query provided.'}, status=400)
 
+    # Fetch stock data using `get_stock_data` from utils.py
+    stock_data = get_stock_data(query)
+    if stock_data is None or stock_data['current_price_nse'] is None:
+        return JsonResponse({'error': 'Stock not found or price data is unavailable.'}, status=404)
 
+    return JsonResponse({
+        'symbol': stock_data['symbol'],
+        'company_name': stock_data['company_name'],
+        'price': stock_data['current_price_nse'],
+        'exchange_code_nse': stock_data['exchange_code_nse'],
+        'exchange_code_bse': stock_data['exchange_code_bse'],
+    })
+
+@login_required
 def buy_stock(request):
     if request.method == 'POST':
-        # Retrieve the data from the form submission
-        stock_symbol = request.POST.get('symbol')
+        symbol = request.POST.get('symbol')
+        price = request.POST.get('price')  # Stock price as a string
         quantity = int(request.POST.get('quantity'))
-        price_per_share = Decimal(request.POST.get('price'))  # Price per share
-        total_amount = price_per_share * quantity  # Calculate total amount
 
-        # Get the user's wallet balance
+        # Convert price to Decimal
+        try:
+            price_decimal = Decimal(price)
+        except Exception as e:
+            print(f"Error converting price to Decimal: {e}")
+            return redirect('company_shares')
+
+        total_cost = price_decimal * Decimal(quantity)
+
         user = request.user
-        wallet_balance = user.wallet_balance  # Assuming you have a wallet balance field in the user model
+        if user.wallet_balance < total_cost:
+            return redirect('portfolio')  # Handle insufficient balance
 
-        if total_amount > wallet_balance:
-            # If the user doesn't have enough balance, show an error
-            messages.error(request, "Insufficient funds in your wallet.")
-            return redirect('buy_stock')  # Redirect back to the buy stock page
+        # Deduct wallet balance
+        user.wallet_balance -= total_cost
+        user.save()
 
-        # Deduct the total amount from the user's wallet
-        user.wallet_balance -= total_amount
-        user.save()  # Save the updated user instance
+        # Fetch stock data, handling API rate limits and errors
+        try:
+            stock_data = get_stock_data(symbol)
+        except Exception as e:
+            print(f"Error fetching data: {e}")
+            return redirect('company_shares')  # Handle API errors
 
-        # Check if the user already owns this stock in their portfolio
-        portfolio, created = Portfolio.objects.get_or_create(
-            user=user,
-            stock_symbol=stock_symbol,
-            defaults={'quantity': 0, 'average_price': price_per_share}
-        )
+        if stock_data:
+            stock_symbol = stock_data['symbol']
+            stock_name = stock_data['company_name']
+            exchange_code_nse = stock_data['exchange_code_nse']
+            exchange_code_bse = stock_data['exchange_code_bse']
 
-        if not created:
-            # Update the average price and quantity if the stock is already in the portfolio
-            total_quantity = portfolio.quantity + quantity
-            portfolio.average_price = (
-                (portfolio.average_price * portfolio.quantity) + (price_per_share * quantity)
-            ) / total_quantity
-            portfolio.quantity = total_quantity
+            # Add or update stock in portfolio
+            portfolio, created = Portfolio.objects.get_or_create(
+                user=user,
+                stock_symbol=stock_symbol,
+                defaults={
+                    'quantity': quantity,
+                    'stock_name': stock_name,
+                    'exchange_code_nse': exchange_code_nse,
+                    'exchange_code_bse': exchange_code_bse,
+                    'average_price': total_cost / Decimal(quantity)
+                }
+            )
+
+            if not created:
+                portfolio.quantity += quantity
+                portfolio.average_price = (
+                    (portfolio.average_price * portfolio.quantity + total_cost)
+                    / Decimal(portfolio.quantity + quantity)
+                )
+            portfolio.save()
+
+        return redirect('company_shares')  # Redirect to portfolio after purchase
+
+    return redirect('company_shares')
+
+def get_stock_price(request):
+    stock_symbol = request.GET.get('symbol')
+    if stock_symbol:
+        try:
+            stock_data = get_stock_data(stock_symbol)
+            # Ensure stock_data contains a price
+            if stock_data and stock_data.get('current_price_nse'):
+                price = stock_data['current_price_nse']
+                return JsonResponse({'price': price})
+            else:
+                return JsonResponse({'error': 'Price not found for this stock'}, status=404)
+        except Exception:
+            return JsonResponse({'error': 'Failed to fetch stock price'}, status=500)
+
+    return JsonResponse({'error': 'Stock symbol is required'}, status=400)
+
+def sell_stock(request):
+    if request.method == "POST":
+        stock_symbol = request.POST.get('stock_symbol')
+        if not stock_symbol:
+            messages.error(request, "Stock symbol is missing!")
+            return redirect('company_shares')
+
+        quantity = request.POST.get('quantity')
+        try:
+            quantity = int(quantity)
+        except ValueError:
+            messages.error(request, "Invalid quantity!")
+            return redirect('company_shares')
+
+        # Fetch stock data
+        stock_data = get_stock_data(stock_symbol)
+        if not stock_data:
+            messages.error(request, "Could not fetch the stock data. Please try again later.")
+            return redirect('company_shares')
+
+        price_per_share = stock_data.get('current_price_nse')
+        if not price_per_share:
+            messages.error(request, "Could not fetch the stock price. Please try again later.")
+            return redirect('company_shares')
+
+        # Process the sale
+        user = request.user
+        portfolio = Portfolio.objects.filter(user=user, stock_symbol=stock_symbol).first()
+
+        if not portfolio or portfolio.quantity < quantity:
+            messages.error(request, "Insufficient shares to sell.")
+            return redirect('company_shares')
+
+        portfolio.quantity -= quantity
+        if portfolio.quantity == 0:
+            portfolio.delete()
         else:
-            # If it's a new stock, set the purchase price (average price) and quantity
-            portfolio.quantity = quantity
-            portfolio.average_price = price_per_share
+            portfolio.save()
 
-        portfolio.save()
+        total_earnings = quantity * Decimal(str(price_per_share))
+        user.wallet_balance += total_earnings
+        user.save()
 
-        # Record the stock transaction
+        # Record transaction
         StockTransaction.objects.create(
             user=user,
             stock_symbol=stock_symbol,
-            transaction_type='buy',
+            transaction_type="sell",
             quantity=quantity,
-            price_per_share=price_per_share
+            price_per_share=Decimal(str(price_per_share)),
         )
 
-        # Record the wallet deduction in the user's transaction history
-        Transaction.objects.create(
-            user=user,
-            transaction_type='buy_stock',  # Meaningful transaction type
-            amount=total_amount
-        )
-
-        # Show success message and redirect
-        messages.success(request, f"Successfully bought {quantity} shares of {stock_symbol}.")
-        return redirect('company_shares')  # Redirect to a dashboard or any other page
-
-    # If the request is GET, simply render the buy stock page (you can customize this view)
-    return render(request, 'company_shares.html')
-
-def get_stock_price(request):
-    print("get_stock_price view called!")  # Debugging
-    stock_symbol = request.GET.get('symbol')  # Retrieve the stock symbol from the request
-    print(f"Received stock symbol: {stock_symbol}")  # Debugging
-
-    if stock_symbol:
-        price = get_stock_data(stock_symbol)
-        print(f"Price fetched for {stock_symbol}: {price}")  # Debugging output
-        if price:
-            return JsonResponse({'price': price})
-        else:
-            print("Price not found or invalid response from API.")
-    return JsonResponse({'price': None}, status=404)
-
+        messages.success(request, f"Successfully sold {quantity} shares of {stock_symbol}.")
+    return redirect('company_shares')
 
 def mutual_funds(request):
     return render(request, 'mutual_funds.html', {})
+
+def insights(request):
+    user = request.user
+    suggestions, high_potential_stocks = generate_insights(user)
+
+    return render(request, "insights.html", {
+        "suggestions": suggestions,
+        "high_potential_stocks": high_potential_stocks,
+    })

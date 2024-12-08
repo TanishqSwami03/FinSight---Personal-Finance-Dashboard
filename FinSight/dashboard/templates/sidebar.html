@@ -1,5 +1,6 @@
 {% load static %}
 
+
 <div class="adminuiux-sidebar">
     <div class="adminuiux-sidebar-inner">
         <div class="px-3 not-iconic mt-3">
@@ -47,6 +48,12 @@
                     <i class="menu-icon bi bi-calculator">
                     </i> <span class="menu-name">Calculator</span>
                 </a>
+            </li>
+            <li class="nav-item"></li>
+            <a href="{% url 'insights' %}" class="nav-link">
+                <i class="bi bi-cash-coin"></i>
+                </i> <span class="menu-name">&nbsp; Insights</span>
+            </a>
             </li>
             <li class="nav-item">
                 <a href="{% url 'logout' %}" class="nav-link">
