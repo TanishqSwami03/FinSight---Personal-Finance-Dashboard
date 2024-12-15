@@ -49,7 +49,7 @@ def get_stock_data(symbol):
     # API connection setup
     conn = http.client.HTTPSConnection("indian-stock-exchange-api2.p.rapidapi.com")
     headers = {
-        'x-rapidapi-key': "c1c626fd31msh9234c3a88568ae2p111cebjsn81b3bcc75e23",
+        'x-rapidapi-key': "047c89427dmsh4abf46c87883640p1bab6cjsnda99588c24f1",
         'x-rapidapi-host': "indian-stock-exchange-api2.p.rapidapi.com"
     }
 

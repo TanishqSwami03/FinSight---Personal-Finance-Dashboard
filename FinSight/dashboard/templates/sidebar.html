@@ -38,9 +38,10 @@
                                 class="menu-icon bi bi-bank"></i> <span class="menu-name">Company
                                 Share</span></a>
                     </div>
-                    <div class="nav-item"><a href="{% url 'mutual_funds' %}" class="nav-link"><i
+                    <!-- <div class="nav-item"><a href="{% url 'mutual_funds' %}" class="nav-link"><i
                                 class="menu-icon bi bi-cash-coin"></i> <span class="menu-name">Mutual
-                                Fund</span></a></div>
+                                Fund</span></a>
+                    </div> -->
                 </div>
             </li>
             <li class="nav-item">
@@ -49,16 +50,16 @@
                     </i> <span class="menu-name">Calculator</span>
                 </a>
             </li>
-            <li class="nav-item"></li>
-            <a href="{% url 'insights' %}" class="nav-link">
-                <i class="bi bi-cash-coin"></i>
-                </i> <span class="menu-name">&nbsp; Insights</span>
-            </a>
-            </li>
             <li class="nav-item">
-                <a href="{% url 'logout' %}" class="nav-link">
-                    <i class="menu-icon bi bi-layers"></i>
-                    <span class="menu-name">Logout</span>
+                <a href="{% url 'insights' %}" class="nav-link">
+                    <i class="bi bi-cash-coin"></i>
+                    </i> <span class="menu-name">&nbsp; Insights</span>
+                </a>
+            </li>
+            <li class="nav-item theme-red">
+                <a href="{% url 'logout' %}" class="nav-link theme-red">
+                    <i data-feather="power" class="theme-red avatar avatar-18 me-1"></i>
+                    <span class="menu-name">&nbsp;Logout</span>
                 </a>
             </li>
         </ul>

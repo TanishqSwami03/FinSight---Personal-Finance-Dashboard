@@ -606,8 +606,7 @@
                                         <th>Current Price</th>
                                         <th>Holding</th>
                                         <th>Profit/Loss</th>
-                                        <th>Today's Trend</th>
-                                        <th>Invest/Sell</th>
+                                        <th>Sell Stocks</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -651,19 +650,6 @@
                                             </p>
                                             <p class="small"><span class="text-secondary">Loss:</span>
                                                 ₹ {{ portfolio.profit }}</p>
-                                            {% endif %}
-                                        </td>
-
-                                        <!-- Today's Trend -->
-                                        <td>
-                                            {% if portfolio.today_trend == "Bullish" %}
-                                            <p class="mb-0 text-success">
-                                                <i class="bi bi-graph-up-arrow"></i> {{ portfolio.today_trend }}
-                                            </p>
-                                            {% else %}
-                                            <p class="mb-0 text-danger">
-                                                <i class="bi bi-graph-down-arrow"></i> {{ portfolio.today_trend }}
-                                            </p>
                                             {% endif %}
                                         </td>
 

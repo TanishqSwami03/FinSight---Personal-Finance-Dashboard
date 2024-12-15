@@ -6,9 +6,11 @@ from django.db.models import Sum, F, Sum
 from django.http import JsonResponse
 from .models import *
 import json
-
 from .utils import *
 # Create your views here.
+
+User = get_user_model()
+
 
 def dashboard(request):
     # Get the logged-in user
@@ -18,7 +20,33 @@ def dashboard(request):
         # Get the user's wallet balance
         wallet_balance = user.wallet_balance
 
-        # Fetch the portfolio distribution (invested value for each stock)
+        # Initialize portfolio summary values
+        total_value = Decimal('0.0')
+        total_investment = Decimal('0.0')
+        total_profit = Decimal('0.0')
+
+        # Fetch user's portfolio
+        user_portfolio = Portfolio.objects.filter(user=user)
+
+        for portfolio in user_portfolio:
+            try:
+                # Fetch current price
+                current_price_str = portfolio.get_current_price()  # Returns as string
+                current_price = Decimal(current_price_str)  # Convert to Decimal for calculation
+                
+                # Calculate derived values
+                average_price = portfolio.average_price
+                invested_value = portfolio.quantity * average_price
+                profit = (current_price - average_price) * portfolio.quantity
+
+                # Update portfolio summary
+                total_value += current_price * portfolio.quantity
+                total_investment += invested_value
+                total_profit += profit
+            except Exception as e:
+                print(f"Error processing stock {portfolio.stock_symbol}: {e}")
+
+        # Fetch the portfolio distribution for pie chart
         portfolio_data = (
             Portfolio.objects.filter(user=user)
             .annotate(total_investment=F('average_price') * F('quantity'))
@@ -46,10 +74,7 @@ def dashboard(request):
             portfolio_chart_data["labels"].append("Others")
             portfolio_chart_data["values"].append(float(others_total))
 
-        # Calculate the total portfolio value
-        total_portfolio_value = sum(portfolio_chart_data["values"])
-
-        # Format portfolio values for rendering in the template
+        # Format values for rendering in the template
         def format_currency(value):
             if value >= 10000000:
                 return f"₹{(value / 10000000):.2f} Cr"  # Crore
@@ -57,42 +82,21 @@ def dashboard(request):
                 return f"₹{(value / 100000):.2f} L"  # Lakh
             return f"₹{value:.2f}"
 
-        # Prepare formatted portfolio data for the UI
-        formatted_portfolio_data = [
-            {
-                'stock_symbol': stock['stock_symbol'],
-                'total_investment': format_currency(stock['total_investment']),
-            }
-            for stock in top_stocks
-        ]
-
-        # Add "Others" to formatted data if applicable
-        if others_total > 0:
-            formatted_portfolio_data.append({
-                'stock_symbol': "Others",
-                'total_investment': format_currency(others_total),
-            })
-
-        # Get top stocks for the dashboard (this could be part of another helper)
-        top_stocks_list = get_top_stocks()
-        for stock in top_stocks_list:
-            stock['change_class'] = 'text-success' if stock['percent_change'] >= 0 else 'text-danger'
-            stock['icon_class'] = 'bi-caret-up-fill' if stock['percent_change'] >= 0 else 'bi-caret-down-fill'
-            stock['percent_change'] = abs(stock['percent_change'])
+        # Format profit/loss revenue for UI
+        profit_loss_revenue = total_profit
+        profit_loss_class = 'text-success' if profit_loss_revenue >= 0 else 'text-danger'
 
         # Pass data to the template
         return render(request, 'dashboard.html', {
-            'top_stocks': top_stocks_list,
-            'user_name': user.first_name,
             'wallet_balance': format_currency(wallet_balance),
             'portfolio_chart_json': json.dumps(portfolio_chart_data),  # Pass chart data
-            'formatted_portfolio_data': formatted_portfolio_data,  # Pass formatted portfolio data
-            'total_portfolio_value': format_currency(total_portfolio_value),  # Total value
+            'total_portfolio_value': format_currency(total_investment),  # Total invested amount
+            'current_value': format_currency(total_value),  # Current value
+            'profit_loss_revenue': format_currency(profit_loss_revenue),  # Profit/Loss revenue
+            'profit_loss_class': profit_loss_class,  # CSS class for Profit/Loss
         })
     else:
         return redirect('login')
-
-
 
 def transaction(request):
     # Fetch transactions only for the logged-in user
@@ -102,7 +106,6 @@ def transaction(request):
     return render(request, 'transaction.html', {
         'transactions': transactions,
     })
-
 
 def portfolio(request):
     return render(request, 'portfolio.html')
@@ -148,9 +151,6 @@ def wallet(request):
         'total_income': total_income,
         'total_expense': total_expense,
     })
-
-
-User = get_user_model()
 
 def add_money(request):
     if request.method == 'POST':
@@ -299,11 +299,6 @@ def company_shares(request):
         'total_profit': total_profit,
         'portfolio_growth': portfolio_growth,
     })
-
-
-
-from django.http import JsonResponse
-from .utils import get_stock_data
 
 @login_required
 def search_stock(request):

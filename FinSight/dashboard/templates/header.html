@@ -51,9 +51,13 @@
                                             src="{% static 'img/user-image/avatar.png' %}" alt=""></figure>
                                 </div>
                                 <div class="col align-self-center">
-                                    <p class="mb-1"><span>{{ user.first_name }}</span></p>
-                                    <p><i class="bi bi-wallet2 me-2"></i>₹ {{ user.wallet_balance }} <small
-                                            class="opacity-50">Balance</small></p>
+                                    <p class="mb-1">
+                                        <span>{{ user.first_name }}</span>
+                                    </p>
+                                    <p>
+                                        <i class="bi bi-wallet2 me-2"></i>₹ {{ user.wallet_balance }} 
+                                        <small class="opacity-50">Balance</small>
+                                    </p>
                                 </div>
                             </div>
                         </div>
