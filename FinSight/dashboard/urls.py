@@ -16,6 +16,5 @@ urlpatterns = [
     path('buy_stock/', buy_stock, name='buy_stock'),
     path('get_stock_price/', get_stock_price, name='get_stock_price'),
     path('sell/', sell_stock, name='sell_stock'),
-    path('mutual_funds/', mutual_funds, name='mutual_funds'),
     path('insights/', insights, name='insights'),
 ]

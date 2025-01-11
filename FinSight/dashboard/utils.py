@@ -1,3 +1,4 @@
+import os
 import requests
 import http.client
 import urllib.parse
@@ -5,15 +6,18 @@ import json
 from urllib.parse import quote
 from decimal import Decimal
 import pandas as pd
+import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from alpha_vantage.timeseries import TimeSeries
-
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+import joblib
+from datetime import datetime
 from .models import *
 
 def get_top_stocks():
     url = "https://indian-stock-exchange-api2.p.rapidapi.com/NSE_most_active"
     headers = {
-        "x-rapidapi-key": "047c89427dmsh4abf46c87883640p1bab6cjsnda99588c24f1",
+        "x-rapidapi-key": "06ce2c117emshb10dee7b44d4c4ep11e44cjsn2a53a7965b9f",
         "x-rapidapi-host": "indian-stock-exchange-api2.p.rapidapi.com"
     }
     response = requests.get(url, headers=headers)
@@ -49,7 +53,7 @@ def get_stock_data(symbol):
     # API connection setup
     conn = http.client.HTTPSConnection("indian-stock-exchange-api2.p.rapidapi.com")
     headers = {
-        'x-rapidapi-key': "047c89427dmsh4abf46c87883640p1bab6cjsnda99588c24f1",
+        'x-rapidapi-key': "06ce2c117emshb10dee7b44d4c4ep11e44cjsn2a53a7965b9f",
         'x-rapidapi-host': "indian-stock-exchange-api2.p.rapidapi.com"
     }
 
@@ -93,173 +97,51 @@ def get_stock_data(symbol):
         conn.close()
 
 
-ALPHA_VANTAGE_API_KEY = '9IDDAT67A3ODEWLG'
+# Insights page
 
-# Fetch stock data from Alpha Vantage
-def fetch_stock_data(symbol):
-    if not ('.BSE' in symbol or '.NS' in symbol):
-        symbol += '.BSE'
-    
-    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={ALPHA_VANTAGE_API_KEY}"
-    response = requests.get(url)
-    data = response.json()
+def get_stock_news(stock_symbol):
+    """
+    Fetch recent news specifically related to a stock symbol using NewsAPI.
 
-    if "Time Series (Daily)" not in data:
-        raise ValueError(f"Invalid API call for {symbol}. Check your API key or symbol format.")
+    Args:
+        stock_symbol (str): Stock symbol to fetch news for.
 
-    time_series = data["Time Series (Daily)"]
-    df = pd.DataFrame.from_dict(time_series, orient="index", dtype=float)
-    df.rename(columns={
-        "1. open": "Open",
-        "2. high": "High",
-        "3. low": "Low",
-        "4. close": "Close",
-        "5. volume": "Volume",
-    }, inplace=True)
-    df.index = pd.to_datetime(df.index)
-    df.sort_index(inplace=True)
-    return df
+    Returns:
+        list: A list of up to 5 news articles containing title, description, and URL.
+    """
+    api_key = "d9cae1602f114f34a7575c813314e7d7"
+    base_url = "https://newsapi.org/v2/everything"
 
-# Extract features for analysis
-def calculate_rsi(prices, window=14):
-    delta = prices.diff()
-    gain = (delta.where(delta > 0, 0)).rolling(window=window).mean()
-    loss = (-delta.where(delta < 0, 0)).rolling(window=window).mean()
-    rs = gain / loss
-    return 100 - (100 / (1 + rs))
+    # Add specific financial terms to focus on stock-related news
+    query = f"{stock_symbol} stock OR share price OR market"
 
-def extract_features(stock_data):
-    stock_data["SMA_50"] = stock_data["Close"].rolling(window=50).mean()
-    stock_data["SMA_200"] = stock_data["Close"].rolling(window=200).mean()
-    stock_data["RSI"] = calculate_rsi(stock_data["Close"])
-    stock_data["Price Change"] = stock_data["Close"].pct_change()
-    stock_data.dropna(inplace=True)
-    return stock_data
+    # Query parameters
+    params = {
+        "q": query,
+        "sortBy": "publishedAt",
+        "language": "en",
+        "apiKey": api_key,
+        "pageSize": 5,  # Limit the results to 5 articles
+    }
 
-# Train and save the prediction model
-def train_model(stock_data):
-    features = stock_data[["SMA_50", "SMA_200", "RSI", "Price Change"]]
-    target = (stock_data["Close"].shift(-1) > stock_data["Close"]).astype(int)
+    try:
+        response = requests.get(base_url, params=params)
+        response.raise_for_status()  # Raise HTTPError for bad responses
+        news_data = response.json()
 
-    X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
-    model = RandomForestClassifier(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
+        # Extract relevant news articles
+        articles = news_data.get("articles", [])
+        return [
+            {
+                "title": article["title"],
+                "description": article["description"],
+                "url": article["url"],
+                "source": article["source"]["name"],
+                "published_at": datetime.strptime(article["publishedAt"], "%Y-%m-%dT%H:%M:%SZ").strftime("%d-%m-%Y, %I:%M %p"),
+            }
+            for article in articles
+        ]
 
-    accuracy = accuracy_score(y_test, model.predict(X_test))
-    print(f"Model Accuracy: {accuracy * 100:.2f}%")
-
-    joblib.dump(model, "trained_model.pkl")
-    return model
-
-# Predict stock action (Buy/Sell)
-def predict_action(stock_symbol):
-    stock_data = fetch_stock_data(stock_symbol)
-    features = extract_features(stock_data)
-
-    if not os.path.exists("trained_model.pkl"):
-        train_model(features)
-
-    model = joblib.load("trained_model.pkl")
-    latest_data = features.iloc[-1][["SMA_50", "SMA_200", "RSI", "Price Change"]].values.reshape(1, -1)
-    prediction = model.predict(latest_data)
-
-    return "Buy" if prediction[0] == 1 else "Sell"
-
-# Fetch high-potential stocks dynamically using Alpha Vantage API
-def fetch_high_potential_stocks():
-    # Define symbols for analysis (you can replace this with a broader list)
-    stock_symbols = [
-        "HDFCBANK.BSE",
-        "INFY.BSE",
-        "RELIANCE.BSE",
-        "ICICIBANK.BSE",
-        "KOTAKBANK.BSE",
-        "AXISBANK.BSE",
-        "ASIANPAINT.BSE",
-        "TATASTEEL.BSE",
-        "BAJAJFINANCE.BSE",
-        "HINDUNILVR.BSE",
-        "NTPC.BSE",
-        "TATAMOTORS.BSE",
-        "JSWSTEEL.BSE",
-        "BHARTIARTL.BSE",
-        "MARUTI.BSE",
-        "BAJAJFINSV.BSE",
-        "SUNPHARMA.BSE",
-        "NESTLEIND.BSE",
-        "GRASIM.BSE",
-        "WIPRO.BSE",
-        "DIVISLAB.BSE",
-        "M&M.BSE",
-        "INDUSINDBK.BSE",
-        "TITAN.BSE",
-        "HDFCLIFE.BSE",
-        "ADANIPORTS.BSE",
-        "CIPLA.BSE",
-        "BAJAJ-AUTO.BSE",
-        "DRREDDY.BSE",
-        "EICHERMOT.BSE",
-        "HINDALCO.BSE",
-        "UPL.BSE",
-        "SHREECEM.BSE",
-        "APOLLOHOSP.BSE",
-        "TECHM.BSE",
-        "BPCL.BSE",
-        "SBILIFE.BSE",
-        "ONGC.BSE",
-        "COALINDIA.BSE",
-        "BRITANNIA.BSE",
-        "HEROMOTOCO.BSE",
-        "TATACONSUM.BSE",
-    ]
-
-    high_potential_stocks = []
-
-    for symbol in stock_symbols:
-        try:
-            # Fetch stock data
-            stock_data = fetch_stock_data(symbol)
-            stock_data = extract_features(stock_data)
-
-            # Analyze indicators
-            latest_data = stock_data.iloc[-1]
-            if latest_data["RSI"] < 30:  # Oversold condition
-                high_potential_stocks.append({
-                    "stock": symbol,
-                    "reason": "This stock is currently oversold and may see a rebound soon. Consider buying."
-                })
-            elif latest_data["SMA_50"] > latest_data["SMA_200"]:  # Positive SMA crossover
-                high_potential_stocks.append({
-                    "stock": symbol,
-                    "reason": "This stock has shown a positive trend recently, with a strong upward momentum."
-                })
-        except Exception as e:
-            print(f"Error processing {symbol}: {e}")
-
-    return high_potential_stocks
-
-# Generate insights for the logged-in user
-def generate_insights(user):
-    portfolio = Portfolio.objects.filter(user=user)
-
-    # Analyze user's portfolio
-    suggestions = []
-    for stock in portfolio:
-        try:
-            action, reason = predict_action(stock.stock_symbol)
-        except Exception as e:
-            action = "Hold"
-            reason = f"Could not fetch data for {stock.stock_symbol}: {str(e)}"
-
-        suggestions.append({
-            "stock": stock.stock_symbol,
-            "action": action,
-            "reason": reason,
-            "profit": stock.profit,
-            "percentage_change": stock.percentage_change,
-        })
-
-    # Fetch high-potential stocks
-    high_potential_stocks = fetch_high_potential_stocks()
-
-    return suggestions, high_potential_stocks
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching news for {stock_symbol}: {e}")
+        return []

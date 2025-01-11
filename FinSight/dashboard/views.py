@@ -17,6 +17,15 @@ def dashboard(request):
     user = request.user
 
     if user.is_authenticated:
+        # Get top stocks
+        top_stocks = get_top_stocks()
+        for stock in top_stocks:
+            stock['change_class'] = 'text-success' if stock['percent_change'] >= 0 else 'text-danger'
+            stock['icon_class'] = 'bi-caret-up-fill' if stock['percent_change'] >= 0 else 'bi-caret-down-fill'
+            stock['percent_change'] = abs(stock['percent_change'])
+
+        # print(top_stocks)
+
         # Get the user's wallet balance
         wallet_balance = user.wallet_balance
 
@@ -88,6 +97,7 @@ def dashboard(request):
 
         # Pass data to the template
         return render(request, 'dashboard.html', {
+            'top_stocks': top_stocks,
             'wallet_balance': format_currency(wallet_balance),
             'portfolio_chart_json': json.dumps(portfolio_chart_data),  # Pass chart data
             'total_portfolio_value': format_currency(total_investment),  # Total invested amount
@@ -322,63 +332,74 @@ def search_stock(request):
 @login_required
 def buy_stock(request):
     if request.method == 'POST':
-        symbol = request.POST.get('symbol')
-        price = request.POST.get('price')  # Stock price as a string
-        quantity = int(request.POST.get('quantity'))
+        # Get inputs from the form
+        symbol = request.POST.get('symbol', '').strip()  # Ensure no leading/trailing spaces
+        price = request.POST.get('price', '').strip()
+        quantity = request.POST.get('quantity', '').strip()
 
-        # Convert price to Decimal
+        # Validate inputs
+        if not symbol:
+            messages.error(request, "Stock symbol is missing.")
+            return redirect('company_shares')
+        if not price or not quantity:
+            messages.error(request, "Invalid price or quantity.")
+            return redirect('company_shares')
+
         try:
             price_decimal = Decimal(price)
-        except Exception as e:
-            print(f"Error converting price to Decimal: {e}")
+            quantity = int(quantity)
+            if quantity <= 0:
+                raise ValueError("Quantity must be greater than 0.")
+        except (ValueError, Decimal.InvalidOperation):
+            messages.error(request, "Invalid price or quantity format.")
             return redirect('company_shares')
 
         total_cost = price_decimal * Decimal(quantity)
 
+        # Check wallet balance
         user = request.user
         if user.wallet_balance < total_cost:
-            return redirect('portfolio')  # Handle insufficient balance
+            messages.error(request, "Insufficient wallet balance.")
+            return redirect('portfolio')
 
-        # Deduct wallet balance
+        # Fetch stock data
+        stock_data = get_stock_data(symbol)
+        if not stock_data:
+            messages.error(request, f"Could not fetch stock data for symbol '{symbol}'.")
+            return redirect('company_shares')
+
+        # Extract stock details
+        stock_symbol = stock_data.get('symbol', symbol)
+        stock_name = stock_data.get('company_name', 'Unknown Stock')
+
+        # Update user's portfolio
+        portfolio, created = Portfolio.objects.get_or_create(
+            user=user,
+            stock_symbol=stock_symbol,
+            defaults={
+                'quantity': quantity,
+                'stock_name': stock_name,
+                'average_price': total_cost / Decimal(quantity),
+            },
+        )
+        if not created:
+            # Update existing portfolio entry
+            portfolio.average_price = (
+                (portfolio.average_price * portfolio.quantity + total_cost)
+                / (portfolio.quantity + quantity)
+            )
+            portfolio.quantity += quantity
+        portfolio.save()
+
+        # Deduct the cost from the wallet
         user.wallet_balance -= total_cost
         user.save()
 
-        # Fetch stock data, handling API rate limits and errors
-        try:
-            stock_data = get_stock_data(symbol)
-        except Exception as e:
-            print(f"Error fetching data: {e}")
-            return redirect('company_shares')  # Handle API errors
+        messages.success(request, f"Successfully purchased {quantity} shares of {stock_symbol}.")
+        return redirect('company_shares')
 
-        if stock_data:
-            stock_symbol = stock_data['symbol']
-            stock_name = stock_data['company_name']
-            exchange_code_nse = stock_data['exchange_code_nse']
-            exchange_code_bse = stock_data['exchange_code_bse']
-
-            # Add or update stock in portfolio
-            portfolio, created = Portfolio.objects.get_or_create(
-                user=user,
-                stock_symbol=stock_symbol,
-                defaults={
-                    'quantity': quantity,
-                    'stock_name': stock_name,
-                    'exchange_code_nse': exchange_code_nse,
-                    'exchange_code_bse': exchange_code_bse,
-                    'average_price': total_cost / Decimal(quantity)
-                }
-            )
-
-            if not created:
-                portfolio.quantity += quantity
-                portfolio.average_price = (
-                    (portfolio.average_price * portfolio.quantity + total_cost)
-                    / Decimal(portfolio.quantity + quantity)
-                )
-            portfolio.save()
-
-        return redirect('company_shares')  # Redirect to portfolio after purchase
-
+    # Handle invalid request methods
+    messages.error(request, "Invalid request method.")
     return redirect('company_shares')
 
 def get_stock_price(request):
@@ -452,14 +473,17 @@ def sell_stock(request):
         messages.success(request, f"Successfully sold {quantity} shares of {stock_symbol}.")
     return redirect('company_shares')
 
-def mutual_funds(request):
-    return render(request, 'mutual_funds.html', {})
-
 def insights(request):
+    """
+    Insights page view that fetches news for all stocks in the user's portfolio.
+    """
     user = request.user
-    suggestions, high_potential_stocks = generate_insights(user)
+    portfolio_stocks = Portfolio.objects.filter(user=user)  # Your Portfolio model
+    news_by_stock = {}
 
-    return render(request, "insights.html", {
-        "suggestions": suggestions,
-        "high_potential_stocks": high_potential_stocks,
-    })
+    for stock in portfolio_stocks:
+        stock_symbol = stock.stock_symbol
+        news = get_stock_news(stock_symbol)
+        news_by_stock[stock_symbol] = news
+
+    return render(request, "insights.html", {"news_by_stock": news_by_stock})

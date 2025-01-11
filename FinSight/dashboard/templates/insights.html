@@ -75,35 +75,22 @@
                         <p class="text-secondary">Stay informed with expert recommendations on your portfolio.</p>
                     </div>
                 
-                    <!-- Portfolio Insights -->
-                    {% for suggestion in suggestions %}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ suggestion.stock }}</h5>
-                            <p class="card-text">Action: <strong>{{ suggestion.action }}</strong></p>
-                            <p class="card-text">Profit: ₹{{ suggestion.profit }}</p>
-                            <p class="card-text">Percentage Change: {{ suggestion.percentage_change }}%</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                
-                    <!-- High-Potential Stocks -->
-                    <div class="mt-5">
-                        <h3>Stocks with High Potential</h3>
-                        {% if high_potential_stocks %}
-                            {% for stock in high_potential_stocks %}
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ stock.stock }}</h5>
-                                    <p class="card-text">{{ stock.reason }}</p>
-                                </div>
-                            </div>
+                    {% for stock, news_list in news_by_stock.items %}
+                        <h2>{{ stock }}</h2>
+                        <ul>
+                            {% for news in news_list %}
+                                <li>
+                                    <a href="{{ news.url }}" target="_blank">
+                                        <strong>{{ news.title }}</strong>
+                                    </a>
+                                    <p>{{ news.description }}</p>
+                                    <small>Source: {{ news.source }} | Published: {{ news.published_at }}</small>
+                                </li>
+                            {% empty %}
+                            <p>No recent news found for this stock.</p>
                             {% endfor %}
-                        {% else %}
-                            <p>No high-potential stocks identified at the moment. Please check again later.</p>
-                        {% endif %}
-                    </div>
-                    
+                        </ul>
+                    {% endfor %}
                 </div>
                 
 
