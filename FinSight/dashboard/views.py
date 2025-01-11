@@ -18,11 +18,11 @@ def dashboard(request):
 
     if user.is_authenticated:
         # Get top stocks
-        top_stocks = get_top_stocks()
-        for stock in top_stocks:
-            stock['change_class'] = 'text-success' if stock['percent_change'] >= 0 else 'text-danger'
-            stock['icon_class'] = 'bi-caret-up-fill' if stock['percent_change'] >= 0 else 'bi-caret-down-fill'
-            stock['percent_change'] = abs(stock['percent_change'])
+        # top_stocks = get_top_stocks()
+        # for stock in top_stocks:
+        #     stock['change_class'] = 'text-success' if stock['percent_change'] >= 0 else 'text-danger'
+        #     stock['icon_class'] = 'bi-caret-up-fill' if stock['percent_change'] >= 0 else 'bi-caret-down-fill'
+        #     stock['percent_change'] = abs(stock['percent_change'])
 
         # print(top_stocks)
 
