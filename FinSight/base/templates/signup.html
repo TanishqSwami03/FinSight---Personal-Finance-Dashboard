@@ -70,7 +70,7 @@
                             <div class="col-11 col-sm-8 col-md-11 col-xl-11 col-xxl-10 login-box">
                                 <div class="text-center mb-4">
                                     <h1 class="mb-3">Let's get started&#128077;</h1>
-                                    <p class="text-secondary">Provide your few details</p>
+                                    <p class="text-secondary">Enter your details</p>
                                 </div>
                                 <form method="post" action="{% url 'signup' %}">
                                     {% csrf_token %}
@@ -131,9 +131,9 @@
 
                                     <button type="submit" class="btn btn-lg btn-theme w-100 mb-4">Sign up</button>
                                 </form>
-                                <div class="text-center mb-3">Already have account? <a href="investment-login.html"
+                                <div class="text-center mb-3">Already have account? <a href="{% url 'login' %}"
                                         class="">Login</a> here.</div>
-                                <div class="row align-items-center mb-3">
+                                <!-- <div class="row align-items-center mb-3">
                                     <div class="col">
                                         <hr class="">
                                     </div>
@@ -143,8 +143,8 @@
                                     <div class="col">
                                         <hr class="">
                                     </div>
-                                </div>
-                                <div class="row align-items-center">
+                                </div> -->
+                                <!-- <div class="row align-items-center">
                                     <div class="col"><button
                                             class="btn btn-lg btn-outline-theme w-100 mb-3 text-start"><img
                                                 src="{% static 'img/g-logo.png' %}" alt="" class="me-2"> Google</button>
@@ -153,7 +153,7 @@
                                             class="btn btn-lg btn-outline-theme w-100 mb-3 text-start"><img
                                                 src="{% static 'img/f-logo.png' %}" alt="" class="me-2">
                                             Facebook</button></div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
