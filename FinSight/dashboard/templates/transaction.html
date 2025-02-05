@@ -496,22 +496,22 @@
                                     </td>
                                     <td>
                                         {% if transaction.transaction_type == 'buy_stock' %}
-                                        <h6 class="text-success">+ ₹{{ transaction.amount }}</h6>
+                                        <h6 class="text-success">- ₹{{ transaction.amount }}</h6>
                                         {% elif transaction.transaction_type == 'receive' %}
                                         <h6 class="text-success">+ ₹{{ transaction.amount }}</h6>
                                         {% elif transaction.transaction_type == 'add' %}
                                         <h6 class="text-success">+ ₹{{ transaction.amount }}</h6>
                                         {% elif transaction.transaction_type == 'sell_stock' %}
-                                        <h6 class="text-danger">- ₹{{ transaction.amount }}</h6>
+                                        <h6 class="text-success">+ ₹{{ transaction.amount }}</h6>
                                         {% elif transaction.transaction_type == 'send' %}
                                         <h6 class="text-danger">- ₹{{ transaction.amount }}</h6>
                                         {% endif %}
                                     </td>
                                     <td>
                                         {% if transaction.transaction_type == 'buy_stock' %}
-                                        <span class="badge badge-light rounded-pill text-bg-success">Shares Bought</span>
+                                        <span class="badge badge-light rounded-pill text-bg-success">Shares Bought (Amount Deducted)</span>
                                         {% elif transaction.transaction_type == 'sell_stock' %}
-                                        <span class="badge badge-light rounded-pill text-bg-danger">Shares Sold</span>
+                                        <span class="badge badge-light rounded-pill text-bg-danger">Shares Sold (Amount Added)</span>
                                         {% elif transaction.transaction_type == 'add' %}
                                         <span class="badge badge-light rounded-pill text-bg-primary">Money Added</span>
                                         {% elif transaction.transaction_type == 'send' %}

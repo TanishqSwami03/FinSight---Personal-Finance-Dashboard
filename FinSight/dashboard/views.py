@@ -17,14 +17,6 @@ def dashboard(request):
     user = request.user
 
     if user.is_authenticated:
-        # Get top stocks
-        # top_stocks = get_top_stocks()
-        # for stock in top_stocks:
-        #     stock['change_class'] = 'text-success' if stock['percent_change'] >= 0 else 'text-danger'
-        #     stock['icon_class'] = 'bi-caret-up-fill' if stock['percent_change'] >= 0 else 'bi-caret-down-fill'
-        #     stock['percent_change'] = abs(stock['percent_change'])
-
-        # print(top_stocks)
 
         # Get the user's wallet balance
         wallet_balance = user.wallet_balance
@@ -391,6 +383,23 @@ def buy_stock(request):
             portfolio.quantity += quantity
         portfolio.save()
 
+        # Record transaction
+        StockTransaction.objects.create(
+            user=user,
+            stock_symbol=stock_symbol,
+            transaction_type="buy",
+            quantity=quantity,
+            price_per_share=Decimal(str(price)),
+        )
+
+        amount = price_per_share * quantity
+        
+        Transaction.objects.create(
+            user=user,
+            transaction_type='buy_stock',
+            amount=amount
+        )
+
         # Deduct the cost from the wallet
         user.wallet_balance -= total_cost
         user.save()
@@ -461,13 +470,23 @@ def sell_stock(request):
         user.wallet_balance += total_earnings
         user.save()
 
+        price_per_share = Decimal(str(price_per_share))
+
         # Record transaction
         StockTransaction.objects.create(
             user=user,
             stock_symbol=stock_symbol,
             transaction_type="sell",
             quantity=quantity,
-            price_per_share=Decimal(str(price_per_share)),
+            price_per_share= price_per_share,
+        )
+
+        amount = quantity * price_per_share
+
+        Transaction.objects.create(
+            user=user,
+            transaction_type='sell_stock',
+            amount=amount
         )
 
         messages.success(request, f"Successfully sold {quantity} shares of {stock_symbol}.")
